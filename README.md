@@ -1,3 +1,2 @@
 # SDM
-App Android para SDM guat2gaweuhdsfasdasdsdas
-Wey
+App Android para SDM
