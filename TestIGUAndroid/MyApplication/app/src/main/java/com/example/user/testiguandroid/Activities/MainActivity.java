@@ -1,7 +1,12 @@
 package com.example.user.testiguandroid.Activities;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,12 +19,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Switch;
 
+import com.example.user.testiguandroid.Fragments.Configuration;
+import com.example.user.testiguandroid.Fragments.SearchMovies;
 import com.example.user.testiguandroid.R;
 import com.example.user.testiguandroid.ThemeChanger;
 
 public class MainActivity extends Activity //AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener {
 
+    SharedPreferences datos;
+
+    public SharedPreferences getDatos(){
+        return datos;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +49,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        datos=getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
     }
 
     @Override
@@ -69,28 +82,38 @@ public class MainActivity extends Activity //AppCompatActivity
     }
 
     public void actualizarInterfaz(View v){
-        Switch interr=(Switch)findViewById(R.id.switch1);
+        Switch interr=(Switch)findViewById(R.id.cinemaModeConfiguration);
 
-
+        boolean preferencias=datos.getBoolean("CinemaMode",false);
+        System.out.println("Las preferencias antes eran eran: " + preferencias);
         if(interr.isChecked()){
 
-            ThemeChanger.changeToTheme(this,ThemeChanger.CINEMA);
+            datos.edit().putBoolean("CinemaMode",true).commit();
+            ThemeChanger.changeToTheme(this, ThemeChanger.CINEMA);
         }
         else{
+            datos.edit().putBoolean("CinemaMode", false).commit();
             ThemeChanger.changeToTheme(this, ThemeChanger.DAY);
+
         }
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        Fragment fragment;
         if (id == R.id.nav_search_movie) {
-            // Handle the camera action
+            fragment = new SearchMovies();
+            FragmentManager fm= getFragmentManager();
+            fm.beginTransaction().replace(R.id.fragmentRemplazar,fragment).commit();
         } else if (id == R.id.nav_my_lists) {
 
         }  else if (id == R.id.nav_conf) {
+            fragment = new Configuration();
+            FragmentManager fm= getFragmentManager();
+            fm.beginTransaction().replace(R.id.fragmentRemplazar,fragment).commit();
 
         } else if (id == R.id.nav_about) {
 
@@ -99,5 +122,10 @@ public class MainActivity extends Activity //AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
