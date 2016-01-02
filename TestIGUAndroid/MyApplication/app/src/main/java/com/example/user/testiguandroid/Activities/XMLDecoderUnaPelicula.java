@@ -1,25 +1,23 @@
-package com.example.user.testiguandroid.API;
+package com.example.user.testiguandroid.Activities;
+
+import android.os.AsyncTask;
 
 import com.example.user.testiguandroid.Logica.Pelicula;
 
-import java.io.InputStream;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.Element;
+class XMLDecoderUnaPelicula extends AsyncTask<String,Void,List<Pelicula>>{
 
-import java.io.File;
-import java.net.URL;
-
-class XMLDecoder {
-
-    public List<Pelicula> decodearXMLVariasPeliculas(String url){
+    private List<Pelicula> decodearXMLVariasPeliculas(String url){
 
         List<Pelicula> peliculasDelJson= new ArrayList<Pelicula>();
 
@@ -65,7 +63,7 @@ class XMLDecoder {
 
     }
 
-    public Pelicula decodearXMLUnaPelicula(String url){
+    private Pelicula decodearXMLUnaPelicula(String url){
 
         Pelicula peliADevolver=null;
         try {
@@ -126,5 +124,25 @@ class XMLDecoder {
     }
 
 
+    @Override
+    protected List<Pelicula> doInBackground(String... params) {
+        List<Pelicula> toReturnNunca= new ArrayList<Pelicula>();
+       if(params[0].equals("una")){
+           Pelicula p=decodearXMLUnaPelicula(params[1]);
+           List<Pelicula> toRet= new ArrayList<Pelicula>();
+           toRet.add(p);
+           return toRet;
+       }
+        else if(params[0].equals("varias")){
+            return decodearXMLVariasPeliculas(params[1]);
+       }
+        return toReturnNunca;
+    }
+
+
+    @Override
+    protected void onPostExecute(List<Pelicula> result){
+
+    }
 }
 

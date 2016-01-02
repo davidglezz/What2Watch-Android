@@ -1,4 +1,4 @@
-package com.example.user.testiguandroid.API;
+package com.example.user.testiguandroid.Activities;
 
 import java.net.MalformedURLException;
 import java.net.URL;
