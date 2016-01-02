@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,12 +21,17 @@ import android.view.MenuItem;
 import android.widget.Switch;
 
 import com.example.user.testiguandroid.Fragments.Configuration;
+import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
+import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 import com.example.user.testiguandroid.ThemeChanger;
 
+import java.net.MalformedURLException;
+import java.util.List;
+
 public class MainActivity extends Activity //AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener,MovieListResult.OnFragmentInteractionListener {
 
     SharedPreferences datos;
 
@@ -81,6 +87,49 @@ public class MainActivity extends Activity //AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void searchMovies(View v){
+        //TODO
+        android.support.design.widget.TextInputLayout title=
+                (TextInputLayout) findViewById(R.id.movieTitleToSearch);
+        android.support.design.widget.TextInputLayout year= (TextInputLayout) findViewById(R.id.movieYearToSearch);
+        String titleString=title.getEditText().getText().toString();
+        String yearString=year.getEditText().getText().toString();
+
+        if(titleString==""|| titleString.isEmpty() || titleString==null){
+            Snackbar snackbar = Snackbar
+                    .make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG);
+
+            snackbar.show();
+
+        }
+        else{
+            try {
+            APICalls api= new APICalls();
+            api.buscarTitulos(titleString);
+            api.buscarPorAnyo(yearString);
+            String url= api.obtenerURLListaPeliculas();
+            new XMLDecoderVariasPeliculas(this).execute(url);
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+    public void asyncResult(List<Pelicula> lista){
+        for(Pelicula p:lista){
+            System.out.println(p.getTitle() + " " + p.getYear() + " " + p.getPoster());
+        }
+        //TODO raul aqui se pasaria a un fragment con un List que enseñaria caratula titulo año y autor (personalizado)
+        //TODO no soy capaz de hacerlo. Mira whatsapp para mas datos
+        MovieListResult f= new MovieListResult();
+        f.setResult(lista);
+        changeFragment(f);
+
+    }
+
+
+
     public void actualizarInterfaz(View v){
         Switch interr=(Switch)findViewById(R.id.cinemaModeConfiguration);
 
@@ -106,14 +155,12 @@ public class MainActivity extends Activity //AppCompatActivity
         Fragment fragment;
         if (id == R.id.nav_search_movie) {
             fragment = new SearchMovies();
-            FragmentManager fm= getFragmentManager();
-            fm.beginTransaction().replace(R.id.fragmentRemplazar,fragment).commit();
+            changeFragment(fragment);
         } else if (id == R.id.nav_my_lists) {
 
         }  else if (id == R.id.nav_conf) {
             fragment = new Configuration();
-            FragmentManager fm= getFragmentManager();
-            fm.beginTransaction().replace(R.id.fragmentRemplazar,fragment).commit();
+            changeFragment(fragment);
 
         } else if (id == R.id.nav_about) {
 
@@ -122,6 +169,11 @@ public class MainActivity extends Activity //AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void changeFragment(Fragment newFrg){
+        FragmentManager fm= getFragmentManager();
+        fm.beginTransaction().replace(R.id.fragmentRemplazar,newFrg).commit();
     }
 
     @Override
