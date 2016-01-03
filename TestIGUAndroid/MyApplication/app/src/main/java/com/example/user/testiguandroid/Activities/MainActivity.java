@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -23,6 +24,7 @@ import android.widget.Switch;
 import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
+import com.example.user.testiguandroid.Fragments.SingleMovieData;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 import com.example.user.testiguandroid.ThemeChanger;
@@ -31,7 +33,8 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener,MovieListResult.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener,MovieListResult.OnFragmentInteractionListener,
+        SingleMovieData.OnFragmentInteractionListener{
 
     SharedPreferences datos;
 
@@ -87,6 +90,19 @@ public class MainActivity extends Activity //AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void searchSingleMovie(Pelicula p){
+        try {
+            String codigo=p.getImdbID();
+            APICalls api= new APICalls();
+            String url=api.obtenerURLSoloUnaPeli(codigo);
+            new XMLDecoderUnaPelicula(this).execute(url);
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void searchMovies(View v){
         //TODO
         android.support.design.widget.TextInputLayout title=
@@ -102,6 +118,12 @@ public class MainActivity extends Activity //AppCompatActivity
             snackbar.show();
 
         }
+        else if(titleString.length()==1){
+            Snackbar snackbar = Snackbar
+                    .make(v, "Put at least 2 characters to search", Snackbar.LENGTH_LONG);
+
+            snackbar.show();
+        }
         else{
             try {
             APICalls api= new APICalls();
@@ -116,14 +138,20 @@ public class MainActivity extends Activity //AppCompatActivity
         }
 
     }
+    public void asyncResult(Pelicula p){
+        new PosterGetter(this,p).execute(p.getPoster());
+    }
+
+    public void asyncResult(Pelicula p,Bitmap caratula){
+        SingleMovieData s= new SingleMovieData(p,caratula);
+        changeFragment(s);
+    }
+
+
     public void asyncResult(List<Pelicula> lista){
-        for(Pelicula p:lista){
-            System.out.println(p.getTitle() + " " + p.getYear() + " " + p.getPoster());
-        }
-        //TODO raul aqui se pasaria a un fragment con un List que enseñaria caratula titulo año y autor (personalizado)
-        //TODO no soy capaz de hacerlo. Mira whatsapp para mas datos
-        MovieListResult f= new MovieListResult();
-        f.setResult(lista);
+
+        MovieListResult f= new MovieListResult(lista,this);
+
         changeFragment(f);
 
     }
@@ -146,6 +174,8 @@ public class MainActivity extends Activity //AppCompatActivity
 
         }
     }
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

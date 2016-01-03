@@ -1,0 +1,71 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.user.testiguandroid.Fragments.SingleMovieData">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/caratulaSingleMovieData"
+        android:layout_gravity="left|top" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="226dp"
+        android:layout_height="153dp"
+        android:layout_gravity="right|top">
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Titulo Aqui"
+            android:id="@+id/tituloSingleMovieData"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Anyo Aqui"
+            android:id="@+id/anyoSingleMovieData" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Genero Aqui"
+            android:id="@+id/generoSingleMovieData"
+         />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Director Aqui"
+            android:id="@+id/directorSingleMovieData"
+            android:layout_gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Escritor Aqui"
+            android:id="@+id/escritorSingleMovieData" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Duracion Aqui"
+            android:id="@+id/duracionSingleMovieData" />
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="173dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/plotSingleMovieData"
+        android:layout_gravity="center"
+        android:enabled="true"
+        android:text="Plot aqui" />
+
+</FrameLayout>

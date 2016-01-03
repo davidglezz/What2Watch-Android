@@ -2,78 +2,73 @@ package com.example.user.testiguandroid.Fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ListFragment;
-import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import android.widget.Adapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-
-import com.example.user.testiguandroid.Activities.MainActivity;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
-import com.example.user.testiguandroid.WhatToWatchListView.WTWCustomAdapter;
 
 
-import java.util.List;
-
-
-public class MovieListResult extends ListFragment {
+public class SingleMovieData extends Fragment {
 
 
     private OnFragmentInteractionListener mListener;
 
-    private List<Pelicula> result;
-    private MainActivity main;
+    private Pelicula p;
+    private Bitmap caratula;
 
-    //WTWListFragment listviewMovies;
-    Context context;
-    ListAdapter adapter;
-
-
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        main.searchSingleMovie(result.get(position));
-    }
-
-    public MovieListResult() {
-        // Required empty public constructor
-    }
 
     @SuppressLint("ValidFragment")
-    public MovieListResult(List<Pelicula> p, MainActivity main) {
-        this.result=p;
-        this.main=main;
+    public SingleMovieData(Pelicula p, Bitmap caratula) {
+        this.p=p;
+        this.caratula=caratula;
     }
 
+
+    public SingleMovieData() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
 
-
         }
     }
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View vista= inflater.inflate(R.layout.movie_list_result_fragment, container, false);
+        View v= inflater.inflate(R.layout.single_movie_data_fragment, container, false);
+        ImageView poster=(ImageView)v.findViewById(R.id.caratulaSingleMovieData);
+        poster.setImageBitmap(caratula);
+        EditText plot=(EditText)v.findViewById(R.id.plotSingleMovieData);
+        TextView title=(TextView)v.findViewById(R.id.tituloSingleMovieData);
+        TextView year=(TextView)v.findViewById(R.id.anyoSingleMovieData);
+        TextView director=(TextView)v.findViewById(R.id.directorSingleMovieData);
+        TextView genero=(TextView)v.findViewById(R.id.generoSingleMovieData);
+        TextView escritor=(TextView)v.findViewById(R.id.escritorSingleMovieData);
+        TextView duracion=(TextView)v.findViewById(R.id.duracionSingleMovieData);
 
-        adapter=new WTWCustomAdapter(vista.getContext(),result);
-
-        setListAdapter(adapter);
-
-        return vista;
+        genero.setText("Genre:"+p.getGenre());
+        escritor.setText("Writter:"+p.getWriter());
+        duracion.setText(p.getRuntime());
+        title.setText(p.getTitle());
+        year.setText("Year:"+p.getYear()+"");
+        director.setText("Director:"+p.getDirector()+"");
+        plot.setKeyListener(null);
+        plot.setText(p.getPlot());
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
