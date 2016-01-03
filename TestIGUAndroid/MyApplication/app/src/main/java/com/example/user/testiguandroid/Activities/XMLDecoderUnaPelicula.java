@@ -17,51 +17,13 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 class XMLDecoderUnaPelicula extends AsyncTask<String,Void,List<Pelicula>>{
 
-    private List<Pelicula> decodearXMLVariasPeliculas(String url){
 
-        List<Pelicula> peliculasDelJson= new ArrayList<Pelicula>();
-
-        try {
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(url);
-
-            doc.getDocumentElement().normalize();
-
-            //	System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-
-            NodeList nList = doc.getElementsByTagName("result");
-
-            //	System.out.println("----------------------------");
-
-            for (int temp = 0; temp < nList.getLength(); temp++) {
-
-                Node nNode = nList.item(temp);
-
-                //		System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
-                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-                    Element eElement = (Element) nNode;
-		/*
-					System.out.println("Pelicula Title : " + eElement.getAttribute("Title"));
-					System.out.println("Pelicula Year : " + eElement.getAttribute("Year"));
-					System.out.println("Pelicula IMDBID : " + eElement.getAttribute("imdbID"));
-					System.out.println("Pelicula Type : " + eElement.getAttribute("Type"));
-					System.out.println("Pelicula Poster : " + eElement.getAttribute("Poster"));
-		 */
-                    peliculasDelJson.add(new Pelicula(eElement.getAttribute("Title"), Integer.parseInt(eElement.getAttribute("Year")), eElement.getAttribute("imdbID"), eElement.getAttribute("Type"), eElement.getAttribute("Poster")));
-
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
-        return peliculasDelJson;
-
+    private MainActivity main;
+    private String codigo;
+    public XMLDecoderUnaPelicula(MainActivity mainActivity) {
+        this.main=mainActivity;
     }
+
 
     private Pelicula decodearXMLUnaPelicula(String url){
 
@@ -126,23 +88,18 @@ class XMLDecoderUnaPelicula extends AsyncTask<String,Void,List<Pelicula>>{
 
     @Override
     protected List<Pelicula> doInBackground(String... params) {
-        List<Pelicula> toReturnNunca= new ArrayList<Pelicula>();
-       if(params[0].equals("una")){
-           Pelicula p=decodearXMLUnaPelicula(params[1]);
+
+           Pelicula p=decodearXMLUnaPelicula(params[0]);
            List<Pelicula> toRet= new ArrayList<Pelicula>();
            toRet.add(p);
            return toRet;
-       }
-        else if(params[0].equals("varias")){
-            return decodearXMLVariasPeliculas(params[1]);
-       }
-        return toReturnNunca;
+
     }
 
 
     @Override
     protected void onPostExecute(List<Pelicula> result){
-
+            main.asyncResult(result.get((0)));
     }
 }
 

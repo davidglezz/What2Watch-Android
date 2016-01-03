@@ -19,30 +19,23 @@ import java.util.List;
 /**
  * Created by USER on 02/01/2016.
  */
-public class WTWCustomAdapter extends BaseAdapter {
+public class WTWCustomAdapter extends ArrayAdapter<Pelicula> {
     private List<Pelicula> data;
-    private static LayoutInflater inf=null;
-    private Context context;
+    private final Context context;
 
 
-
-    public WTWCustomAdapter(Context context, List<Pelicula> lista){
-
-        this.data=lista;
-        this.context=context;
-        inf = ( LayoutInflater )context.
-                getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public WTWCustomAdapter(Context context, List<Pelicula> values) {
+        super(context, R.layout.movielayout, values);
+        this.context = context;
+        this.data = values;
     }
+
     @Override
     public int getCount() {
         // TODO Auto-generated method stub
         return data.size();
     }
 
-    @Override
-    public Object getItem(int position) {
-      return data.get(position);
-    }
 
 
     @Override
@@ -51,28 +44,23 @@ public class WTWCustomAdapter extends BaseAdapter {
         return position;
     }
 
-    public static class PeliculaHolder{
-
-        public ImageView caratula;
-        public TextView titulo;
-        public TextView amyo;
-
-
-
-
-    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View rowMovies;
-        rowMovies=inf.inflate(R.layout.movielayout, null);
-        PeliculaHolder ph=new PeliculaHolder();
-        ph.caratula=(ImageView)rowMovies.findViewById(R.id.caratulaLayout);
-        ph.titulo=(TextView) rowMovies.findViewById(R.id.tituloLayout);
-        ph.amyo=(TextView) rowMovies.findViewById(R.id.yearLayout);
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View rowView = inflater.inflate(R.layout.movielayout, parent, false);
 
-        ph.titulo.setText(data.get(position).getTitle());
-        ph.amyo.setText(data.get(position).getYear());
-        return rowMovies;
+        TextView titulo = (TextView) rowView.findViewById(R.id.tituloLayout);
+        TextView anyo = (TextView) rowView.findViewById(R.id.yearLayout);
+
+        Pelicula p=data.get(position);
+
+        titulo.setText(p.getTitle().toString()+"");
+        anyo.setText(p.getYear()+"");
+
+        //TODO poner icono
+        return rowView;
     }
 }
