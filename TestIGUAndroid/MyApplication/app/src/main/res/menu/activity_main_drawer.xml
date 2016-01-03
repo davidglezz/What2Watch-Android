@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_search_movie" android:icon="@android:drawable/ic_menu_search"
+            android:title="Search Movies" />
+        <item android:id="@+id/nav_my_lists" android:icon="@android:drawable/ic_delete"
+            android:title="My Lists" />
+
+    </group>
+
+    <item android:title="Others">
+        <menu>
+            <item android:id="@+id/nav_conf" android:icon="@android:drawable/ic_menu_manage"
+                android:title="Configuration" />
+            <item android:id="@+id/nav_about" android:icon="@android:drawable/ic_menu_info_details"
+                android:title="About" />
+        </menu>
+    </item>
+
+</menu>
