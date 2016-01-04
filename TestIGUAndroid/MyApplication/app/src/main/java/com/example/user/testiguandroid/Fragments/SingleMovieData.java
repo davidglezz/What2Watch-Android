@@ -52,7 +52,7 @@ public class SingleMovieData extends Fragment {
         View v= inflater.inflate(R.layout.single_movie_data_fragment, container, false);
         ImageView poster=(ImageView)v.findViewById(R.id.caratulaSingleMovieData);
         poster.setImageBitmap(caratula);
-        EditText plot=(EditText)v.findViewById(R.id.plotSingleMovieData);
+        TextView plot=(TextView)v.findViewById(R.id.plotSingleMovieData);
         TextView title=(TextView)v.findViewById(R.id.tituloSingleMovieData);
         TextView year=(TextView)v.findViewById(R.id.anyoSingleMovieData);
         TextView director=(TextView)v.findViewById(R.id.directorSingleMovieData);
@@ -66,7 +66,7 @@ public class SingleMovieData extends Fragment {
         title.setText(p.getTitle());
         year.setText("Year:"+p.getYear()+"");
         director.setText("Director:"+p.getDirector()+"");
-        plot.setKeyListener(null);
+        //plot.setKeyListener(null);
         plot.setText(p.getPlot());
         return v;
     }

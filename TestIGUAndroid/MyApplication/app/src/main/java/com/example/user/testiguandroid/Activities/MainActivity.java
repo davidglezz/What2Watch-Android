@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +27,7 @@ import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
 import com.example.user.testiguandroid.Fragments.SingleMovieData;
 import com.example.user.testiguandroid.Logica.Pelicula;
+import com.example.user.testiguandroid.Logica.PopularMovies;
 import com.example.user.testiguandroid.R;
 import com.example.user.testiguandroid.ThemeChanger;
 
@@ -44,6 +46,9 @@ public class MainActivity extends Activity //AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d("MAIN", "onCreate");
+
         ThemeChanger.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -59,6 +64,8 @@ public class MainActivity extends Activity //AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         datos=getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
+
+        PopularMovies.get();
     }
 
     @Override

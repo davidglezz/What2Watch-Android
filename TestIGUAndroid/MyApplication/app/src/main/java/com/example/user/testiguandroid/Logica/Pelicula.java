@@ -2,6 +2,7 @@ package com.example.user.testiguandroid.Logica;
 
 
 public class Pelicula {
+
     private String Title;
     private int Year;
     private String imdbID; //TODO redefinir equals con esto
