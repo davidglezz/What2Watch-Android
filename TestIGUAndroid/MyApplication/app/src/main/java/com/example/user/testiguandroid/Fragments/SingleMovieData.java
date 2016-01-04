@@ -28,8 +28,8 @@ public class SingleMovieData extends Fragment {
 
     @SuppressLint("ValidFragment")
     public SingleMovieData(Pelicula p, Bitmap caratula) {
-        this.p=p;
-        this.caratula=caratula;
+        this.p = p;
+        this.caratula = caratula;
     }
 
 
@@ -46,28 +46,48 @@ public class SingleMovieData extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.single_movie_data_fragment, container, false);
-        ImageView poster=(ImageView)v.findViewById(R.id.caratulaSingleMovieData);
-        poster.setImageBitmap(caratula);
-        EditText plot=(EditText)v.findViewById(R.id.plotSingleMovieData);
-        TextView title=(TextView)v.findViewById(R.id.tituloSingleMovieData);
-        TextView year=(TextView)v.findViewById(R.id.anyoSingleMovieData);
-        TextView director=(TextView)v.findViewById(R.id.directorSingleMovieData);
-        TextView genero=(TextView)v.findViewById(R.id.generoSingleMovieData);
-        TextView escritor=(TextView)v.findViewById(R.id.escritorSingleMovieData);
-        TextView duracion=(TextView)v.findViewById(R.id.duracionSingleMovieData);
+        View v = inflater.inflate(R.layout.single_movie_data_fragment, container, false);
 
-        genero.setText("Genre:"+p.getGenre());
-        escritor.setText("Writter:"+p.getWriter());
-        duracion.setText(p.getRuntime());
+        ImageView poster = (ImageView) v.findViewById(R.id.imgPoster);
+        poster.setImageBitmap(caratula);
+
+        TextView title = (TextView) v.findViewById(R.id.txvTitle);
+        TextView genre = (TextView) v.findViewById(R.id.txvGenre);
+        TextView plot = (TextView) v.findViewById(R.id.txvPlot);
+        TextView year = (TextView) v.findViewById(R.id.txvYear);
+        TextView rated = (TextView) v.findViewById(R.id.txvRated);
+        TextView relased = (TextView) v.findViewById(R.id.txvReleased);
+        TextView duration = (TextView) v.findViewById(R.id.txvRunTime);
+        TextView director = (TextView) v.findViewById(R.id.txvDirector);
+        TextView writer = (TextView) v.findViewById(R.id.txvWriter);
+        TextView actors = (TextView) v.findViewById(R.id.txvActors);
+        TextView awards = (TextView) v.findViewById(R.id.txvAwards);
+        TextView language = (TextView) v.findViewById(R.id.txvLanguage);
+        TextView country = (TextView) v.findViewById(R.id.txvCountry);
+        TextView rating = (TextView) v.findViewById(R.id.txvRating);
+        TextView metascore = (TextView) v.findViewById(R.id.txvMetascore);
+        TextView votes = (TextView) v.findViewById(R.id.txvVotes);
+
         title.setText(p.getTitle());
-        year.setText("Year:"+p.getYear()+"");
-        director.setText("Director:"+p.getDirector()+"");
-        plot.setKeyListener(null);
+        genre.setText(p.getGenre());
         plot.setText(p.getPlot());
+        year.setText("" + p.getYear());
+        rated.setText(p.getRated());
+        relased.setText(p.getReleased());
+        duration.setText(p.getRuntime());
+        director.setText(p.getDirector());
+        writer.setText(p.getWriter());
+
+        actors.setText(p.getActors());
+        awards.setText(p.getAwards());
+        //language.setText(p.getLanguage());
+        country.setText(p.getCountry());
+        rating.setText(p.getImdbRating());
+        //metascore.setText(p.getMetascore());
+        //votes.setText(p.getVotes());
+
         return v;
     }
 

@@ -8,4 +8,20 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="txvTextNotAvailable">Not available</string>
+    <string name="duration">Duration</string>
+    <string name="year">Year</string>
+    <string name="imdbRating">Rating</string>
+    <string name="metascore">Metascore</string>
+    <string name="imdbVotes">Votes</string>
+    <string name="sample">sample</string>
+    <string name="country">Country</string>
+    <string name="rated">Rated</string>
+    <string name="released">Released</string>
+    <string name="director">Director</string>
+    <string name="writer">Writer</string>
+    <string name="actors">Actors</string>
+    <string name="awards">Awards</string>
+    <string name="language">Language</string>
+    <string name="MoviePosterContentDescription">Movie Poster</string>
 </resources>
