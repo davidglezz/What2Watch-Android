@@ -22,7 +22,7 @@ public class Pelicula {
     private String genre;
     private String director;
     private String writer;
-    private String[] actors;
+    private String actors;
     private String plot;
     private String country;
     private String awards;
@@ -47,7 +47,7 @@ public class Pelicula {
         this.genre = genre;
         this.director = director;
         this.writer = writer;
-        this.actors = actors.split(", ");
+        this.actors = actors;//actors.split(", ");
         this.plot = plot;
         this.country = country;
         this.awards = awards;
@@ -71,9 +71,7 @@ public class Pelicula {
         this.nota = n;
     }
 
-    public String getRated() {
-        return rated;
-    }
+    public String getRated() { return rated;}
 
     public String getReleased() {
         return released;
@@ -95,9 +93,7 @@ public class Pelicula {
         return writer;
     }
 
-    public String[] getActors() {
-        return actors;
-    }
+    public String getActors() { return actors; }
 
     public String getPlot() {
         return plot;
