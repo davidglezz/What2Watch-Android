@@ -15,18 +15,18 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-class XMLDecoderVariasPeliculas extends AsyncTask<String,Void,List<Pelicula>>{
+class XMLDecoderVariasPeliculas extends AsyncTask<String, Void, List<Pelicula>> {
 
     private MainActivity main;
+
     public XMLDecoderVariasPeliculas(MainActivity mainActivity) {
-        this.main=mainActivity;
+        this.main = mainActivity;
     }
 
-    private List<Pelicula> decodearXMLVariasPeliculas(String url){
+    private List<Pelicula> decodearXMLVariasPeliculas(String url) {
 
 
-
-        List<Pelicula> peliculasDelJson= new ArrayList<Pelicula>();
+        List<Pelicula> peliculas = new ArrayList<Pelicula>();
 
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -50,37 +50,37 @@ class XMLDecoderVariasPeliculas extends AsyncTask<String,Void,List<Pelicula>>{
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
                     Element eElement = (Element) nNode;
-		/*
+        /*
 					System.out.println("Pelicula Title : " + eElement.getAttribute("Title"));
 					System.out.println("Pelicula Year : " + eElement.getAttribute("Year"));
 					System.out.println("Pelicula IMDBID : " + eElement.getAttribute("imdbID"));
 					System.out.println("Pelicula Type : " + eElement.getAttribute("Type"));
 					System.out.println("Pelicula Poster : " + eElement.getAttribute("Poster"));
 		 */
-                    peliculasDelJson.add(new Pelicula(eElement.getAttribute("Title"), Integer.parseInt(eElement.getAttribute("Year")), eElement.getAttribute("imdbID"), eElement.getAttribute("Type"), eElement.getAttribute("Poster")));
-
+                    peliculas.add(new Pelicula(
+                            eElement.getAttribute("Title"),
+                            Integer.parseInt(eElement.getAttribute("Year")),
+                            eElement.getAttribute("imdbID"),
+                            eElement.getAttribute("Type"),
+                            eElement.getAttribute("Poster")));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-
-        return peliculasDelJson;
-
+        return peliculas;
     }
 
     @Override
     protected List<Pelicula> doInBackground(String... params) {
-
-            return decodearXMLVariasPeliculas(params[0]);
-
+        return decodearXMLVariasPeliculas(params[0]);
     }
 
 
     @Override
-    protected void onPostExecute(List<Pelicula> result){
-            main.asyncResult(result);
+    protected void onPostExecute(List<Pelicula> result) {
+        main.asyncResult(result);
     }
 }
 
