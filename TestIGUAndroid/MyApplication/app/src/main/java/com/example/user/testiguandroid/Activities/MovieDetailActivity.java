@@ -49,6 +49,9 @@ public class MovieDetailActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+        CollapsingToolbarLayout collapsing_container = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
+        collapsing_container.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+        collapsing_container.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
         // FAB
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
