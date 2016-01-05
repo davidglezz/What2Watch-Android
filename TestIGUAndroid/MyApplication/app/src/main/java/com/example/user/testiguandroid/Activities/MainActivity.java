@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -193,7 +194,11 @@ public class MainActivity extends Activity //AppCompatActivity
             changeFragment(fragment);
 
         } else if (id == R.id.nav_about) {
-
+            Intent intent = new Intent(this, MovieDetailActivity.class);
+            //EditText editText = (EditText) findViewById(R.id.edit_message);
+            //String message = editText.getText().toString();
+            //intent.putExtra(EXTRA_MESSAGE, message);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
