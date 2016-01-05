@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 
@@ -96,7 +97,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         TextView metascore = (TextView) findViewById(R.id.txvMetascore);
         TextView votes = (TextView) findViewById(R.id.txvVotes);
 
-        pelicula.setBigPosterToView(poster);
+        //pelicula.setBigPosterToView(poster);
+        Glide.with(this)
+                .load(pelicula.getBigPoster())
+                .placeholder(R.drawable.ic_perm_media_white_48dp)
+                .error(R.drawable.ic_perm_media_white_48dp)
+                .into(poster);
 
         collapsing_container.setTitle(pelicula.getTitle());
         genre.setText(pelicula.getGenre());

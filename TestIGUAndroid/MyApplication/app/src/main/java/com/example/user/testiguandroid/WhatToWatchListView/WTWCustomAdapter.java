@@ -13,6 +13,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 
@@ -46,7 +47,13 @@ public class WTWCustomAdapter extends ArrayAdapter<Pelicula> {
             //TextView txvRating   = (TextView) convertView.findViewById(R.id.txvRating);
             //TextView txvGenre    = (TextView) convertView.findViewById(R.id.txvGenre);
 
-            movie.setPosterToView(imgPoster);
+            //movie.setPosterToView(imgPoster);
+            Glide.with(getContext())
+                    .load(movie.getPoster())
+                    .placeholder(R.drawable.ic_perm_media_white_48dp)
+                    .error(R.drawable.ic_perm_media_white_48dp)
+                    .into(imgPoster);
+
             txvTitle.setText(movie.getTitle());
             txvYear.setText("" + movie.getYear());
             //txvRating.setText("" + movie.getImdbRating());
