@@ -40,4 +40,11 @@ public class MyDBHelper extends SQLiteOpenHelper {
         this.onCreate(db);
 
     }
+
+
+    //activa las foreignKey
+    @Override
+    public void onConfigure(SQLiteDatabase db){
+        db.setForeignKeyConstraintsEnabled(true);
+    }
 }
