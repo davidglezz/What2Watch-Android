@@ -22,6 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Switch;
 
+import com.example.user.testiguandroid.BaseDatos.MyDataSource;
 import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
@@ -42,6 +43,10 @@ public class MainActivity extends Activity //AppCompatActivity
     public SharedPreferences getDatos(){
         return datos;
     }
+
+    //Atributo para la base de datos
+    private MyDataSource dataSource;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +55,8 @@ public class MainActivity extends Activity //AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+        //Crear nuevo objeto MyDataSource
+        dataSource = new MyDataSource(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

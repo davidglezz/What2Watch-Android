@@ -14,18 +14,6 @@ import android.database.sqlite.SQLiteDatabase;
 
     private MyDBHelper dbHelper;
 
-     //TODO
-     //Columnas de la tabla Lista
-    private final String[] allColumns = { MyDBHelper.COLUMN_ID, MyDBHelper.COLUMN_USER,
-            MyDBHelper.COLUMN_COMMENT, MyDBHelper.COLUMN_RATING };
-
-
-     //TODO
-
-    public ListaDataSource(Context context) {
-        dbHelper = new MyDBHelper(context, null, null, 0);
-    }
-
 
     public void open() throws SQLException {
         baseDatos = dbHelper.getWritableDatabase();
