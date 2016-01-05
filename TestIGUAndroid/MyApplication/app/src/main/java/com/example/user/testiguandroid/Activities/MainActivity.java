@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -99,12 +100,16 @@ public class MainActivity extends Activity //AppCompatActivity
 
     public void searchSingleMovie(Pelicula p){
         try {
-            String codigo=p.getImdbID();
-            APICalls api= new APICalls();
-            String url=api.obtenerURLSoloUnaPeli(codigo);
-            new XMLDecoderUnaPelicula(this).execute(url);
+            //String codigo=p.getImdbID();
+            //APICalls api= new APICalls();
+            //String url=api.obtenerURLSoloUnaPeli(codigo);
+            //new XMLDecoderUnaPelicula(this).execute(url);
 
-        } catch (MalformedURLException e) {
+            Intent intent = new Intent(this, MovieDetailActivity.class);
+            intent.putExtra("imdbID", p.getImdbID());
+            startActivity(intent);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -200,7 +205,9 @@ public class MainActivity extends Activity //AppCompatActivity
             changeFragment(fragment);
 
         } else if (id == R.id.nav_about) {
-
+            Intent intent = new Intent(this, MovieDetailActivity.class);
+            intent.putExtra("imdbID", "tt2488496");
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
