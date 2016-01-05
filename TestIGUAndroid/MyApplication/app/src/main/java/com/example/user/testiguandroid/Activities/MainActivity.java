@@ -100,12 +100,16 @@ public class MainActivity extends Activity //AppCompatActivity
 
     public void searchSingleMovie(Pelicula p){
         try {
-            String codigo=p.getImdbID();
-            APICalls api= new APICalls();
-            String url=api.obtenerURLSoloUnaPeli(codigo);
-            new XMLDecoderUnaPelicula(this).execute(url);
+            //String codigo=p.getImdbID();
+            //APICalls api= new APICalls();
+            //String url=api.obtenerURLSoloUnaPeli(codigo);
+            //new XMLDecoderUnaPelicula(this).execute(url);
 
-        } catch (MalformedURLException e) {
+            Intent intent = new Intent(this, MovieDetailActivity.class);
+            intent.putExtra("imdbID", p.getImdbID());
+            startActivity(intent);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -202,9 +206,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
         } else if (id == R.id.nav_about) {
             Intent intent = new Intent(this, MovieDetailActivity.class);
-            //EditText editText = (EditText) findViewById(R.id.edit_message);
-            //String message = editText.getText().toString();
-            //intent.putExtra(EXTRA_MESSAGE, message);
+            intent.putExtra("imdbID", "tt2488496");
             startActivity(intent);
         }
 

@@ -128,7 +128,15 @@ public class Pelicula {
 
     public void setPosterToView(ImageView imgPoster) {
         if (posterBMP == null) {
-            new DownloadImageTask(imgPoster).execute(getPoster());
+            new DownloadImageTask(imgPoster).execute(poster);
+        } else {
+            imgPoster.setImageBitmap(posterBMP);
+        }
+    }
+
+    public void setBigPosterToView(ImageView imgPoster) {
+        if (posterBMP == null) {
+            new DownloadImageTask(imgPoster).execute(poster.replace("_SX300.jpg", "_SX1000.jpg"));
         } else {
             imgPoster.setImageBitmap(posterBMP);
         }
