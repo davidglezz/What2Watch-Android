@@ -63,6 +63,7 @@ public class MyDataSource {
     public static final String MOVIE_TABLE_NAME = "Movie";
     public static final String STRING_TYPE = "text";
     public static final String INT_TYPE = "integer";
+    public static final String BOOL_TYPE = "boolean";
 
     //Campos de la tabla Movie
     public static class ColumnMovie {
@@ -82,6 +83,10 @@ public class MyDataSource {
         public static final String ACTORS_MOVIE = "actor";
         public static final String AWARDS_MOVIE = "awards";
         public static final String COUNTRY_MOVIE = "country";
+        public static final String IMDBID_MOVIE = "imdbID";
+        public static final String IMDB_RATING_MOVIE = "imdbRating";
+        public static final String POSTER_MOVIE = "poster";
+        public static final String VIEW_MOVIE = "view";
 
 
     }
@@ -89,9 +94,9 @@ public class MyDataSource {
     //Script de Creación de la tabla Movie
     public static final String CREATE_MOVIE_SCRIPT =
             "create table " + MOVIE_TABLE_NAME + "(" +
-                    ColumnMovie.ID_MOVIE + " " + INT_TYPE + " primary key autoincrement," +
+                    ColumnMovie.ID_MOVIE + " " + INT_TYPE + " primary key autoincrement not null," +
                     ColumnMovie.USER_MOVIE + " " + STRING_TYPE + " not null," +
-                    ColumnMovie.RATING_MOVIE + " " + INT_TYPE + "," +
+                    ColumnMovie.RATING_MOVIE + " " + STRING_TYPE + "," +
                     ColumnMovie.COMMENT_MOVIE + " " + STRING_TYPE + "," +
                     ColumnMovie.TITLE_MOVIE + " " + STRING_TYPE + " not null," +
                     ColumnMovie.GENRE_MOVIE + " " + STRING_TYPE + "," +
@@ -104,14 +109,18 @@ public class MyDataSource {
                     ColumnMovie.WRITER_MOVIE + " " + STRING_TYPE + "," +
                     ColumnMovie.ACTORS_MOVIE + " " + STRING_TYPE + "," +
                     ColumnMovie.AWARDS_MOVIE + " " + STRING_TYPE + "," +
-                    ColumnMovie.COUNTRY_MOVIE + " " + STRING_TYPE + ")";
+                    ColumnMovie.COUNTRY_MOVIE + " " + STRING_TYPE + "," +
+                    ColumnMovie.IMDBID_MOVIE + " " + STRING_TYPE + "," +
+                    ColumnMovie.IMDB_RATING_MOVIE + " " + STRING_TYPE + "," +
+                    ColumnMovie.POSTER_MOVIE + " " + STRING_TYPE + "," +
+                    ColumnMovie.VIEW_MOVIE + " " + BOOL_TYPE + " not null )";
 
 
     //Script para borrar la base de datos
     public static final String DROP_MOVIE_SCRIPT = "DROP TABLE IF EXISTS " + MOVIE_TABLE_NAME;
 
     //Metodo para añadir una pelicula
-    public void saveMovieRow(String user, int rating, String comment, Pelicula p) {
+    public void saveMovieRow(String user, int rating, String comment, boolean view, Pelicula p) {
         //Nuestro contenedor de valores
         ContentValues values = new ContentValues();
 
@@ -131,6 +140,10 @@ public class MyDataSource {
         values.put(ColumnMovie.ACTORS_MOVIE, p.getActors());
         values.put(ColumnMovie.AWARDS_MOVIE, p.getAwards());
         values.put(ColumnMovie.COUNTRY_MOVIE, p.getCountry());
+        values.put(ColumnMovie.IMDBID_MOVIE, p.getImdbID());
+        values.put(ColumnMovie.IMDB_RATING_MOVIE, p.getImdbRating());
+        values.put(ColumnMovie.POSTER_MOVIE, p.getPoster());
+        values.put(ColumnMovie.VIEW_MOVIE, view);
 
         //Insertando en la base de datos
         database.insert(MOVIE_TABLE_NAME, null, values);
@@ -144,13 +157,14 @@ public class MyDataSource {
                 "select * from " + MOVIE_TABLE_NAME, null);
     }
 
-    public void actualizarMovie(int id, int rating, String comment){
+    public void actualizarMovie(int id, int rating, String comment, boolean view){
         //Nuestro contenedor de valores
         ContentValues values = new ContentValues();
 
         //Seteando body y author
         values.put(ColumnMovie.RATING_MOVIE, rating);
         values.put(ColumnMovie.COMMENT_MOVIE, comment);
+        values.put(ColumnMovie.VIEW_MOVIE, view);
 
         //Clausula WHERE
         String selection = ColumnMovie.ID_MOVIE + " = ?";
@@ -193,7 +207,7 @@ public class MyDataSource {
     //Script de Creación de la tabla List
     public static final String CREATE_LIST_SCRIPT =
             "create table " + LIST_TABLE_NAME + "(" +
-                    ColumnList.ID_LIST + " " + INT_TYPE + " primary key autoincrement," +
+                    ColumnList.ID_LIST + " " + INT_TYPE + " primary key autoincrement not null," +
                     ColumnList.NAME_LIST + " " + STRING_TYPE + " not null," +
                     ColumnList.DESCRIPTION_LIST + " " + STRING_TYPE + ")";
 
@@ -262,15 +276,20 @@ public class MyDataSource {
     public static class ColumnMoviesList {
         public static final String ID_MOVIE_MOVIESLIST = "idMovie";
         public static final String ID_LIST_MOVIESLIST = "idList";
-
-
     }
 
     //Script de Creación de la tabla MoviesList
     public static final String CREATE_MOVIESLIST_SCRIPT =
             "create table " + MOVIESLIST_TABLE_NAME + "(" +
                     ColumnMoviesList.ID_MOVIE_MOVIESLIST + " " + INT_TYPE + "," +
-                    ColumnMoviesList.ID_LIST_MOVIESLIST + " " + INT_TYPE + ")";
+                    ColumnMoviesList.ID_LIST_MOVIESLIST + " " + INT_TYPE + "," +
+                    "PRIMARY KEY("  + ColumnMoviesList.ID_MOVIE_MOVIESLIST + "," +
+                    ColumnMoviesList.ID_LIST_MOVIESLIST + ")" + "," +
+                    "FOREIGN KEY(" + ColumnMoviesList.ID_MOVIE_MOVIESLIST + ") REFERENCES " +
+                    MOVIE_TABLE_NAME + "(" + ColumnMovie.ID_MOVIE + ") ON DELETE CASCADE," +
+                    "FOREIGN KEY(" + ColumnMoviesList.ID_LIST_MOVIESLIST + ") REFERENCES " +
+                    LIST_TABLE_NAME + "(" + ColumnList.ID_LIST + ") ON DELETE CASCADE" + ")";
+
 
 
     //Script para borrar la base de datos
