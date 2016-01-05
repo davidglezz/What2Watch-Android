@@ -199,7 +199,8 @@ public class MainActivity extends Activity //AppCompatActivity
             fragment = new SearchMovies();
             changeFragment(fragment);
         } else if (id == R.id.nav_my_lists) {
-
+            fragment = new Configuration();
+            //changeFragment(fragment);
         }  else if (id == R.id.nav_conf) {
             fragment = new Configuration();
             changeFragment(fragment);

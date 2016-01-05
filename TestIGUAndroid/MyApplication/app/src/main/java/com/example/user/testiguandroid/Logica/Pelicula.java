@@ -125,7 +125,12 @@ public class Pelicula {
         return poster;
     }
 
+    public String getBigPoster() {
+        return poster.replace("_SX300.jpg", "_SX1000.jpg");
+    }
 
+
+    /* Deprecated */
     public void setPosterToView(ImageView imgPoster) {
         if (posterBMP == null) {
             new DownloadImageTask(imgPoster).execute(poster);
@@ -134,9 +139,10 @@ public class Pelicula {
         }
     }
 
+    /* Deprecated */
     public void setBigPosterToView(ImageView imgPoster) {
         if (posterBMP == null) {
-            new DownloadImageTask(imgPoster).execute(poster.replace("_SX300.jpg", "_SX1000.jpg"));
+            new DownloadImageTask(imgPoster).execute(getBigPoster());
         } else {
             imgPoster.setImageBitmap(posterBMP);
         }

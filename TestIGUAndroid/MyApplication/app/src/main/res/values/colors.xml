@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#8c54ae</color>
     <color name="colorAccent">#95df68</color>
     <color name="year">#888888</color>
+    <color name="actionBarText">#ffffff</color>
 </resources>
