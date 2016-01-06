@@ -25,8 +25,10 @@ import android.widget.Switch;
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
 import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
+import com.example.user.testiguandroid.Fragments.MyListsFragment;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
 import com.example.user.testiguandroid.Fragments.SingleMovieData;
+import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 import com.example.user.testiguandroid.ThemeChanger;
@@ -67,6 +69,12 @@ public class MainActivity extends Activity //AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         datos=getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
+
+
+        /* Prueba listas */
+        new Lista("Mi lista", "Prueba");
+        new Lista("Mi lista 2", "Prueba");
+        new Lista("Mi lista 3", "Prueba");
     }
 
     @Override
@@ -199,8 +207,8 @@ public class MainActivity extends Activity //AppCompatActivity
             fragment = new SearchMovies();
             changeFragment(fragment);
         } else if (id == R.id.nav_my_lists) {
-            fragment = new Configuration();
-            //changeFragment(fragment);
+            fragment = new MyListsFragment();
+            changeFragment(fragment);
         }  else if (id == R.id.nav_conf) {
             fragment = new Configuration();
             changeFragment(fragment);

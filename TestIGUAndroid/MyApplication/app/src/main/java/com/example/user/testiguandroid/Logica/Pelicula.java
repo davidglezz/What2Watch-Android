@@ -2,20 +2,14 @@ package com.example.user.testiguandroid.Logica;
 
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.ImageView;
 
-import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
 
 public class Pelicula {
+    /* imdb api*/
     private String title;
     private int year;
-    private String imdbID; //TODO redefinir equals con esto
-    private String type;
-    private String poster;
-    private Bitmap posterBMP;
     private String rated;
     private String released;
     private String runtime;
@@ -24,9 +18,19 @@ public class Pelicula {
     private String writer;
     private String actors;
     private String plot;
+    private String language;
     private String country;
     private String awards;
+    private String poster;
+    private String metascore;
     private String imdbRating;
+    private String imdbVotes;
+    private String imdbID;
+    private String type;
+
+    /* nuestros */
+    private int ID; // id en la base de datos?
+    private Date timestamp; // Timestamp de la hora de descarga
     private boolean vista = false;
     private int nota;
 
@@ -63,15 +67,37 @@ public class Pelicula {
         this.poster = poster;
     }
 
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getMetascore() {
+        return metascore;
+    }
+
+    public String getImdbVotes() {
+        return imdbVotes;
+    }
+
+    public boolean isVista() {
+        return vista;
+    }
+
     public void setVista(boolean b) {
         this.vista = b;
+    }
+
+    public int getNota() {
+        return nota;
     }
 
     private void setNota(int n) {
         this.nota = n;
     }
 
-    public String getRated() { return rated;}
+    public String getRated() {
+        return rated;
+    }
 
     public String getReleased() {
         return released;
@@ -93,17 +119,25 @@ public class Pelicula {
         return writer;
     }
 
-    public String getActors() { return actors; }
+    public String getActors() {
+        return actors;
+    }
 
     public String getPlot() {
         return plot;
     }
 
-    public String getCountry() { return country;  }
+    public String getCountry() {
+        return country;
+    }
 
-    public String getAwards() { return awards; }
+    public String getAwards() {
+        return awards;
+    }
 
-    public String getImdbRating() { return imdbRating;  }
+    public String getImdbRating() {
+        return imdbRating;
+    }
 
     public String getTitle() {
         return title;
@@ -129,49 +163,12 @@ public class Pelicula {
         return poster.replace("_SX300.jpg", "_SX1000.jpg");
     }
 
-
-    /* Deprecated */
-    public void setPosterToView(ImageView imgPoster) {
-        if (posterBMP == null) {
-            new DownloadImageTask(imgPoster).execute(poster);
-        } else {
-            imgPoster.setImageBitmap(posterBMP);
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Pelicula) {
+            Pelicula p = (Pelicula) o;
+            return imdbID.equals(p.imdbID);
         }
-    }
-
-    /* Deprecated */
-    public void setBigPosterToView(ImageView imgPoster) {
-        if (posterBMP == null) {
-            new DownloadImageTask(imgPoster).execute(getBigPoster());
-        } else {
-            imgPoster.setImageBitmap(posterBMP);
-        }
-    }
-
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                Log.v("-------", "Descargando");
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            posterBMP = result;
-            bmImage.setImageBitmap(result);
-        }
+        return false;
     }
 }

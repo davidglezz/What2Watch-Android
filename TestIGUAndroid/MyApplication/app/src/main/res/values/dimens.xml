@@ -10,4 +10,5 @@
     <dimen name="year">15dp</dimen>
     <dimen name="app_bar_height">500dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="descripcion">14dp</dimen>
 </resources>
