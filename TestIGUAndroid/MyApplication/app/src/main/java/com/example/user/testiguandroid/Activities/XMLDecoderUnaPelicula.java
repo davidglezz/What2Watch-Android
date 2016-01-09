@@ -15,19 +15,18 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-class XMLDecoderUnaPelicula extends AsyncTask<String,Void,List<Pelicula>>{
-
+class XMLDecoderUnaPelicula extends AsyncTask<String, Void, List<Pelicula>> {
 
     private MainActivity main;
     private String codigo;
+
     public XMLDecoderUnaPelicula(MainActivity mainActivity) {
-        this.main=mainActivity;
+        this.main = mainActivity;
     }
 
+    private Pelicula decodearXMLUnaPelicula(String url) {
 
-    private Pelicula decodearXMLUnaPelicula(String url){
-
-        Pelicula peliADevolver=null;
+        Pelicula pelicula = null;
         try {
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -35,29 +34,31 @@ class XMLDecoderUnaPelicula extends AsyncTask<String,Void,List<Pelicula>>{
 
             doc.getDocumentElement().normalize();
 
-            //	System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            // System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 
             NodeList nList = doc.getElementsByTagName("movie");
 
-            //	System.out.println("----------------------------");
+            // System.out.println("----------------------------");
 
             for (int temp = 0; temp < nList.getLength(); temp++) {
 
                 Node nNode = nList.item(temp);
 
-                //		System.out.println("\nCurrent Element :" + nNode.getNodeName());
+                // System.out.println("\nCurrent Element :" + nNode.getNodeName());
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
                     Element eElement = (Element) nNode;
-		/*
-					System.out.println("Pelicula Title : " + eElement.getAttribute("Title"));
+
+                    /*
+                    System.out.println("Pelicula Title : " + eElement.getAttribute("Title"));
 					System.out.println("Pelicula Year : " + eElement.getAttribute("Year"));
 					System.out.println("Pelicula IMDBID : " + eElement.getAttribute("imdbID"));
 					System.out.println("Pelicula Type : " + eElement.getAttribute("Type"));
 					System.out.println("Pelicula Poster : " + eElement.getAttribute("Poster"));
-		 */
-                    peliADevolver=new Pelicula(eElement.getAttribute("title"),
+		            */
+
+                    pelicula = new Pelicula(eElement.getAttribute("title"),
                             Integer.parseInt(eElement.getAttribute("year")),
                             eElement.getAttribute("imdbID"),
                             eElement.getAttribute("type"),
@@ -80,26 +81,23 @@ class XMLDecoderUnaPelicula extends AsyncTask<String,Void,List<Pelicula>>{
             e.printStackTrace();
         }
 
-
-        return peliADevolver;
-
+        return pelicula;
     }
 
 
     @Override
     protected List<Pelicula> doInBackground(String... params) {
 
-           Pelicula p=decodearXMLUnaPelicula(params[0]);
-           List<Pelicula> toRet= new ArrayList<Pelicula>();
-           toRet.add(p);
-           return toRet;
+        Pelicula p = decodearXMLUnaPelicula(params[0]);
+        List<Pelicula> toRet = new ArrayList<Pelicula>();
+        toRet.add(p);
+        return toRet;
 
     }
 
-
     @Override
-    protected void onPostExecute(List<Pelicula> result){
-            main.asyncResult(result.get((0)));
+    protected void onPostExecute(List<Pelicula> result) {
+        main.asyncResult(result.get((0)));
     }
 }
 

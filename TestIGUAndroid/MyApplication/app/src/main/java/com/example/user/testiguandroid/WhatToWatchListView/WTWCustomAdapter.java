@@ -1,6 +1,10 @@
 package com.example.user.testiguandroid.WhatToWatchListView;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,58 +13,58 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 
 import org.w3c.dom.Text;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
  * Created by USER on 02/01/2016.
  */
 public class WTWCustomAdapter extends ArrayAdapter<Pelicula> {
-    private List<Pelicula> data;
-    private final Context context;
-
 
     public WTWCustomAdapter(Context context, List<Pelicula> values) {
         super(context, R.layout.movielayout, values);
-        this.context = context;
-        this.data = values;
     }
-
-    @Override
-    public int getCount() {
-        // TODO Auto-generated method stub
-        return data.size();
-    }
-
-
-
-    @Override
-    public long getItemId(int position) {
-        // TODO Auto-generated method stub
-        return position;
-    }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View rowMovies;
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.movielayout, parent, false);
 
-        TextView titulo = (TextView) rowView.findViewById(R.id.tituloLayout);
-        TextView anyo = (TextView) rowView.findViewById(R.id.yearLayout);
+        if (convertView == null)
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.movielayout, null);
 
-        Pelicula p=data.get(position);
+        Pelicula movie = getItem(position);
 
-        titulo.setText(p.getTitle().toString()+"");
-        anyo.setText(p.getYear()+"");
+        if (movie != null) {
 
-        //TODO poner icono
-        return rowView;
+            ImageView imgPoster  = (ImageView) convertView.findViewById(R.id.imgPoster);
+            TextView txvTitle    = (TextView) convertView.findViewById(R.id.txvTitle);
+            TextView txvYear     = (TextView) convertView.findViewById(R.id.txvYear);
+            //TextView txvRating   = (TextView) convertView.findViewById(R.id.txvRating);
+            //TextView txvGenre    = (TextView) convertView.findViewById(R.id.txvGenre);
+
+            //movie.setPosterToView(imgPoster);
+            Glide.with(getContext())
+                    .load(movie.getPoster())
+                    .placeholder(R.drawable.ic_perm_media_white_48dp)
+                    .error(R.drawable.ic_perm_media_white_48dp)
+                    .into(imgPoster);
+
+            txvTitle.setText(movie.getTitle());
+            txvYear.setText("" + movie.getYear());
+            //txvRating.setText("" + movie.getImdbRating());
+            //txvGenre.setText("" + movie.getGenre());
+
+        }
+
+        return convertView;
     }
+
+
+
+
 }

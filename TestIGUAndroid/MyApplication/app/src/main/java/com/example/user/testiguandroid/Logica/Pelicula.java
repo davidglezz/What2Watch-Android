@@ -1,28 +1,98 @@
 package com.example.user.testiguandroid.Logica;
 
 
-public class Pelicula {
-    private String Title;
-    private int Year;
-    private String imdbID; //TODO redefinir equals con esto
-    private String Type;
-    private String poster;
+import android.graphics.Bitmap;
 
+import java.util.Calendar;
+import java.util.Date;
+
+public class Pelicula {
+    /* imdb api*/
+    private String title;
+    private int year;
     private String rated;
     private String released;
     private String runtime;
     private String genre;
     private String director;
     private String writer;
-    private String[] actors;
+    private String actors;
+    private String plot;
+    private String language;
+    private String country;
+    private String awards;
+    private String poster;
+    private String metascore;
+    private String imdbRating;
+    private String imdbVotes;
+    private String imdbID;
+    private String type;
 
-    private boolean vista=false;
-    private  int nota;
-    public void setVista(boolean b){
-        this.vista=b;
+    /* nuestros */
+    private int ID; // id en la base de datos?
+    private Date timestamp; // Timestamp de la hora de descarga
+    private boolean vista = false;
+    private int nota;
+
+
+    public Pelicula(String title, int year, String imdbID, String type,
+                    String poster, String rated, String released, String runtime,
+                    String genre, String director, String writer, String actors,
+                    String plot, String country, String awards, String imdbRating) {
+        super();
+        this.title = title;
+        this.year = year;
+        this.imdbID = imdbID;
+        this.type = type;
+        this.poster = poster;
+        this.rated = rated;
+        this.released = released;
+        this.runtime = runtime;
+        this.genre = genre;
+        this.director = director;
+        this.writer = writer;
+        this.actors = actors;//actors.split(", ");
+        this.plot = plot;
+        this.country = country;
+        this.awards = awards;
+        this.imdbRating = imdbRating;
     }
-    private void setNota(int n){
-        this.nota=n;
+
+    public Pelicula(String title, int year, String imdbID, String type, String poster) {
+        super();
+        this.title = title;
+        this.year = year;
+        this.imdbID = imdbID;
+        this.type = type;
+        this.poster = poster;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public String getMetascore() {
+        return metascore;
+    }
+
+    public String getImdbVotes() {
+        return imdbVotes;
+    }
+
+    public boolean isVista() {
+        return vista;
+    }
+
+    public void setVista(boolean b) {
+        this.vista = b;
+    }
+
+    public int getNota() {
+        return nota;
+    }
+
+    private void setNota(int n) {
+        this.nota = n;
     }
 
     public String getRated() {
@@ -49,7 +119,7 @@ public class Pelicula {
         return writer;
     }
 
-    public String[] getActors() {
+    public String getActors() {
         return actors;
     }
 
@@ -69,51 +139,12 @@ public class Pelicula {
         return imdbRating;
     }
 
-    private String plot;
-    private String country;
-    private String awards;
-    private String imdbRating;
-
-
-    public Pelicula(String title, int year, String imdbID, String type,
-                    String poster, String rated, String released, String runtime,
-                    String genre, String director, String writer, String actors,
-                    String plot, String country, String awards, String imdbRating) {
-        super();
-        Title = title;
-        Year = year;
-        this.imdbID = imdbID;
-        Type = type;
-        this.poster = poster;
-        this.rated = rated;
-        this.released = released;
-        this.runtime = runtime;
-        this.genre = genre;
-        this.director = director;
-        this.writer = writer;
-        this.actors = actors.split(", ");
-        this.plot = plot;
-        this.country = country;
-        this.awards = awards;
-        this.imdbRating = imdbRating;
-    }
-
-    public Pelicula(String title, int year, String imdbID, String type,
-                    String poster) {
-        super();
-        Title = title;
-        Year = year;
-        this.imdbID = imdbID;
-        Type = type;
-        this.poster = poster;
-    }
-
     public String getTitle() {
-        return Title;
+        return title;
     }
 
     public int getYear() {
-        return Year;
+        return year;
     }
 
     public String getImdbID() {
@@ -121,14 +152,25 @@ public class Pelicula {
     }
 
     public String getType() {
-        return Type;
+        return type;
     }
 
     public String getPoster() {
         return poster;
     }
 
+    public String getBigPoster() {
+        return poster.replace("_SX300.jpg", "_SX1000.jpg");
+    }
 
+    public Boolean getVista() { return vista; }
 
-
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Pelicula) {
+            Pelicula p = (Pelicula) o;
+            return imdbID.equals(p.imdbID);
+        }
+        return false;
+    }
 }

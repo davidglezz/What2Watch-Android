@@ -25,3 +25,7 @@ proguard/
 
 # Log Files
 *.log
+
+# Proyecto
+/.idea/
+TestIGUAndroid/MyApplication/.idea/misc.xml

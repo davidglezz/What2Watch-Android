@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -21,10 +22,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Switch;
 
+import com.example.user.testiguandroid.BaseDatos.MyDataSource;
 import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
+import com.example.user.testiguandroid.Fragments.MyListsFragment;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
 import com.example.user.testiguandroid.Fragments.SingleMovieData;
+import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 import com.example.user.testiguandroid.ThemeChanger;
@@ -41,6 +45,10 @@ public class MainActivity extends Activity //AppCompatActivity
     public SharedPreferences getDatos(){
         return datos;
     }
+
+    //Atributo para la base de datos
+    private MyDataSource dataSource;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +57,8 @@ public class MainActivity extends Activity //AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
 
+        //Crear nuevo objeto MyDataSource
+        dataSource = new MyDataSource(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -59,6 +69,15 @@ public class MainActivity extends Activity //AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         datos=getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
+
+
+        /* Prueba listas */
+        dataSource.loadDB();
+        /*
+            new Lista("Mi lista", "Prueba");
+            new Lista("Mi lista 2", "Prueba");
+            new Lista("Mi lista 3", "Prueba");
+            */
     }
 
     @Override
@@ -92,12 +111,16 @@ public class MainActivity extends Activity //AppCompatActivity
 
     public void searchSingleMovie(Pelicula p){
         try {
-            String codigo=p.getImdbID();
-            APICalls api= new APICalls();
-            String url=api.obtenerURLSoloUnaPeli(codigo);
-            new XMLDecoderUnaPelicula(this).execute(url);
+            //String codigo=p.getImdbID();
+            //APICalls api= new APICalls();
+            //String url=api.obtenerURLSoloUnaPeli(codigo);
+            //new XMLDecoderUnaPelicula(this).execute(url);
 
-        } catch (MalformedURLException e) {
+            Intent intent = new Intent(this, MovieDetailActivity.class);
+            intent.putExtra("imdbID", p.getImdbID());
+            startActivity(intent);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -187,13 +210,16 @@ public class MainActivity extends Activity //AppCompatActivity
             fragment = new SearchMovies();
             changeFragment(fragment);
         } else if (id == R.id.nav_my_lists) {
-
+            fragment = new MyListsFragment();
+            changeFragment(fragment);
         }  else if (id == R.id.nav_conf) {
             fragment = new Configuration();
             changeFragment(fragment);
 
         } else if (id == R.id.nav_about) {
-
+            Intent intent = new Intent(this, MovieDetailActivity.class);
+            intent.putExtra("imdbID", "tt2488496");
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
