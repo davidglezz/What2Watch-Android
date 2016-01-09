@@ -72,9 +72,12 @@ public class MainActivity extends Activity //AppCompatActivity
 
 
         /* Prueba listas */
-        new Lista("Mi lista", "Prueba");
-        new Lista("Mi lista 2", "Prueba");
-        new Lista("Mi lista 3", "Prueba");
+        dataSource.loadDB();
+        /*
+            new Lista("Mi lista", "Prueba");
+            new Lista("Mi lista 2", "Prueba");
+            new Lista("Mi lista 3", "Prueba");
+            */
     }
 
     @Override

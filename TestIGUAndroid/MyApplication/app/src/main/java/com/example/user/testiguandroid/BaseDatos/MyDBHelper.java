@@ -30,6 +30,9 @@ public class MyDBHelper extends SQLiteOpenHelper {
         //Crea la tabla MoviesList
         db.execSQL(MyDataSource.CREATE_MOVIESLIST_SCRIPT);
 
+        //Insertar listas por defecto
+        db.execSQL(MyDataSource.INSERT_LIST_SCRIPT);
+
     }
 
     @Override
