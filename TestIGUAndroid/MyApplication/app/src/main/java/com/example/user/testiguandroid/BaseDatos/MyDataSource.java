@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
+import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 
 
@@ -55,6 +56,25 @@ public class MyDataSource {
      */
     public void deleteAnyRow(String table, String selection, String[] selectionArgs) {
         database.delete(table, selection, selectionArgs);
+    }
+
+    public void loadDB() {
+        Cursor cursor = getAllLists();
+        while (cursor.moveToNext()) {
+            if(!Lista.isLista(cursor.getInt(cursor.getColumnIndex(ColumnList.ID_LIST)))){
+                new Lista(cursor.getInt(cursor.getColumnIndex(ColumnList.ID_LIST)),
+                        cursor.getString(cursor.getColumnIndex(ColumnList.NAME_LIST)),
+                        cursor.getString(cursor.getColumnIndex(ColumnList.DESCRIPTION_LIST)));
+            }
+        }
+
+        cursor.close();
+    }
+
+    public void InsertTable(Pelicula pelicula, Lista Lista){
+        saveMovieRow("Por defecto", 0, null, pelicula);
+        //CONTINUAR
+
     }
 
     //******************************* MOVIE ********************************************
@@ -120,7 +140,7 @@ public class MyDataSource {
     public static final String DROP_MOVIE_SCRIPT = "DROP TABLE IF EXISTS " + MOVIE_TABLE_NAME;
 
     //Metodo para añadir una pelicula
-    public void saveMovieRow(String user, int rating, String comment, boolean view, Pelicula p) {
+    public void saveMovieRow(String user, int rating, String comment, Pelicula p) {
         //Nuestro contenedor de valores
         ContentValues values = new ContentValues();
 
@@ -143,7 +163,7 @@ public class MyDataSource {
         values.put(ColumnMovie.IMDBID_MOVIE, p.getImdbID());
         values.put(ColumnMovie.IMDB_RATING_MOVIE, p.getImdbRating());
         values.put(ColumnMovie.POSTER_MOVIE, p.getPoster());
-        values.put(ColumnMovie.VIEW_MOVIE, view);
+        values.put(ColumnMovie.VIEW_MOVIE, p.getVista());
 
         //Insertando en la base de datos
         database.insert(MOVIE_TABLE_NAME, null, values);
@@ -212,10 +232,23 @@ public class MyDataSource {
                     ColumnList.DESCRIPTION_LIST + " " + STRING_TYPE + ")";
 
 
+    //Scripts de inserción por de listas
+    public static final String INSERT_LIST_SCRIPT =
+            "insert into "+LIST_TABLE_NAME+" values(" +
+                    "null," +
+                    "\"Favorite\"," +
+                    "\"Favorite movies\")," +
+                    "(null," +
+                    "\"To watch\"," +
+                    "\"Movies to see in the future\")," +
+                    "(null," +
+                    "\"Already views\"," +
+                    "\"Movies that have already been seen\")";
+
     //Script para borrar la base de datos
     public static final String DROP_LIST_SCRIPT = "DROP TABLE IF EXISTS " + LIST_TABLE_NAME;
 
-    //Metodo para añadir una pelicula
+    //Metodo para añadir una lista
     public void saveListRow(String name, String descripcion) {
         //Nuestro contenedor de valores
         ContentValues values = new ContentValues();

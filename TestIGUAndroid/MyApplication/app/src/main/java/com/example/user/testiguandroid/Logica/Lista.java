@@ -8,7 +8,7 @@ public class Lista {
 
     public static List<Lista> listas = new ArrayList<Lista>();
 
-    private String id; //TODO hablar lo del id
+    private int id; //TODO hablar lo del id
     private String nombre;
     private String descripcion;
     private List<Pelicula> peliculas;
@@ -22,6 +22,11 @@ public class Lista {
     public Lista(String nombre, String descripcion) {
         this(nombre);
         this.descripcion = descripcion;
+    }
+
+    public Lista(int id, String nombre, String descripcion) {
+        this(nombre, descripcion);
+        this.id = id;
     }
 
     public void addPelicula(Pelicula p) {
@@ -38,7 +43,15 @@ public class Lista {
         }
     }
 
-    public String getId() {
+    public static boolean isLista(int id){
+        for(Lista lista : listas){
+            if(lista.getId() == id)
+                return true;
+        }
+        return false;
+    }
+
+    public int getId() {
         return id;
     }
 

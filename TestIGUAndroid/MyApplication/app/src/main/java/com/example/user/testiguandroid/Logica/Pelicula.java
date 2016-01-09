@@ -163,6 +163,8 @@ public class Pelicula {
         return poster.replace("_SX300.jpg", "_SX1000.jpg");
     }
 
+    public Boolean getVista() { return vista; }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof Pelicula) {
