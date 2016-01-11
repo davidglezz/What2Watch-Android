@@ -37,12 +37,12 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener,MovieListResult.OnFragmentInteractionListener,
-        SingleMovieData.OnFragmentInteractionListener{
+        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener,
+        SingleMovieData.OnFragmentInteractionListener {
 
     SharedPreferences datos;
 
-    public SharedPreferences getDatos(){
+    public SharedPreferences getDatos() {
         return datos;
     }
 
@@ -68,7 +68,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        datos=getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
+        datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
 
 
         /* Prueba listas */
@@ -105,11 +105,10 @@ public class MainActivity extends Activity //AppCompatActivity
         int id = item.getItemId();
 
 
-
         return super.onOptionsItemSelected(item);
     }
 
-    public void searchSingleMovie(Pelicula p){
+    public void searchSingleMovie(Pelicula p) {
         try {
             //String codigo=p.getImdbID();
             //APICalls api= new APICalls();
@@ -126,34 +125,32 @@ public class MainActivity extends Activity //AppCompatActivity
     }
 
 
-    public void searchMovies(View v){
+    public void searchMovies(View v) {
         //TODO
-        android.support.design.widget.TextInputLayout title=
+        android.support.design.widget.TextInputLayout title =
                 (TextInputLayout) findViewById(R.id.movieTitleToSearch);
-        android.support.design.widget.TextInputLayout year= (TextInputLayout) findViewById(R.id.movieYearToSearch);
-        String titleString=title.getEditText().getText().toString();
-        String yearString=year.getEditText().getText().toString();
+        android.support.design.widget.TextInputLayout year = (TextInputLayout) findViewById(R.id.movieYearToSearch);
+        String titleString = title.getEditText().getText().toString().trim();
+        String yearString = year.getEditText().getText().toString().trim();
 
-        if(titleString==""|| titleString.isEmpty() || titleString==null){
+        if (titleString == "" || titleString.isEmpty() || titleString == null) {
             Snackbar snackbar = Snackbar
                     .make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG);
 
             snackbar.show();
 
-        }
-        else if(titleString.length()==1){
+        } else if (titleString.length() == 1) {
             Snackbar snackbar = Snackbar
                     .make(v, "Put at least 2 characters to search", Snackbar.LENGTH_LONG);
 
             snackbar.show();
-        }
-        else{
+        } else {
             try {
-            APICalls api= new APICalls();
-            api.buscarTitulos(titleString);
-            api.buscarPorAnyo(yearString);
-            String url= api.obtenerURLListaPeliculas();
-            new XMLDecoderVariasPeliculas(this).execute(url);
+                APICalls api = new APICalls();
+                api.buscarTitulos(titleString);
+                api.buscarPorAnyo(yearString);
+                String url = api.obtenerURLListaPeliculas();
+                new XMLDecoderVariasPeliculas(this).execute(url);
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -161,43 +158,41 @@ public class MainActivity extends Activity //AppCompatActivity
         }
 
     }
-    public void asyncResult(Pelicula p){
-        new PosterGetter(this,p).execute(p.getPoster());
+
+    public void asyncResult(Pelicula p) {
+        new PosterGetter(this, p).execute(p.getPoster());
     }
 
-    public void asyncResult(Pelicula p,Bitmap caratula){
-        SingleMovieData s= new SingleMovieData(p,caratula);
+    public void asyncResult(Pelicula p, Bitmap caratula) {
+        SingleMovieData s = new SingleMovieData(p, caratula);
         changeFragment(s);
     }
 
 
-    public void asyncResult(List<Pelicula> lista){
+    public void asyncResult(List<Pelicula> lista) {
 
-        MovieListResult f= new MovieListResult(lista,this);
+        MovieListResult f = new MovieListResult(lista, this);
 
         changeFragment(f);
 
     }
 
 
+    public void actualizarInterfaz(View v) {
+        Switch interr = (Switch) findViewById(R.id.cinemaModeConfiguration);
 
-    public void actualizarInterfaz(View v){
-        Switch interr=(Switch)findViewById(R.id.cinemaModeConfiguration);
-
-        boolean preferencias=datos.getBoolean("CinemaMode",false);
+        boolean preferencias = datos.getBoolean("CinemaMode", false);
         System.out.println("Las preferencias antes eran eran: " + preferencias);
-        if(interr.isChecked()){
+        if (interr.isChecked()) {
 
-            datos.edit().putBoolean("CinemaMode",true).commit();
+            datos.edit().putBoolean("CinemaMode", true).commit();
             ThemeChanger.changeToTheme(this, ThemeChanger.CINEMA);
-        }
-        else{
+        } else {
             datos.edit().putBoolean("CinemaMode", false).commit();
             ThemeChanger.changeToTheme(this, ThemeChanger.DAY);
 
         }
     }
-
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -212,7 +207,7 @@ public class MainActivity extends Activity //AppCompatActivity
         } else if (id == R.id.nav_my_lists) {
             fragment = new MyListsFragment();
             changeFragment(fragment);
-        }  else if (id == R.id.nav_conf) {
+        } else if (id == R.id.nav_conf) {
             fragment = new Configuration();
             changeFragment(fragment);
 
@@ -227,9 +222,9 @@ public class MainActivity extends Activity //AppCompatActivity
         return true;
     }
 
-    private void changeFragment(Fragment newFrg){
-        FragmentManager fm= getFragmentManager();
-        fm.beginTransaction().replace(R.id.fragmentRemplazar,newFrg).commit();
+    private void changeFragment(Fragment newFrg) {
+        FragmentManager fm = getFragmentManager();
+        fm.beginTransaction().replace(R.id.fragmentRemplazar, newFrg).commit();
     }
 
     @Override
