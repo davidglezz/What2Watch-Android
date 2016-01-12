@@ -6,7 +6,7 @@ import java.net.URL;
 
 class GeneradorURLsAPI {
 
-    private String api = "http://www.omdbapi.com/?";
+    private String api = "http://www.omdbapi.com/";
 
     private String s = ""; //S es para Serchear peliculas (por titulo
 
