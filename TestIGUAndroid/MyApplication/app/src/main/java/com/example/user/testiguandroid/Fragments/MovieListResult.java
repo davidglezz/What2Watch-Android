@@ -4,22 +4,19 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.widget.Adapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.example.user.testiguandroid.Activities.MainActivity;
-import com.example.user.testiguandroid.Activities.MovieDetailActivity;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
-import com.example.user.testiguandroid.WhatToWatchListView.WTWCustomAdapter;
+import com.example.user.testiguandroid.Adapters.WTWCustomAdapter;
 
 
 import java.util.List;

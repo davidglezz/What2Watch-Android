@@ -8,15 +8,15 @@ public class Lista {
 
     public static List<Lista> listas = new ArrayList<Lista>();
 
-    private int id; //TODO hablar lo del id
+    private int id;
     private String nombre;
     private String descripcion;
     private List<Pelicula> peliculas;
 
     public Lista(String nombre) {
         this.nombre = nombre;
-        listas.add(this);
         this.peliculas = new ArrayList<Pelicula>();
+        listas.add(this);
     }
 
     public Lista(String nombre, String descripcion) {
@@ -27,6 +27,13 @@ public class Lista {
     public Lista(int id, String nombre, String descripcion) {
         this(nombre, descripcion);
         this.id = id;
+    }
+
+    public static CharSequence[] getNames() {
+        CharSequence[] names = new CharSequence[listas.size()];
+        for (int i = 0; i < names.length; i++)
+            names[i] = listas.get(i).getNombre();
+        return names;
     }
 
     public void addPelicula(Pelicula p) {
