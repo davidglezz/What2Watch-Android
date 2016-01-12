@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.user.testiguandroid.WhatToWatchListView.MyListsRecyclerViewAdapter;
+import com.example.user.testiguandroid.Adapters.MyListsRecyclerViewAdapter;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.R;
 
@@ -60,16 +60,16 @@ public class MyListsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mylists_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyListsRecyclerViewAdapter(Lista.listas, mListener));
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.mylists);
+        Context context = recyclerView.getContext();
+
+        if (mColumnCount <= 1) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
         }
+        recyclerView.setAdapter(new MyListsRecyclerViewAdapter(Lista.listas, mListener));
+
         return view;
     }
 

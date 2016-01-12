@@ -18,6 +18,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+// deprecated Para eliminar ya que se usa una libreria que administra esto mejor
 class PosterGetter extends AsyncTask<String,Void,Bitmap>{
 
 
@@ -49,7 +50,7 @@ class PosterGetter extends AsyncTask<String,Void,Bitmap>{
     protected void onPostExecute(Bitmap  result){
 
 
-        main.asyncResult(p,result);
+        //main.asyncResult(p,result);
 
 
     }

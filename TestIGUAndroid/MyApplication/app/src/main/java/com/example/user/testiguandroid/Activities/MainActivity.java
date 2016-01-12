@@ -1,9 +1,11 @@
 package com.example.user.testiguandroid.Activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -11,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +23,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
@@ -27,7 +32,6 @@ import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
-import com.example.user.testiguandroid.Fragments.SingleMovieData;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
@@ -37,8 +41,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener,
-        SingleMovieData.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener {
 
     SharedPreferences datos;
 
@@ -58,7 +61,7 @@ public class MainActivity extends Activity //AppCompatActivity
         //setSupportActionBar(toolbar);
 
         //Crear nuevo objeto MyDataSource
-        dataSource = new MyDataSource(this);
+        dataSource = MyDataSource.getInstance(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -72,12 +75,12 @@ public class MainActivity extends Activity //AppCompatActivity
 
 
         /* Prueba listas */
-        dataSource.loadDB();
-        /*
-            new Lista("Mi lista", "Prueba");
-            new Lista("Mi lista 2", "Prueba");
-            new Lista("Mi lista 3", "Prueba");
-            */
+        dataSource.loadLists();
+
+        /*new Lista("Mi lista", "Prueba");
+        new Lista("Mi lista 2", "Prueba");
+        new Lista("Mi lista 3", "Prueba");*/
+
     }
 
     @Override
@@ -163,12 +166,6 @@ public class MainActivity extends Activity //AppCompatActivity
         new PosterGetter(this, p).execute(p.getPoster());
     }
 
-    public void asyncResult(Pelicula p, Bitmap caratula) {
-        SingleMovieData s = new SingleMovieData(p, caratula);
-        changeFragment(s);
-    }
-
-
     public void asyncResult(List<Pelicula> lista) {
 
         MovieListResult f = new MovieListResult(lista, this);
@@ -230,5 +227,42 @@ public class MainActivity extends Activity //AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+
+    /***************
+     * My Lists
+     ***************/
+    public void fab_new_list_click(View view) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext());
+        Context context = view.getContext();
+        LinearLayout layout = new LinearLayout(context);
+        layout.setPadding(16, 16, 16, 16);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        final EditText nameBox = new EditText(context);
+        nameBox.setHint(R.string.name);
+        layout.addView(nameBox);
+
+        final EditText descriptionBox = new EditText(context);
+        descriptionBox.setHint(R.string.description);
+        layout.addView(descriptionBox);
+
+        dialog.setTitle(R.string.new_list).setView(layout)//.setIcon(R.drawable...)
+                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        if (!nameBox.getText().toString().isEmpty()) {
+                            new Lista(nameBox.getText().toString(), descriptionBox.getText().toString());
+                            // TODO Add_to_db(new List(...))
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // No hacer nada
+                    }
+                });
+
+        dialog.show();
     }
 }
