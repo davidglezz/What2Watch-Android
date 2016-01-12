@@ -1,57 +1,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context="com.example.user.testiguandroid.Fragments.SearchMovies">
 
     <!-- TODO: Update blank fragment layout -->
 
     <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/movieTitleToSearch"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp">
-    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Movie to Search"
-        android:inputType="text"
-        android:layout_gravity="center_horizontal|top"
-        android:id="@+id/movieTitleToSearchEditText"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="45dp" />
+        android:layout_marginTop="45dp"
+        android:layout_centerHorizontal="true">
+        <EditText
+            android:id="@+id/movieTitleToSearchEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:hint="Movie to Search"
+            android:inputType="text" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
+        android:id="@+id/movieYearToSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/movieYearToSearch"
-        android:layout_below="@+id/movieTitleToSearch"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="80dp" >
+        android:layout_below="@+id/movieTitleToSearch"
+        android:layout_marginTop="45dp">
         <EditText
+            android:id="@+id/movieYearToSearchEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="top"
             android:hint="Year of Release (Optional)"
-            android:inputType="number"
-            android:layout_gravity="center_horizontal|top"
-            android:id="@+id/movieYearToSearchEditText"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="45dp" />
-
+            android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FABSearchMovie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/FABSearchMovie"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginBottom="41dp"
+        android:layout_margin="0dp"
         android:onClick="searchMovies"
-        />
-
-
+        android:src="@drawable/ic_search_white_24dp" />
 </RelativeLayout>
