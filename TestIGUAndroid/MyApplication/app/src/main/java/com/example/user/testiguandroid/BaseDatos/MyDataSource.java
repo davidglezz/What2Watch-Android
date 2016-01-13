@@ -75,23 +75,27 @@ public class MyDataSource {
     // Carga las listas de peliculas
     public void loadLists() {
         Cursor cursor = getAllLists();
+        Cursor cursor2;
+        Cursor cursor3;
+        Lista lista;
         while (cursor.moveToNext()) {
             if (!Lista.isLista(cursor.getInt(cursor.getColumnIndex(ColumnList.ID_LIST)))) {
-                new Lista(cursor.getInt(cursor.getColumnIndex(ColumnList.ID_LIST)),
+                lista = new Lista(cursor.getInt(cursor.getColumnIndex(ColumnList.ID_LIST)),
                         cursor.getString(cursor.getColumnIndex(ColumnList.NAME_LIST)),
                         cursor.getString(cursor.getColumnIndex(ColumnList.DESCRIPTION_LIST)));
+                cursor2 = getMoviesInList(cursor.getInt(cursor.getColumnIndex(ColumnList.ID_LIST)));
+                while (cursor2.moveToNext()) {
+                    cursor3 = getMovie(cursor2.getInt(cursor.getColumnIndex(ColumnMoviesList.ID_MOVIE_MOVIESLIST)));
+                    cursor3.moveToNext();
+                    lista.addPelicula(getPelicula(cursor3.getString(cursor.getColumnIndex(ColumnMovie.IMDBID_MOVIE))));
+                    cursor3.close();
+                }
+                cursor2.close();
+
             }
+
         }
         cursor.close();
-    }
-
-
-    public void InsertTable(Pelicula pelicula, Lista Lista) {
-        //if (notExistMovie(pelicula))
-        saveMovie(pelicula);
-
-        //CONTINUAR
-
     }
 
     //******************************* MOVIE ********************************************
@@ -107,6 +111,7 @@ public class MyDataSource {
         public static final String ID_MOVIE = BaseColumns._ID;
         public static final String USER_MOVIE = "user";
         public static final String RATING_MOVIE = "rating";
+        public static final String TYPE_MOVIE = "type";
         public static final String COMMENT_MOVIE = "comment";
         public static final String TITLE_MOVIE = "title";
         public static final String GENRE_MOVIE = "genre";
@@ -135,6 +140,7 @@ public class MyDataSource {
                     ColumnMovie.COMMENT_MOVIE + " " + STRING_TYPE + "," +
                     ColumnMovie.TITLE_MOVIE + " " + STRING_TYPE + " not null," +
                     ColumnMovie.GENRE_MOVIE + " " + STRING_TYPE + "," +
+                    ColumnMovie.TYPE_MOVIE + " " + STRING_TYPE + "," +
                     ColumnMovie.PLOT_MOVIE + " " + STRING_TYPE + "," +
                     ColumnMovie.YEAR_MOVIE + " " + INT_TYPE + "," +
                     ColumnMovie.RATED_MOVIE + " " + STRING_TYPE + "," +
@@ -156,32 +162,77 @@ public class MyDataSource {
 
     //Metodo para añadir una pelicula
     public void saveMovie(Pelicula p) {
-        //Nuestro contenedor de valores
-        ContentValues values = new ContentValues();
 
-        //Seteando columnas
-        //values.put(ColumnMovie.USER_MOVIE, user);
-        values.put(ColumnMovie.RATING_MOVIE, p.getNota());
-        //values.put(ColumnMovie.COMMENT_MOVIE, comment); // No implementado
-        values.put(ColumnMovie.TITLE_MOVIE, p.getTitle());
-        values.put(ColumnMovie.GENRE_MOVIE, p.getGenre());
-        values.put(ColumnMovie.PLOT_MOVIE, p.getPlot());
-        values.put(ColumnMovie.YEAR_MOVIE, p.getYear());
-        values.put(ColumnMovie.RATED_MOVIE, p.getRated());
-        values.put(ColumnMovie.RELEASED_MOVIE, p.getReleased());
-        values.put(ColumnMovie.DURATION_MOVIE, p.getRuntime());
-        values.put(ColumnMovie.DIRECTOR_MOVIE, p.getDirector());
-        values.put(ColumnMovie.WRITER_MOVIE, p.getWriter());
-        values.put(ColumnMovie.ACTORS_MOVIE, p.getActors());
-        values.put(ColumnMovie.AWARDS_MOVIE, p.getAwards());
-        values.put(ColumnMovie.COUNTRY_MOVIE, p.getCountry());
-        values.put(ColumnMovie.IMDBID_MOVIE, p.getImdbID());
-        values.put(ColumnMovie.IMDB_RATING_MOVIE, p.getImdbRating());
-        values.put(ColumnMovie.POSTER_MOVIE, p.getPoster());
-        values.put(ColumnMovie.VIEW_MOVIE, p.getVista());
+        if(p.getID() == 0) {
+            //Nuestro contenedor de valores
+            ContentValues values = new ContentValues();
 
-        //Insertando en la base de datos
-        database.insert(MOVIE_TABLE_NAME, null, values);
+            //Seteando columnas
+            //values.put(ColumnMovie.USER_MOVIE, user);
+            values.put(ColumnMovie.RATING_MOVIE, p.getNota());
+            //values.put(ColumnMovie.COMMENT_MOVIE, comment); // No implementado
+            values.put(ColumnMovie.TITLE_MOVIE, p.getTitle());
+            values.put(ColumnMovie.GENRE_MOVIE, p.getGenre());
+            values.put(ColumnMovie.PLOT_MOVIE, p.getPlot());
+            values.put(ColumnMovie.YEAR_MOVIE, p.getYear());
+            values.put(ColumnMovie.RATED_MOVIE, p.getRated());
+            values.put(ColumnMovie.RELEASED_MOVIE, p.getReleased());
+            values.put(ColumnMovie.DURATION_MOVIE, p.getRuntime());
+            values.put(ColumnMovie.DIRECTOR_MOVIE, p.getDirector());
+            values.put(ColumnMovie.WRITER_MOVIE, p.getWriter());
+            values.put(ColumnMovie.ACTORS_MOVIE, p.getActors());
+            values.put(ColumnMovie.AWARDS_MOVIE, p.getAwards());
+            values.put(ColumnMovie.COUNTRY_MOVIE, p.getCountry());
+            values.put(ColumnMovie.IMDBID_MOVIE, p.getImdbID());
+            values.put(ColumnMovie.IMDB_RATING_MOVIE, p.getImdbRating());
+            values.put(ColumnMovie.POSTER_MOVIE, p.getPoster());
+            values.put(ColumnMovie.VIEW_MOVIE, p.getVista());
+            values.put(ColumnMovie.TYPE_MOVIE, p.getType());
+
+            //Insertando en la base de datos
+            database.insert(MOVIE_TABLE_NAME, null, values);
+        }
+        else{
+            actualizarMovie(p.getID(),p.getNota(),p.getComment(),p.getVista());
+        }
+    }
+
+    public Pelicula getPelicula(String imdbID){
+        String selection = ColumnMovie.IMDBID_MOVIE + " = ?";
+        String[] selectionArgs = {imdbID};
+        Cursor cursor = getAnyRow(MOVIE_TABLE_NAME, null, selection, selectionArgs, null, null, null);
+        cursor.moveToNext();
+        return new Pelicula(cursor.getString(cursor.getColumnIndex(ColumnMovie.TITLE_MOVIE)),
+                cursor.getInt(cursor.getColumnIndex(ColumnMovie.YEAR_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.IMDBID_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.TYPE_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.POSTER_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.RATED_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.RELEASED_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.DURATION_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.GENRE_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.DIRECTOR_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.WRITER_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.ACTORS_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.PLOT_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.COUNTRY_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.AWARDS_MOVIE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.IMDB_RATING_MOVIE)));
+    }
+
+    public boolean existPelicula(String imdbID) {
+        String selection = ColumnMovie.IMDBID_MOVIE + " = ?";
+        String[] selectionArgs = {imdbID};
+        Cursor cursor = getAnyRow(MOVIE_TABLE_NAME, null, selection, selectionArgs, null, null, null);
+        return cursor.moveToNext();
+    }
+
+    //borrar una peli por pelicula
+    public void eliminarPelicula(String imdbID) {
+        String selection = ColumnMovie.IMDBID_MOVIE + " = ?";
+        String[] selectionArgs = {imdbID};
+
+        deleteAnyRow(MOVIE_TABLE_NAME, selection, selectionArgs);
     }
 
 
@@ -284,11 +335,12 @@ public class MyDataSource {
                 "select * from " + LIST_TABLE_NAME, null);
     }
 
-    public void actualizarList(int id, String descripcion) {
+    public void actualizarList(int id, String name, String descripcion) {
         //Nuestro contenedor de valores
         ContentValues values = new ContentValues();
 
         //Seteando body y author
+        values.put(ColumnList.NAME_LIST, name);
         values.put(ColumnList.DESCRIPTION_LIST, descripcion);
 
         //Clausula WHERE
@@ -313,6 +365,34 @@ public class MyDataSource {
 
         deleteAnyRow(LIST_TABLE_NAME, selection, selectionArgs);
     }
+
+    //Metodo para añadir una lista
+    public void guardarLista(Lista lista) {
+        if(lista.getId() == 0) {
+            //Nuestro contenedor de valores
+            ContentValues values = new ContentValues();
+
+            //Seteando columnas
+            values.put(ColumnList.NAME_LIST, lista.getNombre());
+            values.put(ColumnList.DESCRIPTION_LIST, lista.getDescripcion());
+
+            //Insertando en la base de datos
+            database.insert(LIST_TABLE_NAME, null, values);
+        }
+        else{
+            actualizarList(lista.getId(), lista.getNombre(),lista.getDescripcion());
+        }
+    }
+
+    //borrar una lista por su id
+    public void eliminarLista(Lista lista) {
+        String selection = ColumnList.ID_LIST + " = ?";
+        String[] selectionArgs = {Integer.toString(lista.getId())};
+
+        deleteAnyRow(LIST_TABLE_NAME, selection, selectionArgs);
+    }
+
+
 
 
     //************************************** MoviesList ***********************************
@@ -343,7 +423,7 @@ public class MyDataSource {
     public static final String DROP_MOVIESLIST_SCRIPT = "DROP TABLE IF EXISTS " + MOVIESLIST_TABLE_NAME;
 
     //Metodo para añadir una pelicula a una lista
-    public void saveListRow(int idMovie, int idList) {
+    public void saveMoviesListRow(int idMovie, int idList) {
         //Nuestro contenedor de valores
         ContentValues values = new ContentValues();
 
@@ -353,6 +433,14 @@ public class MyDataSource {
 
         //Insertando en la base de datos
         database.insert(MOVIESLIST_TABLE_NAME, null, values);
+    }
+
+    public void addPeliculaLista(Pelicula pelicula, Lista lista){
+        saveMoviesListRow(pelicula.getID(), lista.getId());
+    }
+
+    public void removePeliculaLista(Pelicula pelicula, Lista lista){
+        removeMovieInList(pelicula.getID(),lista.getId());
     }
 
     //obtener las peliculas de una lista
