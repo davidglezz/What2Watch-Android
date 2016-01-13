@@ -9,7 +9,7 @@ import java.util.Date;
 public class Pelicula {
     /* imdb api*/
     private String title;
-    private int year;
+    private String year;
     private String rated;
     private String released;
     private String runtime;
@@ -29,14 +29,62 @@ public class Pelicula {
     private String type;
 
     /* nuestros */
-    private int ID; // id en la base de datos?
-    private Date timestamp; // Timestamp de la hora de descarga
+    private long ID; // id en la base de datos?
+    //private Date timestamp; // Timestamp de la hora de descarga
     private boolean vista = false;
     private int nota;
     private String comment;
 
+    public Pelicula(String title, String year, String rated, String released, String runtime, String genre, String director, String writer, String actors, String plot, String language, String country, String awards, String poster, String metascore, String imdbRating, String imdbVotes, String imdbID, String type) {
+        this.title = title;
+        this.year = year;
+        this.rated = rated;
+        this.released = released;
+        this.runtime = runtime;
+        this.genre = genre;
+        this.director = director;
+        this.writer = writer;
+        this.actors = actors;
+        this.plot = plot;
+        this.language = language;
+        this.country = country;
+        this.awards = awards;
+        this.poster = poster;
+        this.metascore = metascore;
+        this.imdbRating = imdbRating;
+        this.imdbVotes = imdbVotes;
+        this.imdbID = imdbID;
+        this.type = type;
+    }
 
-    public Pelicula(String title, int year, String imdbID, String type,
+    public Pelicula(String title, String year, String rated, String released, String runtime, String genre, String director, String writer, String actors, String plot, String language, String country, String awards, String poster, String metascore, String imdbRating, String imdbVotes, String imdbID, String type, long ID, /*Date timestamp,*/ boolean vista, int nota, String comment) {
+        this.title = title;
+        this.year = year;
+        this.rated = rated;
+        this.released = released;
+        this.runtime = runtime;
+        this.genre = genre;
+        this.director = director;
+        this.writer = writer;
+        this.actors = actors;
+        this.plot = plot;
+        this.language = language;
+        this.country = country;
+        this.awards = awards;
+        this.poster = poster;
+        this.metascore = metascore;
+        this.imdbRating = imdbRating;
+        this.imdbVotes = imdbVotes;
+        this.imdbID = imdbID;
+        this.type = type;
+        this.ID = ID;
+        //this.timestamp = timestamp;
+        this.vista = vista;
+        this.nota = nota;
+        this.comment = comment;
+    }
+
+    /*public Pelicula(String title, String year, String imdbID, String type,
                     String poster, String rated, String released, String runtime,
                     String genre, String director, String writer, String actors,
                     String plot, String country, String awards, String imdbRating) {
@@ -52,14 +100,15 @@ public class Pelicula {
         this.genre = genre;
         this.director = director;
         this.writer = writer;
-        this.actors = actors;//actors.split(", ");
+        this.actors = actors;
         this.plot = plot;
         this.country = country;
         this.awards = awards;
         this.imdbRating = imdbRating;
-    }
+    }*/
 
-    public Pelicula(String title, int year, String imdbID, String type, String poster) {
+
+    public Pelicula(String title, String year, String imdbID, String type, String poster) {
         super();
         this.title = title;
         this.year = year;
@@ -67,6 +116,8 @@ public class Pelicula {
         this.type = type;
         this.poster = poster;
     }
+
+
 
     public String getLanguage() {
         return language;
@@ -144,7 +195,7 @@ public class Pelicula {
         return title;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 
@@ -166,9 +217,13 @@ public class Pelicula {
 
     public Boolean getVista() { return vista; }
 
-    public int getID() { return ID; }
+    public long getID() { return ID; }
 
     public String getComment() { return comment; }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -177,5 +232,9 @@ public class Pelicula {
             return imdbID.equals(p.imdbID);
         }
         return false;
+    }
+
+    public void setID(long ID) {
+        this.ID = ID;
     }
 }
