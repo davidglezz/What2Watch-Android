@@ -63,31 +63,6 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         This = this;
 
-        // FAB
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                final CharSequence[] items = {"A", "B", "C"};
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(This);
-                builder.setTitle(R.string.add_to_list);
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int item) {
-                        // TODO
-                        Lista lista = Lista.listas.get(item);
-                        lista.addPelicula(pelicula);
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
-
-                Snackbar.make(view, "TODO: Añadir a lista", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         // Obtener ID la película que se quiere mostrar
         String imdbID = getIntent().getStringExtra("imdbID");
 
@@ -203,6 +178,37 @@ public class MovieDetailActivity extends AppCompatActivity {
             progressDialog.dismiss();
 
         }
+    }
+
+    // FAB & Add to list btn
+    public void add_to_list_click(View view) {
+
+        final CharSequence[] items = Lista.getNames();
+
+        if (items.length == 0)
+        {
+            Snackbar.make(view, R.string.no_lists, Snackbar.LENGTH_LONG).setAction(R.string.new_list, new View.OnClickListener(){
+                        @Override
+                        public void onClick(View v) {
+                            // TODO nueva_lista()
+                            // TODO añadir pelicula a lista
+                        }
+                    }
+            ).show();
+            return;
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(This);
+        builder.setTitle(R.string.add_to_list);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                // TODO
+                Lista lista = Lista.listas.get(item);
+                lista.addPelicula(pelicula);
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 }

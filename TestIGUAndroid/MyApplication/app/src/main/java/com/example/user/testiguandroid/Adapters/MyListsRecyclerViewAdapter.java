@@ -1,4 +1,4 @@
-package com.example.user.testiguandroid.WhatToWatchListView;
+package com.example.user.testiguandroid.Adapters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
