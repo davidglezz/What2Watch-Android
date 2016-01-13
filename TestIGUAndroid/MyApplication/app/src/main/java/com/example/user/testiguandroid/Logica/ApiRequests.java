@@ -162,6 +162,9 @@ public class ApiRequests {
         return ids;
     }
 
+    /**
+     * Descarga un xml y retorna su Document
+    * */
     private static Document getXMLDocument(String url) {
         Document doc = null;
         try {
@@ -226,6 +229,9 @@ public class ApiRequests {
         }
     }
 
+    /**
+     * Descarga la imagen de la película y la guarda en la memoria.
+     */
     public static String downloadAndSavePoster(String posterUrl) {
 
         if (posterUrl == null || posterUrl.isEmpty()) {
@@ -254,7 +260,6 @@ public class ApiRequests {
             if (!posterFolder.isDirectory()) {
                 if (!posterFolder.mkdir())
                     Log.e(TAG, "No se pude crear la carpeta " + posterFolder);
-                // No se pude crear. Excepcion o algo
             }
 
             File file = new File(sdCardFolder, fileName);

@@ -28,9 +28,7 @@ import java.util.List;
  */
 public class PopularsFragment extends Fragment {
 
-    private int mColumnCount = 1;
     private OnPopularsFragmentInteractionListener mListener;
-
     private PrepararPopulares tarea;
     private PopularsRecyclerViewAdapter adapter;
 
@@ -41,14 +39,12 @@ public class PopularsFragment extends Fragment {
     public PopularsFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static PopularsFragment newInstance() {
         PopularsFragment fragment = new PopularsFragment();
-        Bundle args = new Bundle();
+        //Bundle args = new Bundle();
         //args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-
+        //fragment.setArguments(args);
         return fragment;
     }
 
@@ -66,8 +62,7 @@ public class PopularsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_populars_list, container, false);
 
         // Set the adapter
@@ -94,8 +89,7 @@ public class PopularsFragment extends Fragment {
         if (context instanceof OnPopularsFragmentInteractionListener) {
             mListener = (OnPopularsFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener");
         }
     }
 

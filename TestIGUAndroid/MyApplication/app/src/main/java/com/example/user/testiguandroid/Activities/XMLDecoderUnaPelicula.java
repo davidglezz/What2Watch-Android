@@ -43,9 +43,5 @@ class XMLDecoderUnaPelicula extends AsyncTask<String, Void, List<Pelicula>> {
 
     }
 
-    @Override
-    protected void onPostExecute(List<Pelicula> result) {
-        main.asyncResult(result.get((0)));
-    }
 }
 

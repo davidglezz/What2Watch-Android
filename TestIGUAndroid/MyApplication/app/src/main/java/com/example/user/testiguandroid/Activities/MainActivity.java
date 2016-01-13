@@ -45,7 +45,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener, PopularsFragment.OnPopularsFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener, PopularsFragment.OnPopularsFragmentInteractionListener, MyListsFragment.OnListFragmentInteractionListener {
 
     SharedPreferences datos;
     Fragment currentFragment;
@@ -201,10 +201,6 @@ public class MainActivity extends Activity //AppCompatActivity
 
     }
 
-    public void asyncResult(Pelicula p) {
-        new PosterGetter(this, p).execute(p.getPoster());
-    }
-
     public void asyncResult(List<Pelicula> lista) {
 
         MovieListResult f = new MovieListResult(lista, this);
@@ -212,7 +208,6 @@ public class MainActivity extends Activity //AppCompatActivity
         changeFragment(f);
 
     }
-
 
     public void actualizarInterfaz(View v) {
         Switch interr = (Switch) findViewById(R.id.cinemaModeConfiguration);
@@ -293,8 +288,8 @@ public class MainActivity extends Activity //AppCompatActivity
                 .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (!nameBox.getText().toString().isEmpty()) {
-                            new Lista(nameBox.getText().toString(), descriptionBox.getText().toString());
-                            // TODO Add_to_db(new List(...))
+                            Lista l = new Lista(nameBox.getText().toString(), descriptionBox.getText().toString());
+                            MyDataSource.getInstance().guardarLista(l);
                         }
                     }
                 })
@@ -312,6 +307,13 @@ public class MainActivity extends Activity //AppCompatActivity
     public void onPopularsFragmentInteraction(Pelicula p) {
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("imdbID", p.getImdbID());
+        startActivity(intent);
+    }
+
+    @Override
+    public void onListFragmentInteraction(Lista item) {
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra("imdbID", "tt2488496");
         startActivity(intent);
     }
 }
