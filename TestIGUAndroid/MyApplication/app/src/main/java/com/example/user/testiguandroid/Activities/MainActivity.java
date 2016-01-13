@@ -32,6 +32,7 @@ import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
+import com.example.user.testiguandroid.Logica.ApiRequests;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
@@ -201,6 +202,9 @@ public class MainActivity extends Activity //AppCompatActivity
         if (id == R.id.nav_search_movie) {
             fragment = new SearchMovies();
             changeFragment(fragment);
+        } else if (id == R.id.nav_popular) {
+            ApiRequests.getPopularMovies();
+
         } else if (id == R.id.nav_my_lists) {
             fragment = new MyListsFragment();
             changeFragment(fragment);
