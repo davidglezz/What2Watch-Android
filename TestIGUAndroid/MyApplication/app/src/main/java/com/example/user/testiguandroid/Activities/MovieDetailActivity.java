@@ -146,7 +146,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                         Element eElement = (Element) nNode;
 
                         pelicula = new Pelicula(eElement.getAttribute("title"),
-                                Integer.parseInt(eElement.getAttribute("year")),
+                                eElement.getAttribute("year"),
                                 eElement.getAttribute("imdbID"),
                                 eElement.getAttribute("type"),
                                 eElement.getAttribute("poster"),

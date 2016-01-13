@@ -9,7 +9,7 @@ import java.util.Date;
 public class Pelicula {
     /* imdb api*/
     private String title;
-    private int year;
+    private String year;
     private String rated;
     private String released;
     private String runtime;
@@ -35,7 +35,7 @@ public class Pelicula {
     private int nota;
 
 
-    public Pelicula(String title, int year, String imdbID, String type,
+    public Pelicula(String title, String year, String imdbID, String type,
                     String poster, String rated, String released, String runtime,
                     String genre, String director, String writer, String actors,
                     String plot, String country, String awards, String imdbRating) {
@@ -58,7 +58,7 @@ public class Pelicula {
         this.imdbRating = imdbRating;
     }
 
-    public Pelicula(String title, int year, String imdbID, String type, String poster) {
+    public Pelicula(String title, String year, String imdbID, String type, String poster) {
         super();
         this.title = title;
         this.year = year;
@@ -143,7 +143,7 @@ public class Pelicula {
         return title;
     }
 
-    public int getYear() {
+    public String getYear() {
         return year;
     }
 

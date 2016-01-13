@@ -59,7 +59,7 @@ class XMLDecoderVariasPeliculas extends AsyncTask<String, Void, List<Pelicula>> 
 		 */
                     peliculas.add(new Pelicula(
                             eElement.getAttribute("Title"),
-                            Integer.parseInt(eElement.getAttribute("Year")),
+                            eElement.getAttribute("Year"),
                             eElement.getAttribute("imdbID"),
                             eElement.getAttribute("Type"),
                             eElement.getAttribute("Poster")));
