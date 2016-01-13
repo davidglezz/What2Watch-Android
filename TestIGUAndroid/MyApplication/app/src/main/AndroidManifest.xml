@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- ICONO
             https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html#foreground.type=text&foreground.space.trim=1&foreground.space.pad=0&foreground.text.text=W2W&foreground.text.font=Book%20Antiqua&foreColor=fff%2C0&crop=0&backgroundShape=hrect&backColor=9c27b0%2C100&effects=shadow
@@ -19,7 +20,9 @@
         <activity
             android:name=".Activities.MainActivity"
             android:label="@string/app_name"
+            android:configChanges="screenSize|orientation"
             android:theme="@style/AppTheme">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -58,7 +60,14 @@ public class MainActivity extends Activity //AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ThemeChanger.onActivityCreateSetTheme(this);
+        //ThemeChanger.onActivityCreateSetTheme(this);
+        datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
+        boolean preferenciasModoCine = datos.getBoolean("CinemaMode", false);
+        if(preferenciasModoCine){
+            this.setTheme(R.style.AppThemeCinemaMode);
+        }
+        //
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -74,7 +83,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
+
 
 
         /* Prueba listas */
@@ -92,6 +101,22 @@ public class MainActivity extends Activity //AppCompatActivity
 
     }
 
+    public boolean hayInternet(){
+        ConnectivityManager managerConectividad
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo redDeInternet= managerConectividad.getActiveNetworkInfo();
+        if(redDeInternet==null || !redDeInternet.isAvailable()){
+            return false;
+        }
+       if( redDeInternet.getState() == NetworkInfo.State.DISCONNECTED || redDeInternet.getState() == NetworkInfo.State.DISCONNECTED){
+          return false;
+
+        }
+        if( redDeInternet.getState() == NetworkInfo.State.CONNECTED || redDeInternet.getState() == NetworkInfo.State.CONNECTING ){
+            return true;
+        }
+        return redDeInternet.isConnected();
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -111,9 +136,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
 
@@ -145,6 +168,13 @@ public class MainActivity extends Activity //AppCompatActivity
         String titleString = title.getEditText().getText().toString().trim();
         String yearString = year.getEditText().getText().toString().trim();
 
+        if(!hayInternet()){
+            Snackbar snackbar = Snackbar
+                    .make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG);
+
+            snackbar.show();
+
+        }
         if (titleString == "" || titleString.isEmpty() || titleString == null) {
             Snackbar snackbar = Snackbar
                     .make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG);
@@ -188,7 +218,7 @@ public class MainActivity extends Activity //AppCompatActivity
         Switch interr = (Switch) findViewById(R.id.cinemaModeConfiguration);
 
         boolean preferencias = datos.getBoolean("CinemaMode", false);
-        System.out.println("Las preferencias antes eran eran: " + preferencias);
+       // System.out.println("Las preferencias antes eran eran: " + preferencias);
         if (interr.isChecked()) {
 
             datos.edit().putBoolean("CinemaMode", true).commit();
@@ -204,7 +234,7 @@ public class MainActivity extends Activity //AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
         if (id == R.id.nav_search_movie) {
             currentFragment = new SearchMovies();
@@ -237,7 +267,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
+        //best metodo ever chicos. Pero no lo borreis que sino no compila ;)
     }
 
 

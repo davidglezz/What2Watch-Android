@@ -8,16 +8,16 @@ import android.content.Intent;
  */
 public class ThemeChanger {
 
-    private static int sTheme;
+    private static int temaActual;
 
     public final static int DAY = 0;
     public final static int CINEMA = 1;
 
 
 
-    public static void changeToTheme(Activity activity, int theme)
+    public static void changeToTheme(Activity activity, int temaID)
     {
-        sTheme = theme;
+        temaActual = temaID;
         activity.finish();
 
         activity.startActivity(new Intent(activity, activity.getClass()));
@@ -26,15 +26,10 @@ public class ThemeChanger {
     /** Set the theme of the activity, according to the configuration. */
     public static void onActivityCreateSetTheme(Activity activity)
     {
-        switch (sTheme)
-        {
-            default:
-            case DAY:
-                break;
-            case CINEMA:
-                activity.setTheme(R.style.AppThemeCinemaMode);
-                break;
+       if(temaActual==CINEMA) {
+           activity.setTheme(R.style.AppThemeCinemaMode);
+       }
 
-        }
+
     }
 }

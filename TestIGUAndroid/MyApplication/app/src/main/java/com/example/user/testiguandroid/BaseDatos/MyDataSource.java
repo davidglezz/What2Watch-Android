@@ -85,7 +85,7 @@ public class MyDataSource {
                         cursor.getString(cursor.getColumnIndex(ColumnList.DESCRIPTION_LIST)));
                 cursor2 = getMoviesInList(cursor.getInt(cursor.getColumnIndex(ColumnList.ID_LIST)));
                 while (cursor2.moveToNext()) {
-                    cursor3 = getMovie(cursor2.getInt(cursor.getColumnIndex(ColumnMoviesList.ID_MOVIE))); /*Check si es ID_MOVIE */
+                    cursor3 = getMovie(cursor2.getInt(cursor.getColumnIndex(ColumnMoviesList.ID_MOVIE)));
                     cursor3.moveToNext();
                     lista.addPelicula(getPelicula(cursor3.getString(cursor.getColumnIndex(ColumnMovie.IMDBID))));
                     cursor3.close();
