@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
@@ -149,8 +150,11 @@ public class MovieDetailActivity extends AppCompatActivity {
             Snackbar.make(view, R.string.no_lists, Snackbar.LENGTH_LONG).setAction(R.string.new_list, new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
-                            // TODO nueva_lista()
-                            // TODO añadir pelicula a lista
+                            // TODO: mostrar dialogo nueva lista
+                            Lista lista = new Lista("Que pasa wey", "Lista generada automaticamente");
+                            db.guardarLista(lista);
+                            lista.addPelicula(pelicula);
+                            db.addPeliculaLista(pelicula, lista);
                         }
                     }
             ).show();
@@ -161,9 +165,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         builder.setTitle(R.string.add_to_list);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                // TODO
                 Lista lista = Lista.listas.get(item);
                 lista.addPelicula(pelicula);
+                db.addPeliculaLista(pelicula, lista);
+                // TODO: avisar de que todo correcto
             }
         });
         AlertDialog alert = builder.create();
