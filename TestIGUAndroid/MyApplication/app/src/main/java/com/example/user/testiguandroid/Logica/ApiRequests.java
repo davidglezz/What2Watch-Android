@@ -112,11 +112,10 @@ public class ApiRequests {
             Node nNode = nList.item(temp);
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element eElement = (Element) nNode;
-                return new Pelicula(eElement.getAttribute("title"),
+
+                return new Pelicula(
+                        eElement.getAttribute("title"),
                         eElement.getAttribute("year"),
-                        eElement.getAttribute("imdbID"),
-                        eElement.getAttribute("type"),
-                        eElement.getAttribute("poster"),
                         eElement.getAttribute("rated"),
                         eElement.getAttribute("released"),
                         eElement.getAttribute("runtime"),
@@ -125,9 +124,15 @@ public class ApiRequests {
                         eElement.getAttribute("writer"),
                         eElement.getAttribute("actors"),
                         eElement.getAttribute("plot"),
+                        eElement.getAttribute("language"),
                         eElement.getAttribute("country"),
                         eElement.getAttribute("awards"),
-                        eElement.getAttribute("imdbRating"));
+                        eElement.getAttribute("poster"),
+                        eElement.getAttribute("metascore"),
+                        eElement.getAttribute("imdbRating"),
+                        eElement.getAttribute("imdbVotes"),
+                        eElement.getAttribute("imdbID"),
+                        eElement.getAttribute("type"));
             }
         }
         return null;

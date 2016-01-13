@@ -6,6 +6,10 @@ import java.util.List;
 
 public class Lista {
 
+    // lista especial: Populares // No puede ser de tipo lista por que la añade como lista de usuario
+    public static List<Pelicula> populares = new ArrayList<Pelicula>();
+
+    // Lista de listas
     public static List<Lista> listas = new ArrayList<Lista>();
 
     private int id = 0;

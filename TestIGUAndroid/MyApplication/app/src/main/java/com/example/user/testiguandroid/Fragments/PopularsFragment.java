@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,25 +12,27 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.user.testiguandroid.Adapters.PopularsRecyclerViewAdapter;
+import com.example.user.testiguandroid.BaseDatos.MyDataSource;
 import com.example.user.testiguandroid.Logica.ApiRequests;
+import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
-import com.example.user.testiguandroid.Logica.PopularsContent;
-import com.example.user.testiguandroid.Logica.PopularsContent.PopularMovie;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnPopularsFragmentInteractionListener}
  * interface.
  */
 public class PopularsFragment extends Fragment {
 
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private OnPopularsFragmentInteractionListener mListener;
+
+    private PrepararPopulares tarea;
+    private PopularsRecyclerViewAdapter adapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -42,14 +43,11 @@ public class PopularsFragment extends Fragment {
 
     // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
-    public static PopularsFragment newInstance(int columnCount) {
+    public static PopularsFragment newInstance() {
         PopularsFragment fragment = new PopularsFragment();
         Bundle args = new Bundle();
         //args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
-
-        // async
-
 
         return fragment;
     }
@@ -60,6 +58,10 @@ public class PopularsFragment extends Fragment {
 
         if (getArguments() != null) {
             //mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+        }
+
+        if (adapter == null) {
+            adapter = new PopularsRecyclerViewAdapter(Lista.populares, mListener);
         }
     }
 
@@ -72,13 +74,15 @@ public class PopularsFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new PopularsRecyclerViewAdapter(PopularsContent.ITEMS, mListener));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setAdapter(adapter);
         }
+
+        if (tarea == null && Lista.populares.size() == 0) {
+            tarea = new PrepararPopulares();
+            tarea.execute();
+        }
+
         return view;
     }
 
@@ -86,8 +90,9 @@ public class PopularsFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+
+        if (context instanceof OnPopularsFragmentInteractionListener) {
+            mListener = (OnPopularsFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -110,9 +115,8 @@ public class PopularsFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(PopularMovie item);
+    public interface OnPopularsFragmentInteractionListener {
+        void onPopularsFragmentInteraction(Pelicula p);
     }
 
     /**
@@ -122,26 +126,35 @@ public class PopularsFragment extends Fragment {
         protected List<Pelicula> doInBackground(String... urls) {
 
             List<String> ids = ApiRequests.getPopularMovies();
-            List<Pelicula> peliculas = new ArrayList<Pelicula>();
+
+            MyDataSource db = MyDataSource.getInstance();
 
             for (int i = 0, z = ids.size(); i < z; i++) {
 
-                Pelicula p = ApiRequests.getMovie(ids.get(i));
+                String id = ids.get(i);
+                if (db.existPelicula(id)) {
+                    Lista.populares.add(db.getPelicula(id));
+                } else {
+                    Pelicula p = ApiRequests.getMovie(id);
+                    Lista.populares.add(p);
+                    // TODO: Descargar poster.
+                    db.saveMovie(p);
+                }
 
-                publishProgress(i * 100 / z);
+                publishProgress(i);
                 // Escape early if cancel() is called
                 if (isCancelled()) break;
             }
 
-            return peliculas;
+            return Lista.populares;
         }
 
         protected void onProgressUpdate(Integer... progress) {
-            //setProgressPercent(progress[0]);
+            adapter.notifyItemChanged(progress[0]);
         }
 
         protected void onPostExecute(List<Pelicula> result) {
-            //showDialog("Downloaded " + result + " bytes");
+            adapter.notifyDataSetChanged();
         }
     }
 }

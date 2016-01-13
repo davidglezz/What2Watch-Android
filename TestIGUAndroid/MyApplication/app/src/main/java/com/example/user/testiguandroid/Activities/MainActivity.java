@@ -31,6 +31,7 @@ import com.example.user.testiguandroid.BaseDatos.MyDataSource;
 import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
+import com.example.user.testiguandroid.Fragments.PopularsFragment;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
 import com.example.user.testiguandroid.Logica.ApiRequests;
 import com.example.user.testiguandroid.Logica.Lista;
@@ -42,9 +43,10 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener, PopularsFragment.OnPopularsFragmentInteractionListener {
 
     SharedPreferences datos;
+    Fragment currentFragment;
 
     public SharedPreferences getDatos() {
         return datos;
@@ -81,6 +83,12 @@ public class MainActivity extends Activity //AppCompatActivity
         /*new Lista("Mi lista", "Prueba");
         new Lista("Mi lista 2", "Prueba");
         new Lista("Mi lista 3", "Prueba");*/
+
+        if (currentFragment == null) {
+            currentFragment = PopularsFragment.newInstance();
+            changeFragment(currentFragment);
+        }
+
 
     }
 
@@ -198,19 +206,18 @@ public class MainActivity extends Activity //AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Fragment fragment;
         if (id == R.id.nav_search_movie) {
-            fragment = new SearchMovies();
-            changeFragment(fragment);
+            currentFragment = new SearchMovies();
+            changeFragment(currentFragment);
         } else if (id == R.id.nav_popular) {
-            ApiRequests.getPopularMovies();
-
+            currentFragment = PopularsFragment.newInstance();
+            changeFragment(currentFragment);
         } else if (id == R.id.nav_my_lists) {
-            fragment = new MyListsFragment();
-            changeFragment(fragment);
+            currentFragment = new MyListsFragment();
+            changeFragment(currentFragment);
         } else if (id == R.id.nav_conf) {
-            fragment = new Configuration();
-            changeFragment(fragment);
+            currentFragment = new Configuration();
+            changeFragment(currentFragment);
 
         } else if (id == R.id.nav_about) {
             Intent intent = new Intent(this, MovieDetailActivity.class);
@@ -268,5 +275,13 @@ public class MainActivity extends Activity //AppCompatActivity
                 });
 
         dialog.show();
+    }
+
+    /* Lista de películas Populares */
+    @Override
+    public void onPopularsFragmentInteraction(Pelicula p) {
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra("imdbID", p.getImdbID());
+        startActivity(intent);
     }
 }
