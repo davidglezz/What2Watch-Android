@@ -33,6 +33,7 @@ public class Pelicula {
     private Date timestamp; // Timestamp de la hora de descarga
     private boolean vista = false;
     private int nota;
+    private String comment;
 
 
     public Pelicula(String title, String year, String imdbID, String type,
@@ -164,6 +165,10 @@ public class Pelicula {
     }
 
     public Boolean getVista() { return vista; }
+
+    public int getID() { return ID; }
+
+    public String getComment() { return comment; }
 
     @Override
     public boolean equals(Object o) {
