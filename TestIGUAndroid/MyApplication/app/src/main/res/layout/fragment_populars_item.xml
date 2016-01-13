@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:layout_margin="0dp"
+android:padding="5dp">
+
+<TextView
+    android:id="@+id/txvNombre"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:lines="1"
+    android:maxLines="1"
+    android:text="@string/txvTextNotAvailable"
+    android:textSize="@dimen/title"
+    android:textStyle="bold" />
+
+<TextView
+    android:id="@+id/txvDescripcion"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/txvTextNotAvailable"
+    android:textColor="@color/year"
+    android:layout_marginTop="5dp"
+    android:textSize="@dimen/descripcion"
+    android:layout_below="@+id/txvNombre"
+    android:layout_alignParentStart="true" />
+
+<!-- contador -->
+<TextView
+    android:id="@+id/txvContador"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:layout_alignParentRight="true"
+    android:text="@string/txvTextNotAvailable"
+    android:textColor="@color/year"
+    android:textSize="@dimen/title"/>
+
+</RelativeLayout>

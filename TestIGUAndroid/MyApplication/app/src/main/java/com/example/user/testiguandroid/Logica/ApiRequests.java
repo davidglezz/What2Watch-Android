@@ -2,6 +2,7 @@ package com.example.user.testiguandroid.Logica;
 
 import android.net.Uri;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Log;
 
 import org.w3c.dom.Document;
@@ -174,6 +175,10 @@ public class ApiRequests {
     private static String http_get(String strUrl) {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
+
+        // Falla si se hace en el hilo principal, el fix son estas 2 lineas
+        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        //StrictMode.setThreadPolicy(policy);
 
         try {
             URL url = new URL(strUrl);
