@@ -55,7 +55,14 @@ public class MainActivity extends Activity //AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ThemeChanger.onActivityCreateSetTheme(this);
+        //ThemeChanger.onActivityCreateSetTheme(this);
+        datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
+        boolean preferenciasModoCine = datos.getBoolean("CinemaMode", false);
+        if(preferenciasModoCine){
+            this.setTheme(R.style.AppThemeCinemaMode);
+        }
+        //
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);
@@ -71,7 +78,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
+
 
 
         /* Prueba listas */
@@ -102,9 +109,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
 
@@ -179,7 +184,7 @@ public class MainActivity extends Activity //AppCompatActivity
         Switch interr = (Switch) findViewById(R.id.cinemaModeConfiguration);
 
         boolean preferencias = datos.getBoolean("CinemaMode", false);
-        System.out.println("Las preferencias antes eran eran: " + preferencias);
+       // System.out.println("Las preferencias antes eran eran: " + preferencias);
         if (interr.isChecked()) {
 
             datos.edit().putBoolean("CinemaMode", true).commit();
@@ -195,7 +200,7 @@ public class MainActivity extends Activity //AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+
         int id = item.getItemId();
         Fragment fragment;
         if (id == R.id.nav_search_movie) {
@@ -226,7 +231,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
+        //best metodo ever chicos. Pero no lo borreis que sino no compila ;)
     }
 
 
