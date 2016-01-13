@@ -24,20 +24,13 @@ public class SearchMovies extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    // TODO: Rename and change types of parameters el rico codigo autogenerado de android studio ;)
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchMovies.
-     */
+
     // TODO: Rename and change types and number of parameters
     public static SearchMovies newInstance(String param1, String param2) {
         SearchMovies fragment = new SearchMovies();
