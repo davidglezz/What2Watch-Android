@@ -3,9 +3,12 @@
     package="com.example.user.testiguandroid">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <!-- ICONO
+            https://romannurik.github.io/AndroidAssetStudio/icons-launcher.html#foreground.type=text&foreground.space.trim=1&foreground.space.pad=0&foreground.text.text=W2W&foreground.text.font=Book%20Antiqua&foreColor=fff%2C0&crop=0&backgroundShape=hrect&backColor=9c27b0%2C100&effects=shadow
+    -->
     <application
         android:allowBackup="true"
+
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
