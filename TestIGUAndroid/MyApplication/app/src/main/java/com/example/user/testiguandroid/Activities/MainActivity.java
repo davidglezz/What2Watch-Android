@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -90,6 +92,22 @@ public class MainActivity extends Activity //AppCompatActivity
 
     }
 
+    public boolean hayInternet(){
+        ConnectivityManager managerConectividad
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo redDeInternet= managerConectividad.getActiveNetworkInfo();
+        if(redDeInternet==null || !redDeInternet.isAvailable()){
+            return false;
+        }
+       if( redDeInternet.getState() == NetworkInfo.State.DISCONNECTED || redDeInternet.getState() == NetworkInfo.State.DISCONNECTED){
+          return false;
+
+        }
+        if( redDeInternet.getState() == NetworkInfo.State.CONNECTED || redDeInternet.getState() == NetworkInfo.State.CONNECTING ){
+            return true;
+        }
+        return redDeInternet.isConnected();
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -141,6 +159,13 @@ public class MainActivity extends Activity //AppCompatActivity
         String titleString = title.getEditText().getText().toString().trim();
         String yearString = year.getEditText().getText().toString().trim();
 
+        if(!hayInternet()){
+            Snackbar snackbar = Snackbar
+                    .make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG);
+
+            snackbar.show();
+
+        }
         if (titleString == "" || titleString.isEmpty() || titleString == null) {
             Snackbar snackbar = Snackbar
                     .make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG);
