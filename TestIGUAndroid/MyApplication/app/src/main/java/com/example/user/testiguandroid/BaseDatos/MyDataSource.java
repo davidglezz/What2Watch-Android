@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
@@ -17,6 +18,7 @@ public class MyDataSource {
     //Variables para manipulación de datos
     private SQLiteDatabase database;
     private MyDBHelper dbHelper;
+    public final static String TAG = MyDataSource.class.getSimpleName();
 
     private MyDataSource(Context context) {
         //Creando una instancia hacia la base de datos
@@ -74,28 +76,26 @@ public class MyDataSource {
 
     // Carga las listas de peliculas
     public void loadLists() {
-        Cursor cursor = getAllLists();
-        Cursor cursor2;
-        Cursor cursor3;
-        Lista lista;
-        while (cursor.moveToNext()) {
-            if (!Lista.isLista(cursor.getInt(cursor.getColumnIndex(ColumnList.ID_LIST)))) {
-                lista = new Lista(cursor.getInt(cursor.getColumnIndex(ColumnList.ID_LIST)),
-                        cursor.getString(cursor.getColumnIndex(ColumnList.NAME_LIST)),
-                        cursor.getString(cursor.getColumnIndex(ColumnList.DESCRIPTION_LIST)));
-                cursor2 = getMoviesInList(cursor.getInt(cursor.getColumnIndex(ColumnList.ID_LIST)));
-                while (cursor2.moveToNext()) {
-                    cursor3 = getMovie(cursor2.getInt(cursor.getColumnIndex(ColumnMoviesList.ID_MOVIE)));
-                    cursor3.moveToNext();
-                    lista.addPelicula(getPelicula(cursor3.getString(cursor.getColumnIndex(ColumnMovie.IMDBID))));
-                    cursor3.close();
+        Cursor cListas = getAllLists(); // Cursor en tabla listas
+        Cursor cMovieList; // Cursor en tabla lista-pelicula
+        Cursor cPeli; // Cursor en tabla peliculas a una película
+        while (cListas.moveToNext()) {
+            int id_list = cListas.getInt(cListas.getColumnIndex(ColumnList.ID_LIST));
+            if (!Lista.isLista(id_list)) {
+                Lista lista = new Lista(id_list,
+                        cListas.getString(cListas.getColumnIndex(ColumnList.NAME_LIST)),
+                        cListas.getString(cListas.getColumnIndex(ColumnList.DESCRIPTION_LIST)));
+                cMovieList = getMoviesInList(cListas.getInt(cListas.getColumnIndex(ColumnList.ID_LIST)));
+                while (cMovieList.moveToNext()) {
+                    cPeli = getMovie(cMovieList.getInt(cMovieList.getColumnIndex(ColumnMoviesList.ID_MOVIE)));
+                    if(cPeli.moveToNext())
+                        lista.addPelicula(getPelicula(cPeli.getString(cPeli.getColumnIndex(ColumnMovie.IMDBID))));
+                    cPeli.close();
                 }
-                cursor2.close();
-
+                cMovieList.close();
             }
-
         }
-        cursor.close();
+        cListas.close();
     }
 
     //******************************* MOVIE ********************************************
@@ -169,7 +169,7 @@ public class MyDataSource {
 
     //Metodo para añadir una pelicula
     public void saveMovie(Pelicula p) {
-
+        Log.e(TAG, "saveMovie: " + p.toString());
         if (p.getID() == 0) {
             //Nuestro contenedor de valores
             ContentValues values = new ContentValues();
@@ -202,8 +202,10 @@ public class MyDataSource {
             long id = database.insert(MOVIE_TABLE_NAME, null, values);
             if (id != -1) {
                 p.setID(id);
+                Log.e(TAG, "Pelicula guardada en db: " + p.toString());
             } else {
                 // ERROR
+                Log.e(TAG, "No se pudo insertar la pelicula: " + p.toString());
             }
         } else {
             actualizarMovie(p.getID(), p.getNota(), p.getComment(), p.getVista());
@@ -430,8 +432,7 @@ public class MyDataSource {
             "create table " + MOVIESLIST_TABLE_NAME + "(" +
                     ColumnMoviesList.ID_MOVIE + " " + INT_TYPE + "," +
                     ColumnMoviesList.ID_LIST + " " + INT_TYPE + "," +
-                    "PRIMARY KEY(" + ColumnMoviesList.ID_MOVIE + "," +
-                    ColumnMoviesList.ID_LIST + ")" + "," +
+                    "PRIMARY KEY(" + ColumnMoviesList.ID_MOVIE + "," + ColumnMoviesList.ID_LIST + ")," +
                     "FOREIGN KEY(" + ColumnMoviesList.ID_MOVIE + ") REFERENCES " +
                     MOVIE_TABLE_NAME + "(" + ColumnMovie.ID + ") ON DELETE CASCADE," +
                     "FOREIGN KEY(" + ColumnMoviesList.ID_LIST + ") REFERENCES " +

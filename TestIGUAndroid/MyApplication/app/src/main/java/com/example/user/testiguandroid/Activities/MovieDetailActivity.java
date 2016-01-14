@@ -28,7 +28,7 @@ import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 
 public class MovieDetailActivity extends AppCompatActivity {
-
+    public final static String TAG = MovieDetailActivity.class.getSimpleName();
     private MovieDetailActivity This;
     private ProgressDialog progressDialog;
     private Pelicula pelicula;
@@ -123,7 +123,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute () {
-            progressDialog = ProgressDialog.show(MovieDetailActivity.this, "", "Loading. Please wait...", true);
+            progressDialog = ProgressDialog.show(MovieDetailActivity.this, "", "Loading movie info...", true);
         }
 
         @Override
@@ -166,6 +166,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 Lista lista = Lista.listas.get(item);
+                Log.v(TAG, "Añadir pelicula(" + pelicula.getID() +") a lista " + lista.getNombre());
                 lista.addPelicula(pelicula);
                 db.addPeliculaLista(pelicula, lista);
                 // TODO: avisar de que todo correcto
