@@ -1,8 +1,7 @@
-package com.example.user.testiguandroid.API;
+package com.example.user.testiguandroid.Activities;
 
 import android.os.AsyncTask;
 
-import com.example.user.testiguandroid.Activities.MainActivity;
 import com.example.user.testiguandroid.Logica.Pelicula;
 
 import org.w3c.dom.Document;
@@ -16,7 +15,7 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-public class XMLDecoderVariasPeliculas extends AsyncTask<String, Void, List<Pelicula>> {
+class XMLDecoderVariasPeliculas extends AsyncTask<String, Void, List<Pelicula>> {
 
     private MainActivity main;
 

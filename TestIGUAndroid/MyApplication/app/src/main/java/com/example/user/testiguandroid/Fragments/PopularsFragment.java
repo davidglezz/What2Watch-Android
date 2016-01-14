@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.user.testiguandroid.Adapters.PopularsRecyclerViewAdapter;
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
-import com.example.user.testiguandroid.API.ApiRequests;
+import com.example.user.testiguandroid.Logica.ApiRequests;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;

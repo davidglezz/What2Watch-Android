@@ -1,10 +1,9 @@
-package com.example.user.testiguandroid.API;
+package com.example.user.testiguandroid.Logica;
 
 import android.net.Uri;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.util.Log;
-
-import com.example.user.testiguandroid.Logica.Pelicula;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
