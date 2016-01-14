@@ -33,6 +33,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
+import com.example.user.testiguandroid.API.APICalls;
+import com.example.user.testiguandroid.API.XMLDecoderVariasPeliculas;
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
 
 import com.example.user.testiguandroid.Fragments.Configuration;
@@ -311,6 +313,7 @@ public class MainActivity extends Activity //AppCompatActivity
                 });
 
         dialog.show();
+
     }
 
     /* Lista de películas Populares */

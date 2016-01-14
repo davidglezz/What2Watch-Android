@@ -1,10 +1,10 @@
-package com.example.user.testiguandroid.Activities;
+package com.example.user.testiguandroid.API;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 
-class GeneradorURLsAPI {
+public class GeneradorURLsAPI {
 
     private String api = "http://www.omdbapi.com/";
 

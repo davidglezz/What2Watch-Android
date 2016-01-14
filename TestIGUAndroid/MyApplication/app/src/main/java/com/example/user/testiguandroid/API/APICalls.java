@@ -1,9 +1,6 @@
-package com.example.user.testiguandroid.Activities;
-
-import com.example.user.testiguandroid.Logica.Pelicula;
+package com.example.user.testiguandroid.API;
 
 import java.net.*;
-import java.util.List;
 
 
 public class APICalls {
