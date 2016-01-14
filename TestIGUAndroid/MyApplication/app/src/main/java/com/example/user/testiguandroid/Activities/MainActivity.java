@@ -9,6 +9,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -25,11 +29,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
+
 import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
@@ -45,7 +51,13 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener, PopularsFragment.OnPopularsFragmentInteractionListener, MyListsFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        Configuration.OnFragmentInteractionListener,
+        SearchMovies.OnFragmentInteractionListener,
+        /*CinemaFinder.OnFragmentInteractionListener,*/
+        PopularsFragment.OnPopularsFragmentInteractionListener,
+        MyListsFragment.OnListFragmentInteractionListener,
+        MovieListResult.OnFragmentInteractionListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private SharedPreferences datos;
@@ -61,6 +73,7 @@ public class MainActivity extends Activity //AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //ThemeChanger.onActivityCreateSetTheme(this);
         datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
         boolean preferenciasModoCine = datos.getBoolean("CinemaMode", false);
@@ -87,18 +100,16 @@ public class MainActivity extends Activity //AppCompatActivity
 
 
 
-        /* Prueba listas */
+        /* Cargar la base de datos */
         dataSource.loadLists();
-
-        /*new Lista("Mi lista", "Prueba");
-        new Lista("Mi lista 2", "Prueba");
-        new Lista("Mi lista 3", "Prueba");*/
 
         if (currentFragment == null) {
             currentFragment = PopularsFragment.newInstance();
             changeFragment(currentFragment);
         }
 
+        //Activar el sensor de luz
+        SensorLuz();
 
     }
 
@@ -245,6 +256,10 @@ public class MainActivity extends Activity //AppCompatActivity
             currentFragment = new Configuration();
             changeFragment(currentFragment);
 
+        } else if (id == R.id.CinemaFinder) {
+            Intent intent = new Intent(this, CinemaFinderActivity.class);
+            startActivity(intent);
+
         } else if (id == R.id.nav_about) {
             Intent intent = new Intent(this, MovieDetailActivity.class);
             intent.putExtra("imdbID", "tt2488496");
@@ -317,4 +332,51 @@ public class MainActivity extends Activity //AppCompatActivity
     public void onListFragmentInteraction(Lista item) {
         Log.v(TAG, "Click en " + item.toString());
     }
+
+
+
+    private void SensorLuz() {
+        SensorManager mySensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+
+        Sensor LightSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        if(LightSensor != null){
+            mySensorManager.registerListener(
+                    LightSensorListener,
+                    LightSensor,
+                    SensorManager.SENSOR_DELAY_NORMAL);
+
+        }
+    }
+
+    float BackLightValue = 0.5f; //dummy default value
+
+    private final SensorEventListener LightSensorListener = new SensorEventListener(){
+
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if(event.sensor.getType() == Sensor.TYPE_LIGHT){
+
+                //Formula a cambiar para regular como afecta la luz a la aplicacion
+                BackLightValue = (float)1 - event.values[0];
+
+                WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+                layoutParams.screenBrightness = BackLightValue;
+                getWindow().setAttributes(layoutParams);
+
+                int SysBackLightValue = (int)(BackLightValue * 255);
+
+                android.provider.Settings.System.putInt(getContentResolver(),
+                        android.provider.Settings.System.SCREEN_BRIGHTNESS,
+                        SysBackLightValue);
+            }
+        }
+
+    };
 }
