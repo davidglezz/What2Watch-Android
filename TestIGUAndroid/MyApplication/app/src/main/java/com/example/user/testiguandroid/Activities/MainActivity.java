@@ -20,6 +20,8 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,10 +35,12 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
 
 import com.example.user.testiguandroid.Fragments.Configuration;
+import com.example.user.testiguandroid.Fragments.MovieListFragment;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
 import com.example.user.testiguandroid.Fragments.PopularsFragment;
@@ -57,7 +61,8 @@ public class MainActivity extends Activity //AppCompatActivity
         /*CinemaFinder.OnFragmentInteractionListener,*/
         PopularsFragment.OnPopularsFragmentInteractionListener,
         MyListsFragment.OnListFragmentInteractionListener,
-        MovieListResult.OnFragmentInteractionListener {
+        MovieListResult.OnFragmentInteractionListener,
+        MovieListFragment.OnMovieListFragmentInteractionListener{
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private SharedPreferences datos;
@@ -344,16 +349,30 @@ public class MainActivity extends Activity //AppCompatActivity
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("imdbID", p.getImdbID());
         startActivity(intent);
-
     }
 
+    /* Lista de películas */
     @Override
-    public void onListFragmentInteraction(Lista item) {
-        Log.v(TAG, "Click en " + item.toString());
+    public void onMovieListFragmentInteraction(Pelicula p) {
+        Log.v(TAG, "Click en " + p.toString());
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra("imdbID", p.getImdbID());
+        startActivity(intent);
+    }
+
+    // Lista de listas click
+    @Override
+    public void onListFragmentInteraction(Lista lista) {
+        Log.v(TAG, "Click en " + lista.toString());
+        lista.setCurrent();
+        currentFragment = MovieListFragment.newInstance(lista.getId());
+        changeFragment(currentFragment);
     }
 
 
-
+    /*
+    * Cosas sensor de luz
+    * */
     private void SensorLuz() {
         SensorManager mySensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 
@@ -402,4 +421,6 @@ public class MainActivity extends Activity //AppCompatActivity
         }
 
     };
+
+
 }

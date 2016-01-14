@@ -30,7 +30,7 @@ public class PopularsRecyclerViewAdapter extends RecyclerView.Adapter<PopularsRe
     private final PopularsFragment.OnPopularsFragmentInteractionListener mListener;
     private Context context;
 
-    public PopularsRecyclerViewAdapter(Lista items, MovieListFragment.OnMovieListFragmentInteractionListener listener) {
+    public PopularsRecyclerViewAdapter(List<Pelicula> items, PopularsFragment.OnPopularsFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }

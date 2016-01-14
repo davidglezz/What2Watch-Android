@@ -13,9 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.user.testiguandroid.Adapters.MovieListRecyclerViewAdapter;
-import com.example.user.testiguandroid.Adapters.PopularsRecyclerViewAdapter;
-import com.example.user.testiguandroid.BaseDatos.MyDataSource;
-import com.example.user.testiguandroid.Logica.ApiRequests;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
@@ -76,6 +73,7 @@ public class MovieListFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
+            //registerForContextMenu(recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
             recyclerView.setAdapter(adapter);
         }
@@ -104,7 +102,6 @@ public class MovieListFragment extends Fragment {
         } else {
             throw new RuntimeException(activity.toString() + " must implement OnListFragmentInteractionListener");
         }
-
     }
 
     @Override

@@ -12,6 +12,9 @@ public class Lista {
     // Lista de listas
     public static List<Lista> listas = new ArrayList<Lista>();
 
+    // Lista Seleccionada
+    public static Lista current;
+
     private int id = 0;
     private String nombre;
     private String descripcion;
@@ -92,5 +95,9 @@ public class Lista {
                 return lista;
         }
         return null;
+    }
+
+    public void setCurrent() {
+        current = this;
     }
 }
