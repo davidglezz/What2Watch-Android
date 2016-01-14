@@ -45,12 +45,17 @@ public class Configuration extends Fragment {
 
 
         Switch interruptor=(Switch)v.findViewById(R.id.cinemaModeConfiguration);
+
         Switch interruptor2=(Switch)v.findViewById(R.id.lightModeConfiguration);
+
         SharedPreferences datos=((MainActivity) getActivity()).getDatos();
         boolean preferencias=datos.getBoolean("CinemaMode",false);
         interruptor.setChecked(preferencias);
-        preferencias = datos.getBoolean("LightMode",false);
-        interruptor2.setChecked(preferencias);
+
+
+
+        boolean preferenciasLuz = datos.getBoolean("LightMode",false);
+        interruptor2.setChecked(preferenciasLuz);
 
 
         return v;
