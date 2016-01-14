@@ -86,7 +86,7 @@ public class CinemaFinderActivity extends Activity {
             }
 
             if(result == null){
-                showToast("No se han encontrado cines en las cercanías");
+                showToast("No Theatre/Cinema found in your area");
             }else {
                 if (result != null) {
                     for (int i = 0; i < result.size(); i++) {
