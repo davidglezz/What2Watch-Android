@@ -31,14 +31,10 @@ public class MovieListRecyclerViewAdapter extends RecyclerView.Adapter<MovieList
     private final Lista mValues;
     private final MovieListFragment.OnMovieListFragmentInteractionListener mListener;
     private Context context;
-    private MyDataSource db;
 
     public MovieListRecyclerViewAdapter(Lista items, MovieListFragment.OnMovieListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
-
-        db = MyDataSource.getInstance();
-
     }
 
     @Override
@@ -67,8 +63,6 @@ public class MovieListRecyclerViewAdapter extends RecyclerView.Adapter<MovieList
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onMovieListFragmentInteraction(holder.mItem);
                 }
             }
@@ -104,30 +98,32 @@ public class MovieListRecyclerViewAdapter extends RecyclerView.Adapter<MovieList
 
         @Override
         public void onClick(View view) {
-            Context context = view.getContext();
+            /*Context context = view.getContext();*/
         }
 
         @Override
-        public boolean onLongClick(View v) {
+        public boolean onLongClick(View view) {
+            // No funciona
+            /*if (null != mListener) {
+                mListener.onMovieListFragmentInteraction(mItem);
+            }*/
+
             Log.v(TAG, "onLongClick: " + mItem.getTitle());
-
             final CharSequence[] list = {"Delete"};
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
             builder.setTitle("Remove from list?");
             builder.setItems(list, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     Lista lista = Lista.current;
                     lista.removePelicula(mItem);
-                    db.removeMovieInList(mItem.getID(), lista.getId());
+                    MyDataSource.getInstance().removeMovieInList(mItem.getID(), lista.getId());
                     Log.v(TAG, "Eliminada pelicula \"" + mItem.getTitle() + "\" de la lista " + lista.getNombre());
-
+                    notifyDataSetChanged();
                     Snackbar.make(mView, "Movie removed from list", Snackbar.LENGTH_LONG).show();
                 }
             });
             AlertDialog alert = builder.create();
             alert.show();
-
             return true;
         }
     }

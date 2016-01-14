@@ -59,7 +59,6 @@ public class MovieListFragment extends Fragment {
         int id_lista = getArguments().getInt("id_lista");
         lista = Lista.getLista(id_lista);
 
-
         if (adapter == null) {
             adapter = new MovieListRecyclerViewAdapter(lista, mListener);
         }
@@ -80,7 +79,6 @@ public class MovieListFragment extends Fragment {
 
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {
@@ -110,6 +108,10 @@ public class MovieListFragment extends Fragment {
         mListener = null;
     }
 
+    public void notifyDataSetChanged() {
+        adapter.notifyDataSetChanged();
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -122,5 +124,6 @@ public class MovieListFragment extends Fragment {
      */
     public interface OnMovieListFragmentInteractionListener {
         void onMovieListFragmentInteraction(Pelicula p);
+        void onMovieListFragmentLongInteraction(Pelicula p);
     }
 }

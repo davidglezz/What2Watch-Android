@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -20,8 +19,6 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -35,7 +32,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
 
@@ -45,7 +41,6 @@ import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
 import com.example.user.testiguandroid.Fragments.PopularsFragment;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
-import com.example.user.testiguandroid.Logica.ApiRequests;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
@@ -62,7 +57,7 @@ public class MainActivity extends Activity //AppCompatActivity
         PopularsFragment.OnPopularsFragmentInteractionListener,
         MyListsFragment.OnListFragmentInteractionListener,
         MovieListResult.OnFragmentInteractionListener,
-        MovieListFragment.OnMovieListFragmentInteractionListener{
+        MovieListFragment.OnMovieListFragmentInteractionListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private SharedPreferences datos;
@@ -73,7 +68,7 @@ public class MainActivity extends Activity //AppCompatActivity
     }
 
     //Atributo para la base de datos
-    private MyDataSource dataSource;
+    private MyDataSource db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +77,7 @@ public class MainActivity extends Activity //AppCompatActivity
         //ThemeChanger.onActivityCreateSetTheme(this);
         datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
         boolean preferenciasModoCine = datos.getBoolean("CinemaMode", false);
-        if(preferenciasModoCine){
+        if (preferenciasModoCine) {
             this.setTheme(R.style.AppThemeCinemaMode);
         }
 
@@ -92,7 +87,7 @@ public class MainActivity extends Activity //AppCompatActivity
         //setSupportActionBar(toolbar);
 
         //Crear nuevo objeto MyDataSource
-        dataSource = MyDataSource.getInstance(this);
+        db = MyDataSource.getInstance(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -106,11 +101,11 @@ public class MainActivity extends Activity //AppCompatActivity
 
 
         /* Cargar la base de datos */
-        dataSource.loadLists();
+        db.loadLists();
 
+        // Fragment por defecto
         if (currentFragment == null) {
-            currentFragment = PopularsFragment.newInstance();
-            changeFragment(currentFragment);
+            changeFragment(PopularsFragment.newInstance());
         }
 
         //Activar el sensor de luz
@@ -118,22 +113,23 @@ public class MainActivity extends Activity //AppCompatActivity
 
     }
 
-    public boolean hayInternet(){
+    public boolean hayInternet() {
         ConnectivityManager managerConectividad
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo redDeInternet= managerConectividad.getActiveNetworkInfo();
-        if(redDeInternet==null || !redDeInternet.isAvailable()){
+        NetworkInfo redDeInternet = managerConectividad.getActiveNetworkInfo();
+        if (redDeInternet == null || !redDeInternet.isAvailable()) {
             return false;
         }
-       if( redDeInternet.getState() == NetworkInfo.State.DISCONNECTED || redDeInternet.getState() == NetworkInfo.State.DISCONNECTED){
-          return false;
+        if (redDeInternet.getState() == NetworkInfo.State.DISCONNECTED || redDeInternet.getState() == NetworkInfo.State.DISCONNECTED) {
+            return false;
 
         }
-        if( redDeInternet.getState() == NetworkInfo.State.CONNECTED || redDeInternet.getState() == NetworkInfo.State.CONNECTING ){
+        if (redDeInternet.getState() == NetworkInfo.State.CONNECTED || redDeInternet.getState() == NetworkInfo.State.CONNECTING) {
             return true;
         }
         return redDeInternet.isConnected();
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -141,11 +137,9 @@ public class MainActivity extends Activity //AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             if (currentFragment instanceof MovieListFragment) {
-                currentFragment = new MyListsFragment();
-                changeFragment(currentFragment);
+                changeFragment(new MyListsFragment());
             } else if (currentFragment instanceof MovieListResult) {
-                currentFragment = new SearchMovies();
-                changeFragment(currentFragment);
+                changeFragment(new SearchMovies());
             } else {
                 super.onBackPressed();
             }
@@ -190,7 +184,8 @@ public class MainActivity extends Activity //AppCompatActivity
 
         if (!hayInternet()) {
             Snackbar.make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG).show();
-        } if (titleString == "" || titleString.isEmpty() || titleString == null) {
+        }
+        if (titleString == "" || titleString.isEmpty() || titleString == null) {
             Snackbar.make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG).show();
         } else if (titleString.length() == 1) {
             Snackbar.make(v, "Put at least 2 characters to search", Snackbar.LENGTH_LONG).show();
@@ -210,18 +205,14 @@ public class MainActivity extends Activity //AppCompatActivity
     }
 
     public void asyncResult(List<Pelicula> lista) {
-
-        MovieListResult f = new MovieListResult(lista, this);
-
-        changeFragment(f);
-
+        changeFragment(new MovieListResult(lista, this));
     }
 
     public void actualizarInterfaz(View v) {
         Switch interr = (Switch) findViewById(R.id.cinemaModeConfiguration);
 
         boolean preferencias = datos.getBoolean("CinemaMode", false);
-       // System.out.println("Las preferencias antes eran eran: " + preferencias);
+        // System.out.println("Las preferencias antes eran eran: " + preferencias);
         if (interr.isChecked()) {
 
             datos.edit().putBoolean("CinemaMode", true).commit();
@@ -253,22 +244,16 @@ public class MainActivity extends Activity //AppCompatActivity
 
         int id = item.getItemId();
         if (id == R.id.nav_search_movie) {
-            currentFragment = new SearchMovies();
-            changeFragment(currentFragment);
+            changeFragment(new SearchMovies());
         } else if (id == R.id.nav_popular) {
-            currentFragment = PopularsFragment.newInstance();
-            changeFragment(currentFragment);
+            changeFragment(PopularsFragment.newInstance());
         } else if (id == R.id.nav_my_lists) {
-            currentFragment = new MyListsFragment();
-            changeFragment(currentFragment);
+            changeFragment(new MyListsFragment());
         } else if (id == R.id.nav_conf) {
-            currentFragment = new Configuration();
-            changeFragment(currentFragment);
-
+            changeFragment(new Configuration());
         } else if (id == R.id.CinemaFinder) {
             Intent intent = new Intent(this, CinemaFinderActivity.class);
             startActivity(intent);
-
         } else if (id == R.id.nav_about) {
             Intent intent = new Intent(this, MovieDetailActivity.class);
             intent.putExtra("imdbID", "tt2488496");
@@ -281,6 +266,7 @@ public class MainActivity extends Activity //AppCompatActivity
     }
 
     private void changeFragment(Fragment newFrg) {
+        currentFragment = newFrg;
         FragmentManager fm = getFragmentManager();
         fm.beginTransaction().replace(R.id.fragmentRemplazar, newFrg).commit();
     }
@@ -345,13 +331,37 @@ public class MainActivity extends Activity //AppCompatActivity
         startActivity(intent);
     }
 
+    // Toque largo, menu eliminar: no funciona asi, funcion no usada de momento
+    @Override
+    public void onMovieListFragmentLongInteraction(Pelicula p) {
+        Log.v(TAG, "onLongClick: " + p.getTitle());
+
+        final Pelicula pelicula = p;
+        final CharSequence[] list = {"Delete"};
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Remove from list?");
+        builder.setItems(list, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                Lista lista = Lista.current;
+                lista.removePelicula(pelicula);
+                db.removeMovieInList(pelicula.getID(), lista.getId());
+                Log.v(TAG, "Eliminada pelicula \"" + pelicula.getTitle() + "\" de la lista " + lista.getNombre());
+                MovieListFragment f = (MovieListFragment) currentFragment;
+                f.notifyDataSetChanged();
+                Snackbar.make(findViewById(android.R.id.content), "Movie removed from list", Snackbar.LENGTH_LONG).show();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     // Lista de listas click
     @Override
     public void onListFragmentInteraction(Lista lista) {
         Log.v(TAG, "Click en " + lista.toString());
-        lista.setCurrent();
-        currentFragment = MovieListFragment.newInstance(lista.getId());
-        changeFragment(currentFragment);
+        lista.setCurrent(); // Guardamos la lista que estamos viendo
+        changeFragment(MovieListFragment.newInstance(lista.getId()));
     }
 
 
@@ -359,10 +369,10 @@ public class MainActivity extends Activity //AppCompatActivity
     * Cosas sensor de luz
     * */
     private void SensorLuz() {
-        SensorManager mySensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        SensorManager mySensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
 
         Sensor LightSensor = mySensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
-        if(LightSensor != null){
+        if (LightSensor != null) {
             mySensorManager.registerListener(
                     LightSensorListener,
                     LightSensor,
@@ -374,8 +384,7 @@ public class MainActivity extends Activity //AppCompatActivity
     float BackLightValue = 0.5f; //Valor por defecto
 
 
-
-    private final SensorEventListener LightSensorListener = new SensorEventListener(){
+    private final SensorEventListener LightSensorListener = new SensorEventListener() {
 
 
         @Override
@@ -387,9 +396,9 @@ public class MainActivity extends Activity //AppCompatActivity
         @Override
         public void onSensorChanged(SensorEvent event) {
 
-            boolean preferenciasLuz = datos.getBoolean("LightMode",false);
+            boolean preferenciasLuz = datos.getBoolean("LightMode", false);
 
-            if(preferenciasLuz) {
+            if (preferenciasLuz) {
                 if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
 
                     //Formula a cambiar para regular como afecta la luz a la aplicacion
