@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:layout_margin="0dp" >
+
+    <!-- Poster Image -->
+    <ImageView
+        android:id="@+id/imgPoster"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_perm_media_white_48dp"/>
+
+    <!-- Movie Title -->
+    <TextView
+        android:id="@+id/txvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imgPoster"
+        android:layout_toRightOf="@+id/imgPoster"
+        android:textSize="@dimen/title"
+        android:textStyle="bold"
+        android:text="@string/txvTextNotAvailable"
+        android:lines="1"
+        android:maxLines="2"
+        android:layout_marginTop="7dp"/>
+
+    <!-- Year -->
+    <TextView
+        android:id="@+id/txvYear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/title"
+        android:textColor="@color/year"
+        android:text="@string/txvTextNotAvailable"
+        android:layout_below="@+id/txvTitle"
+        android:layout_toRightOf="@+id/imgPoster"
+        android:layout_marginTop="7dp" />
+
+    <!-- Rating -->
+    <!--  <TextView
+        android:id="@+id/txvRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/title"
+        android:textColor="@color/year"
+        android:text="@string/txvTextNotAvailable"
+        android:layout_alignBaseline="@+id/txvYear"
+        android:layout_alignParentRight="true" />  -->
+
+    <!-- Genre -->
+    <!-- <TextView
+        android:id="@+id/txvGenre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/year"
+        android:textSize="@dimen/year"
+        android:text="@string/txvTextNotAvailable"
+        android:layout_below="@+id/txvYear"
+        android:layout_toRightOf="@+id/imgPoster"
+        android:layout_marginTop="5dp"/>  -->
+
+</RelativeLayout>
