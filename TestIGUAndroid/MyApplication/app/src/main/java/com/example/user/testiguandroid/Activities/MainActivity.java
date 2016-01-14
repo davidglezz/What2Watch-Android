@@ -175,11 +175,6 @@ public class MainActivity extends Activity //AppCompatActivity
 
     public void searchSingleMovie(Pelicula p) {
         try {
-            //String codigo=p.getImdbID();
-            //APICalls api= new APICalls();
-            //String url=api.obtenerURLSoloUnaPeli(codigo);
-            //new XMLDecoderUnaPelicula(this).execute(url);
-
             Intent intent = new Intent(this, MovieDetailActivity.class);
             intent.putExtra("imdbID", p.getImdbID());
             startActivity(intent);
