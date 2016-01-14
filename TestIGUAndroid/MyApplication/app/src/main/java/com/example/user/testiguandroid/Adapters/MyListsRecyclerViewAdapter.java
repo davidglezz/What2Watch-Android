@@ -90,8 +90,7 @@ public class MyListsRecyclerViewAdapter extends RecyclerView.Adapter<MyListsRecy
                     Snackbar.make(mView, "List removed", Snackbar.LENGTH_LONG).show();
                 }
             });
-            AlertDialog alert = builder.create();
-            alert.show();
+            builder.create().show();
             return true;
         }
 
