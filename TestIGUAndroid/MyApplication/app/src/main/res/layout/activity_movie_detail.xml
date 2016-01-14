@@ -389,7 +389,6 @@
                 android:id="@+id/ratingBar"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="35dp"
-                android:onClick="rating_bar_click"
                 />
 
             <TextView
