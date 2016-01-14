@@ -408,7 +408,7 @@ public class MainActivity extends Activity //AppCompatActivity
                     layoutParams.screenBrightness = BackLightValue;
                     getWindow().setAttributes(layoutParams);
 
-                    int SysBackLightValue = (int) (BackLightValue * 255);
+                    int SysBackLightValue = (int) (BackLightValue);
 
 
                     android.provider.Settings.System.putInt(getContentResolver(),
