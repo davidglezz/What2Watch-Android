@@ -384,6 +384,8 @@ public class MainActivity extends Activity //AppCompatActivity
     float BackLightValue = 0.5f; //Valor por defecto
 
 
+
+
     private final SensorEventListener LightSensorListener = new SensorEventListener() {
 
 
@@ -410,13 +412,13 @@ public class MainActivity extends Activity //AppCompatActivity
 
                     int SysBackLightValue = (int) (BackLightValue);
 
-
                     android.provider.Settings.System.putInt(getContentResolver(),
                             android.provider.Settings.System.SCREEN_BRIGHTNESS,
                             SysBackLightValue);
                 }
             }
         }
+
 
     };
 
