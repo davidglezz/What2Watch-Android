@@ -55,6 +55,8 @@ public class MainActivity extends Activity //AppCompatActivity
         Configuration.OnFragmentInteractionListener,
         SearchMovies.OnFragmentInteractionListener,
         /*CinemaFinder.OnFragmentInteractionListener,*/
+        PopularsFragment.OnPopularsFragmentInteractionListener,
+        MyListsFragment.OnListFragmentInteractionListener,
         MovieListResult.OnFragmentInteractionListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
