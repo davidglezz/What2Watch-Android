@@ -101,7 +101,6 @@ public class MainActivity extends Activity //AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
         /* Cargar la base de datos */
         db.loadLists();
 
@@ -112,7 +111,6 @@ public class MainActivity extends Activity //AppCompatActivity
 
         //Activar el sensor de luz
         SensorLuz();
-
     }
 
     public boolean hayInternet() {
