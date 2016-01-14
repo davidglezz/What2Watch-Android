@@ -145,7 +145,15 @@ public class MainActivity extends Activity //AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (currentFragment instanceof MovieListFragment) {
+                currentFragment = new MyListsFragment();
+                changeFragment(currentFragment);
+            } else if (currentFragment instanceof MovieListResult) {
+                currentFragment = new SearchMovies();
+                changeFragment(currentFragment);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
