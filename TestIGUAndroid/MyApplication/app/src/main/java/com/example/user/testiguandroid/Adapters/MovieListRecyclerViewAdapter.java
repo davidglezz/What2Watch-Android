@@ -1,7 +1,6 @@
 package com.example.user.testiguandroid.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,27 +9,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.user.testiguandroid.Activities.MovieDetailActivity;
 import com.example.user.testiguandroid.Fragments.MovieListFragment;
 import com.example.user.testiguandroid.Fragments.PopularsFragment;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 
-import java.util.List;
-
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Pelicula} and makes a call to the
  * specified {@link PopularsFragment.OnPopularsFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class PopularsRecyclerViewAdapter extends RecyclerView.Adapter<PopularsRecyclerViewAdapter.ViewHolder> {
+public class MovieListRecyclerViewAdapter extends RecyclerView.Adapter<MovieListRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Pelicula> mValues;
-    private final PopularsFragment.OnPopularsFragmentInteractionListener mListener;
+    private final Lista mValues;
+    private final MovieListFragment.OnMovieListFragmentInteractionListener mListener;
     private Context context;
 
-    public PopularsRecyclerViewAdapter(Lista items, MovieListFragment.OnMovieListFragmentInteractionListener listener) {
+    public MovieListRecyclerViewAdapter(Lista items, MovieListFragment.OnMovieListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -62,7 +58,7 @@ public class PopularsRecyclerViewAdapter extends RecyclerView.Adapter<PopularsRe
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onPopularsFragmentInteraction(holder.mItem);
+                    mListener.onMovieListFragmentInteraction(holder.mItem);
                 }
             }
         });
@@ -70,7 +66,7 @@ public class PopularsRecyclerViewAdapter extends RecyclerView.Adapter<PopularsRe
 
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mValues.numPelis();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

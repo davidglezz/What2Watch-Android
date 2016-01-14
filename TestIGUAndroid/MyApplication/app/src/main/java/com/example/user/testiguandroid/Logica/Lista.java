@@ -77,4 +77,20 @@ public class Lista {
     public List<Pelicula> getPeliculas() {
         return peliculas;
     }
+
+    public Pelicula get(int index) {
+        return peliculas.get(index);
+    }
+
+    public int numPelis() {
+        return peliculas.size();
+    }
+
+    public static Lista getLista(int id_lista) {
+        for(Lista lista : listas){
+            if(lista.getId() == id_lista)
+                return lista;
+        }
+        return null;
+    }
 }
