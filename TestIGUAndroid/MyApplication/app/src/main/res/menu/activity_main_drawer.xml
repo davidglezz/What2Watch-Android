@@ -8,6 +8,8 @@
             android:title="Popular" />
         <item android:id="@+id/nav_my_lists" android:icon="@drawable/ic_list_black_24dp"
             android:title="My Lists" />
+        <item android:id="@+id/CinemaFinder" android:icon="@drawable/ic_list_black_24dp"
+            android:title="Cinema Locator" />
 
     </group>
 
