@@ -15,6 +15,7 @@ import android.hardware.SensorManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -41,6 +42,7 @@ import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
 import com.example.user.testiguandroid.Fragments.PopularsFragment;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
+import com.example.user.testiguandroid.Logica.ApiRequests;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
@@ -99,7 +101,6 @@ public class MainActivity extends Activity //AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-
         /* Cargar la base de datos */
         db.loadLists();
 
@@ -110,7 +111,6 @@ public class MainActivity extends Activity //AppCompatActivity
 
         //Activar el sensor de luz
         SensorLuz();
-
     }
 
     public boolean hayInternet() {
@@ -155,10 +155,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int id = item.getItemId();
-
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -175,37 +172,45 @@ public class MainActivity extends Activity //AppCompatActivity
 
 
     public void searchMovies(View v) {
-        //TODO
-        android.support.design.widget.TextInputLayout title =
-                (TextInputLayout) findViewById(R.id.movieTitleToSearch);
+
+        android.support.design.widget.TextInputLayout title = (TextInputLayout) findViewById(R.id.movieTitleToSearch);
         android.support.design.widget.TextInputLayout year = (TextInputLayout) findViewById(R.id.movieYearToSearch);
         String titleString = title.getEditText().getText().toString().trim();
         String yearString = year.getEditText().getText().toString().trim();
 
         if (!hayInternet()) {
             Snackbar.make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG).show();
+            return;
         }
+
         if (titleString == "" || titleString.isEmpty() || titleString == null) {
             Snackbar.make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG).show();
         } else if (titleString.length() == 1) {
             Snackbar.make(v, "Put at least 2 characters to search", Snackbar.LENGTH_LONG).show();
         } else {
-            try {
-                APICalls api = new APICalls();
-                api.buscarTitulos(titleString);
-                api.buscarPorAnyo(yearString);
-                String url = api.obtenerURLListaPeliculas();
-                new XMLDecoderVariasPeliculas(this).execute(url);
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
+            new TaskBusqueda().execute(titleString, yearString);
         }
 
     }
 
-    public void asyncResult(List<Pelicula> lista) {
-        changeFragment(new MovieListResult(lista, this));
+    class TaskBusqueda extends AsyncTask<String, Void, List<Pelicula>> {
+        @Override
+        protected List<Pelicula> doInBackground(String... params) {
+            return ApiRequests.searchMovies(params[0], params[0], 1);
+        }
+
+        @Override
+        protected void onPostExecute(List<Pelicula> result) {
+            asyncResultBusqueda(result);
+        }
+    }
+
+    public void asyncResultBusqueda(List<Pelicula> lista) {
+        if (lista.size() > 0) {
+            changeFragment(new MovieListResult(lista, this));
+        } else {
+            Snackbar.make(findViewById(android.R.id.content), "No movies found", Snackbar.LENGTH_LONG).show();
+        }
     }
 
     public void actualizarInterfaz(View v) {
@@ -220,20 +225,15 @@ public class MainActivity extends Activity //AppCompatActivity
         } else {
             datos.edit().putBoolean("CinemaMode", false).commit();
             ThemeChanger.changeToTheme(this, ThemeChanger.DAY);
-
         }
 
         Switch interr2 = (Switch) findViewById(R.id.lightModeConfiguration);
 
         preferencias = datos.getBoolean("LightMode", false);
         if (interr2.isChecked()) {
-
             datos.edit().putBoolean("LightMode", true).commit();
-
         } else {
             datos.edit().putBoolean("LightMode", false).commit();
-
-
         }
     }
 

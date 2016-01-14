@@ -33,7 +33,6 @@ public class MyListsFragment extends Fragment {
     public MyListsFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static MyListsFragment newInstance(int columnCount) {
         MyListsFragment fragment = new MyListsFragment();
@@ -106,7 +105,6 @@ public class MyListsFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Lista item);
     }
 }
