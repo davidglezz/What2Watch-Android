@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
+
 import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
@@ -41,7 +42,11 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        Configuration.OnFragmentInteractionListener,
+        SearchMovies.OnFragmentInteractionListener,
+        /*CinemaFinder.OnFragmentInteractionListener,*/
+        MovieListResult.OnFragmentInteractionListener {
 
     SharedPreferences datos;
 
@@ -55,6 +60,7 @@ public class MainActivity extends Activity //AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //ThemeChanger.onActivityCreateSetTheme(this);
         datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
         boolean preferenciasModoCine = datos.getBoolean("CinemaMode", false);
@@ -212,6 +218,10 @@ public class MainActivity extends Activity //AppCompatActivity
         } else if (id == R.id.nav_conf) {
             fragment = new Configuration();
             changeFragment(fragment);
+
+        } else if (id == R.id.CinemaFinder) {
+            Intent intent = new Intent(this, CinemaFinderActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_about) {
             Intent intent = new Intent(this, MovieDetailActivity.class);
