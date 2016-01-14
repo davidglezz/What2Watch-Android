@@ -14,6 +14,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -116,12 +118,12 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         // Usuario
         RatingBar voto = (RatingBar) findViewById(R.id.ratingBar);
-        voto.setRating(pelicula.getNota());
+        voto.setRating(pelicula.getNota() / 2f);
+        voto.setOnRatingBarChangeListener(new myOnRatingBarChangeListener(pelicula));
 
         final EditText comentario = (EditText) findViewById(R.id.txtComment);
         comentario.setText(pelicula.getComment());
-        comentario.setOnFocusChangeListener(new myOnFocusChangeListener(pelicula));
-
+        comentario.addTextChangedListener(new myTextWatcher(pelicula));
 
     }
 
@@ -129,13 +131,13 @@ public class MovieDetailActivity extends AppCompatActivity {
     class getMovieInfo extends AsyncTask<String, Void, Pelicula> {
 
         @Override
-        protected void onPreExecute () {
+        protected void onPreExecute() {
             progressDialog = ProgressDialog.show(MovieDetailActivity.this, "", "Loading movie info...", true);
         }
 
         @Override
         protected Pelicula doInBackground(String... params) {
-              return ApiRequests.getMovie(params[0]);
+            return ApiRequests.getMovie(params[0]);
         }
 
         @Override
@@ -152,9 +154,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         final CharSequence[] items = Lista.getNames();
 
-        if (items.length == 0)
-        {
-            Snackbar.make(view, R.string.no_lists, Snackbar.LENGTH_LONG).setAction(R.string.new_list, new View.OnClickListener(){
+        if (items.length == 0) {
+            Snackbar.make(view, R.string.no_lists, Snackbar.LENGTH_LONG).setAction(R.string.new_list, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             // TODO: mostrar dialogo nueva lista
@@ -173,7 +174,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 Lista lista = Lista.listas.get(item);
-                Log.v(TAG, "Añadir pelicula(" + pelicula.getID() +") a lista " + lista.getNombre());
+                Log.v(TAG, "Añadir pelicula(" + pelicula.getID() + ") a lista " + lista.getNombre());
                 lista.addPelicula(pelicula);
                 db.addPeliculaLista(pelicula, lista);
                 // TODO: avisar de que todo correcto
@@ -184,32 +185,50 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
 
-    public void rating_bar_click(View v) {
-        RatingBar bar = (RatingBar) v;
-        pelicula.setNota((int) bar.getRating());
-        db.saveMovie(pelicula);
-    }
-
     public void mark_as_seen_click(View v) {
         // TODO
     }
 
-    private class myOnFocusChangeListener implements View.OnFocusChangeListener {
+    /* listener Voto */
+    private class myOnRatingBarChangeListener implements RatingBar.OnRatingBarChangeListener {
 
         private Pelicula pelicula;
 
-        public myOnFocusChangeListener(Pelicula pelicula) {
+        public myOnRatingBarChangeListener(Pelicula pelicula) {
             this.pelicula = pelicula;
         }
 
         @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            if (!hasFocus) {
-                EditText txt = (EditText) v;
-                pelicula.setComment(txt.getText().toString());
-                db.saveMovie(pelicula);
-            }
+        public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+            pelicula.setNota((int) (rating * 2f));
+            db.saveMovie(pelicula);
+            Log.v(TAG, "RatingBar " + rating);
+        }
+    }
 
+    /* listener Comentario */
+    private class myTextWatcher implements TextWatcher {
+
+        private Pelicula pelicula;
+
+        public myTextWatcher(Pelicula pelicula) {
+            this.pelicula = pelicula;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            pelicula.setComment(s.toString());
+            db.saveMovie(pelicula);
         }
     }
 }
