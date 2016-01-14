@@ -2,10 +2,13 @@ package com.example.user.testiguandroid.Activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -68,7 +71,22 @@ public class MovieDetailActivity extends AppCompatActivity {
         if (db.existPelicula(imdbID)) {// Obtener de la base de datos
             setPelicula(db.getPelicula(imdbID));
         } else { // Si no esta en la base de datos: de internet...
-            new getMovieInfo().execute(imdbID);
+            if (!hayInternet())
+            {
+                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+                alertDialog.setTitle("Sorry");
+                alertDialog.setMessage("You need to be connected to internet");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                finish();
+                            }
+                        });
+                alertDialog.show();
+            } else {
+                new getMovieInfo().execute(imdbID);
+            }
         }
 
     }
@@ -258,5 +276,22 @@ public class MovieDetailActivity extends AppCompatActivity {
             pelicula.setComment(s.toString());
             db.saveMovie(pelicula);
         }
+    }
+
+    public boolean hayInternet() {
+        ConnectivityManager managerConectividad
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo redDeInternet = managerConectividad.getActiveNetworkInfo();
+        if (redDeInternet == null || !redDeInternet.isAvailable()) {
+            return false;
+        }
+        if (redDeInternet.getState() == NetworkInfo.State.DISCONNECTED || redDeInternet.getState() == NetworkInfo.State.DISCONNECTED) {
+            return false;
+
+        }
+        if (redDeInternet.getState() == NetworkInfo.State.CONNECTED || redDeInternet.getState() == NetworkInfo.State.CONNECTING) {
+            return true;
+        }
+        return redDeInternet.isConnected();
     }
 }
