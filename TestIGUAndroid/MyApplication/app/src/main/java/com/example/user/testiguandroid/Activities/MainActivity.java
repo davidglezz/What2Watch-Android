@@ -80,6 +80,11 @@ public class MainActivity extends Activity //AppCompatActivity
         if(preferenciasModoCine){
             this.setTheme(R.style.AppThemeCinemaMode);
         }
+
+        boolean preferenciasLightMode = datos.getBoolean("LightMode", false);
+        if(preferenciasLightMode){
+            LightMode = false;
+        }
         //
 
         setContentView(R.layout.activity_main);
@@ -235,6 +240,20 @@ public class MainActivity extends Activity //AppCompatActivity
             ThemeChanger.changeToTheme(this, ThemeChanger.DAY);
 
         }
+
+        Switch interr2 = (Switch) findViewById(R.id.lightModeConfiguration);
+
+        preferencias = datos.getBoolean("LightMode", false);
+        // System.out.println("Las preferencias antes eran eran: " + preferencias);
+        if (interr2.isChecked()) {
+
+            datos.edit().putBoolean("LightMode", true).commit();
+            LightMode = true;
+        } else {
+            datos.edit().putBoolean("LightMode", false).commit();
+            LightMode = false;
+
+        }
     }
 
 
@@ -348,7 +367,9 @@ public class MainActivity extends Activity //AppCompatActivity
         }
     }
 
-    float BackLightValue = 0.5f; //dummy default value
+    float BackLightValue = 0.5f; //Valor por defecto
+
+    boolean LightMode = false;
 
     private final SensorEventListener LightSensorListener = new SensorEventListener(){
 
@@ -361,20 +382,22 @@ public class MainActivity extends Activity //AppCompatActivity
 
         @Override
         public void onSensorChanged(SensorEvent event) {
-            if(event.sensor.getType() == Sensor.TYPE_LIGHT){
+            if(LightMode) {
+                if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
 
-                //Formula a cambiar para regular como afecta la luz a la aplicacion
-                BackLightValue = (float)1 - event.values[0];
+                    //Formula a cambiar para regular como afecta la luz a la aplicacion
+                    BackLightValue = (float) event.values[0];
 
-                WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-                layoutParams.screenBrightness = BackLightValue;
-                getWindow().setAttributes(layoutParams);
+                    WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+                    layoutParams.screenBrightness = BackLightValue;
+                    getWindow().setAttributes(layoutParams);
 
-                int SysBackLightValue = (int)(BackLightValue * 255);
+                    int SysBackLightValue = (int) (BackLightValue * 255);
 
-                android.provider.Settings.System.putInt(getContentResolver(),
-                        android.provider.Settings.System.SCREEN_BRIGHTNESS,
-                        SysBackLightValue);
+                    android.provider.Settings.System.putInt(getContentResolver(),
+                            android.provider.Settings.System.SCREEN_BRIGHTNESS,
+                            SysBackLightValue);
+                }
             }
         }
 
