@@ -36,19 +36,19 @@ import android.widget.Switch;
 
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
 
+import com.example.user.testiguandroid.Fragments.AboutFragment;
 import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListFragment;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
 import com.example.user.testiguandroid.Fragments.PopularsFragment;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
-import com.example.user.testiguandroid.Logica.ApiRequests;
+import com.example.user.testiguandroid.API.ApiRequests;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 import com.example.user.testiguandroid.ThemeChanger;
 
-import java.net.MalformedURLException;
 import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
@@ -255,9 +255,7 @@ public class MainActivity extends Activity //AppCompatActivity
             Intent intent = new Intent(this, CinemaFinderActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_about) {
-            Intent intent = new Intent(this, MovieDetailActivity.class);
-            intent.putExtra("imdbID", "tt2488496");
-            startActivity(intent);
+            changeFragment(new AboutFragment());
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
