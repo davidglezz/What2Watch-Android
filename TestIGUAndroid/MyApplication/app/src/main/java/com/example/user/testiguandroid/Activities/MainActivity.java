@@ -47,8 +47,9 @@ import java.util.List;
 public class MainActivity extends Activity //AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener, PopularsFragment.OnPopularsFragmentInteractionListener, MyListsFragment.OnListFragmentInteractionListener {
 
-    SharedPreferences datos;
-    Fragment currentFragment;
+    public static final String TAG = MainActivity.class.getSimpleName();
+    private SharedPreferences datos;
+    private Fragment currentFragment;
 
     public SharedPreferences getDatos() {
         return datos;
@@ -305,15 +306,15 @@ public class MainActivity extends Activity //AppCompatActivity
     /* Lista de películas Populares */
     @Override
     public void onPopularsFragmentInteraction(Pelicula p) {
+        Log.v(TAG, "Click en " + p.toString());
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("imdbID", p.getImdbID());
         startActivity(intent);
+
     }
 
     @Override
     public void onListFragmentInteraction(Lista item) {
-        Intent intent = new Intent(this, MovieDetailActivity.class);
-        intent.putExtra("imdbID", "tt2488496");
-        startActivity(intent);
+        Log.v(TAG, "Click en " + item.toString());
     }
 }
