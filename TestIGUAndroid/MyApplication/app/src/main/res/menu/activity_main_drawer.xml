@@ -4,6 +4,8 @@
     <group android:checkableBehavior="single">
         <item android:id="@+id/nav_search_movie" android:icon="@drawable/ic_search_black_24dp"
             android:title="Search Movies" />
+        <item android:id="@+id/nav_popular" android:icon="@drawable/ic_whatshot_black_24dp"
+            android:title="Popular" />
         <item android:id="@+id/nav_my_lists" android:icon="@drawable/ic_list_black_24dp"
             android:title="My Lists" />
 

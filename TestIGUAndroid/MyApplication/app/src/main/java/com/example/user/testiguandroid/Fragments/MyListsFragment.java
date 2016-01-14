@@ -1,11 +1,13 @@
 package com.example.user.testiguandroid.Fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +23,7 @@ import com.example.user.testiguandroid.R;
  * interface.
  */
 public class MyListsFragment extends Fragment {
-
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+    public final static String TAG = MyListsFragment.class.getSimpleName();
     private OnListFragmentInteractionListener mListener;
 
     /**
@@ -39,19 +37,15 @@ public class MyListsFragment extends Fragment {
     @SuppressWarnings("unused")
     public static MyListsFragment newInstance(int columnCount) {
         MyListsFragment fragment = new MyListsFragment();
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -61,27 +55,38 @@ public class MyListsFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.mylists);
         Context context = recyclerView.getContext();
-
-        if (mColumnCount <= 1) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(new MyListsRecyclerViewAdapter(Lista.listas, mListener));
 
         return view;
     }
 
 
+    // Perfecto, esto solo se ejecuta en moviles con api 23, Gracias Google por avisar
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        Log.e(TAG, "EEEEEEEEEEEE");
+        // TODO: Que alguien me explique por que esto no se ejecuta
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnListFragmentInteractionListener");
+            throw new RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener");
         }
+
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (activity instanceof OnListFragmentInteractionListener) {
+            mListener = (OnListFragmentInteractionListener) activity;
+        } else {
+            throw new RuntimeException(activity.toString() + " must implement OnListFragmentInteractionListener");
+        }
+
     }
 
     @Override

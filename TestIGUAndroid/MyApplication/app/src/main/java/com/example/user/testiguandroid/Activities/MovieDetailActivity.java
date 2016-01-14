@@ -18,28 +18,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.user.testiguandroid.BaseDatos.MyDataSource;
+import com.example.user.testiguandroid.Logica.ApiRequests;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
 public class MovieDetailActivity extends AppCompatActivity {
-
-    MovieDetailActivity This;
+    public final static String TAG = MovieDetailActivity.class.getSimpleName();
+    private MovieDetailActivity This;
     private ProgressDialog progressDialog;
     private Pelicula pelicula;
+    private MyDataSource db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +55,17 @@ public class MovieDetailActivity extends AppCompatActivity {
         collapsing_container.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
         This = this;
+        db = MyDataSource.getInstance();
 
         // Obtener ID la película que se quiere mostrar
+        // TODO: obtener objeto pelicula
         String imdbID = getIntent().getStringExtra("imdbID");
 
-        // Obtener de la base de datos
-        // TODO
-
-        // Si no esta en la base de datos: de internet...
-        progressDialog = ProgressDialog.show(MovieDetailActivity.this, "", "Loading. Please wait...", true);
-        new getMovieInfo().execute(imdbID);
+        if (db.existPelicula(imdbID)) {// Obtener de la base de datos
+            setPelicula(db.getPelicula(imdbID));
+        } else { // Si no esta en la base de datos: de internet...
+            new getMovieInfo().execute(imdbID);
+        }
 
     }
 
@@ -128,56 +122,22 @@ public class MovieDetailActivity extends AppCompatActivity {
     class getMovieInfo extends AsyncTask<String, Void, Pelicula> {
 
         @Override
+        protected void onPreExecute () {
+            progressDialog = ProgressDialog.show(MovieDetailActivity.this, "", "Loading movie info...", true);
+        }
+
+        @Override
         protected Pelicula doInBackground(String... params) {
-            Pelicula pelicula = null;
-            String url = "http://www.omdbapi.com/?i="+params[0]+"&plot=full&r=xml";
-
-            try {
-                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                Document doc = dBuilder.parse(url);
-                doc.getDocumentElement().normalize();
-
-                NodeList nList = doc.getElementsByTagName("movie");
-                for (int temp = 0; temp < nList.getLength(); temp++) {
-                    Node nNode = nList.item(temp);
-
-                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                        Element eElement = (Element) nNode;
-
-                        pelicula = new Pelicula(eElement.getAttribute("title"),
-                                Integer.parseInt(eElement.getAttribute("year")),
-                                eElement.getAttribute("imdbID"),
-                                eElement.getAttribute("type"),
-                                eElement.getAttribute("poster"),
-                                eElement.getAttribute("rated"),
-                                eElement.getAttribute("released"),
-                                eElement.getAttribute("runtime"),
-                                eElement.getAttribute("genre"),
-                                eElement.getAttribute("director"),
-                                eElement.getAttribute("writer"),
-                                eElement.getAttribute("actors"),
-                                eElement.getAttribute("plot"),
-                                eElement.getAttribute("country"),
-                                eElement.getAttribute("awards"),
-                                eElement.getAttribute("imdbRating"));
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return pelicula;
+              return ApiRequests.getMovie(params[0]);
         }
 
         @Override
         protected void onPostExecute(Pelicula result) {
-            // Update
-            // Guarda en base de datos
-
+            db.saveMovie(result);
             setPelicula(result);
             progressDialog.dismiss();
-
         }
+
     }
 
     // FAB & Add to list btn
@@ -190,8 +150,11 @@ public class MovieDetailActivity extends AppCompatActivity {
             Snackbar.make(view, R.string.no_lists, Snackbar.LENGTH_LONG).setAction(R.string.new_list, new View.OnClickListener(){
                         @Override
                         public void onClick(View v) {
-                            // TODO nueva_lista()
-                            // TODO añadir pelicula a lista
+                            // TODO: mostrar dialogo nueva lista
+                            Lista lista = new Lista("Que pasa wey", "Lista generada automaticamente");
+                            db.guardarLista(lista);
+                            lista.addPelicula(pelicula);
+                            db.addPeliculaLista(pelicula, lista);
                         }
                     }
             ).show();
@@ -202,9 +165,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         builder.setTitle(R.string.add_to_list);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                // TODO
                 Lista lista = Lista.listas.get(item);
+                Log.v(TAG, "Añadir pelicula(" + pelicula.getID() +") a lista " + lista.getNombre());
                 lista.addPelicula(pelicula);
+                db.addPeliculaLista(pelicula, lista);
+                // TODO: avisar de que todo correcto
             }
         });
         AlertDialog alert = builder.create();
