@@ -1,9 +1,10 @@
-package com.example.user.testiguandroid.Logica;
+package com.example.user.testiguandroid.API;
 
 import android.net.Uri;
 import android.os.Environment;
-import android.os.StrictMode;
 import android.util.Log;
+
+import com.example.user.testiguandroid.Logica.Pelicula;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -60,11 +61,12 @@ public class ApiRequests {
     /*
     * Busca por un titulo de pelicula, retorna una lista de películas con informacion reducida
     */
-    public List<Pelicula> searchMovies(String title, int page) {
+    public static List<Pelicula> searchMovies(String title, String year, int page) {
 
         // Genera la url de la API
         Uri uri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(PARAM.search, title)
+                .appendQueryParameter(PARAM.year, year)
                 .appendQueryParameter(PARAM.type, "movie")
                 .appendQueryParameter(PARAM.page, Integer.toString(page))
                 .appendQueryParameter(PARAM.return_format, "xml")
@@ -164,7 +166,7 @@ public class ApiRequests {
 
     /**
      * Descarga un xml y retorna su Document
-    * */
+     */
     private static Document getXMLDocument(String url) {
         Document doc = null;
         try {

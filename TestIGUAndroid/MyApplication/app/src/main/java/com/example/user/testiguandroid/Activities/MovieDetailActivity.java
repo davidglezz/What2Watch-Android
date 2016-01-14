@@ -1,15 +1,15 @@
 package com.example.user.testiguandroid.Activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,13 +22,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
-import com.example.user.testiguandroid.Logica.ApiRequests;
+import com.example.user.testiguandroid.API.ApiRequests;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
+import com.example.user.testiguandroid.Logica.YoutubeService;
 import com.example.user.testiguandroid.R;
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -182,6 +182,34 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
         AlertDialog alert = builder.create();
         alert.show();
+    }
+
+    public void finhilo (String trailer)
+    {
+        String api_key="";
+        try {
+            ApplicationInfo appInfo = getPackageManager().getApplicationInfo(getPackageName(),
+                    PackageManager.GET_META_DATA);
+            api_key = appInfo.metaData.getString("com.google.android.maps.v2.API_KEY");
+        }catch(PackageManager.NameNotFoundException e){}
+
+        Log.e(TAG, "MovieDetailActivity : " + trailer);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer)));
+    }
+
+    public void youtube_player(View v) {
+        String api_key="";
+        //pelicula.
+        try {
+            ApplicationInfo appInfo = getPackageManager().getApplicationInfo(getPackageName(),
+                    PackageManager.GET_META_DATA);
+            api_key = appInfo.metaData.getString("com.google.android.maps.v2.API_KEY");
+        }catch(PackageManager.NameNotFoundException e){}
+        YoutubeService youtubeService = new YoutubeService(pelicula,api_key, this);
+        youtubeService.findTrailer();
+
+
+
     }
 
 
