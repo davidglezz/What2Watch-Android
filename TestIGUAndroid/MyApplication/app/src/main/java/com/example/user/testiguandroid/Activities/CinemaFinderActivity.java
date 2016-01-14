@@ -138,6 +138,7 @@ public class CinemaFinderActivity extends Activity {
             return findPlaces;
         }
 
+
     }
 
 

@@ -37,4 +37,5 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="mark_as_seen">Mark as seen</string>
+    <string name="youtubePlay">See Trailer</string>
 </resources>

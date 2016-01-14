@@ -376,6 +376,14 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/youtubePlay"
+                android:onClick="youtube_player"
+                android:id="@+id/youtube_Play" />
+
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="@string/mark_as_seen"
                 android:id="@+id/mark_as_seen"
                 android:drawableLeft="@drawable/ic_visibility_black_24dp"
