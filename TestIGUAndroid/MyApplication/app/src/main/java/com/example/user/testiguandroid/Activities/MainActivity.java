@@ -20,6 +20,8 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,10 +35,12 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
 
 import com.example.user.testiguandroid.Fragments.Configuration;
+import com.example.user.testiguandroid.Fragments.MovieListFragment;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
 import com.example.user.testiguandroid.Fragments.PopularsFragment;
@@ -57,7 +61,8 @@ public class MainActivity extends Activity //AppCompatActivity
         /*CinemaFinder.OnFragmentInteractionListener,*/
         PopularsFragment.OnPopularsFragmentInteractionListener,
         MyListsFragment.OnListFragmentInteractionListener,
-        MovieListResult.OnFragmentInteractionListener {
+        MovieListResult.OnFragmentInteractionListener,
+        MovieListFragment.OnMovieListFragmentInteractionListener{
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private SharedPreferences datos;
@@ -135,7 +140,15 @@ public class MainActivity extends Activity //AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (currentFragment instanceof MovieListFragment) {
+                currentFragment = new MyListsFragment();
+                changeFragment(currentFragment);
+            } else if (currentFragment instanceof MovieListResult) {
+                currentFragment = new SearchMovies();
+                changeFragment(currentFragment);
+            } else {
+                super.onBackPressed();
+            }
         }
     }
 
@@ -157,11 +170,6 @@ public class MainActivity extends Activity //AppCompatActivity
 
     public void searchSingleMovie(Pelicula p) {
         try {
-            //String codigo=p.getImdbID();
-            //APICalls api= new APICalls();
-            //String url=api.obtenerURLSoloUnaPeli(codigo);
-            //new XMLDecoderUnaPelicula(this).execute(url);
-
             Intent intent = new Intent(this, MovieDetailActivity.class);
             intent.putExtra("imdbID", p.getImdbID());
             startActivity(intent);
@@ -180,24 +188,12 @@ public class MainActivity extends Activity //AppCompatActivity
         String titleString = title.getEditText().getText().toString().trim();
         String yearString = year.getEditText().getText().toString().trim();
 
-        if(!hayInternet()){
-            Snackbar snackbar = Snackbar
-                    .make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG);
-
-            snackbar.show();
-
-        }
-        if (titleString == "" || titleString.isEmpty() || titleString == null) {
-            Snackbar snackbar = Snackbar
-                    .make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG);
-
-            snackbar.show();
-
+        if (!hayInternet()) {
+            Snackbar.make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG).show();
+        } if (titleString == "" || titleString.isEmpty() || titleString == null) {
+            Snackbar.make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG).show();
         } else if (titleString.length() == 1) {
-            Snackbar snackbar = Snackbar
-                    .make(v, "Put at least 2 characters to search", Snackbar.LENGTH_LONG);
-
-            snackbar.show();
+            Snackbar.make(v, "Put at least 2 characters to search", Snackbar.LENGTH_LONG).show();
         } else {
             try {
                 APICalls api = new APICalls();
@@ -338,16 +334,30 @@ public class MainActivity extends Activity //AppCompatActivity
         Intent intent = new Intent(this, MovieDetailActivity.class);
         intent.putExtra("imdbID", p.getImdbID());
         startActivity(intent);
-
     }
 
+    /* Lista de películas */
     @Override
-    public void onListFragmentInteraction(Lista item) {
-        Log.v(TAG, "Click en " + item.toString());
+    public void onMovieListFragmentInteraction(Pelicula p) {
+        Log.v(TAG, "Click en " + p.toString());
+        Intent intent = new Intent(this, MovieDetailActivity.class);
+        intent.putExtra("imdbID", p.getImdbID());
+        startActivity(intent);
+    }
+
+    // Lista de listas click
+    @Override
+    public void onListFragmentInteraction(Lista lista) {
+        Log.v(TAG, "Click en " + lista.toString());
+        lista.setCurrent();
+        currentFragment = MovieListFragment.newInstance(lista.getId());
+        changeFragment(currentFragment);
     }
 
 
-
+    /*
+    * Cosas sensor de luz
+    * */
     private void SensorLuz() {
         SensorManager mySensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 
@@ -391,6 +401,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
                     int SysBackLightValue = (int) (BackLightValue * 255);
 
+
                     android.provider.Settings.System.putInt(getContentResolver(),
                             android.provider.Settings.System.SCREEN_BRIGHTNESS,
                             SysBackLightValue);
@@ -399,4 +410,6 @@ public class MainActivity extends Activity //AppCompatActivity
         }
 
     };
+
+
 }
