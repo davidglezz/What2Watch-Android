@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import com.example.user.testiguandroid.BaseDatos.MyDataSource;
+
 import com.example.user.testiguandroid.Fragments.Configuration;
 import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
@@ -50,7 +51,13 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, Configuration.OnFragmentInteractionListener, SearchMovies.OnFragmentInteractionListener, MovieListResult.OnFragmentInteractionListener, PopularsFragment.OnPopularsFragmentInteractionListener, MyListsFragment.OnListFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        Configuration.OnFragmentInteractionListener,
+        SearchMovies.OnFragmentInteractionListener,
+        /*CinemaFinder.OnFragmentInteractionListener,*/
+        PopularsFragment.OnPopularsFragmentInteractionListener,
+        MyListsFragment.OnListFragmentInteractionListener,
+        MovieListResult.OnFragmentInteractionListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private SharedPreferences datos;
@@ -66,11 +73,17 @@ public class MainActivity extends Activity //AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         //ThemeChanger.onActivityCreateSetTheme(this);
         datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
         boolean preferenciasModoCine = datos.getBoolean("CinemaMode", false);
         if(preferenciasModoCine){
             this.setTheme(R.style.AppThemeCinemaMode);
+        }
+
+        boolean preferenciasLightMode = datos.getBoolean("LightMode", false);
+        if(preferenciasLightMode){
+            LightMode = false;
         }
         //
 
@@ -227,6 +240,20 @@ public class MainActivity extends Activity //AppCompatActivity
             ThemeChanger.changeToTheme(this, ThemeChanger.DAY);
 
         }
+
+        Switch interr2 = (Switch) findViewById(R.id.lightModeConfiguration);
+
+        preferencias = datos.getBoolean("LightMode", false);
+        // System.out.println("Las preferencias antes eran eran: " + preferencias);
+        if (interr2.isChecked()) {
+
+            datos.edit().putBoolean("LightMode", true).commit();
+            LightMode = true;
+        } else {
+            datos.edit().putBoolean("LightMode", false).commit();
+            LightMode = false;
+
+        }
     }
 
 
@@ -247,6 +274,10 @@ public class MainActivity extends Activity //AppCompatActivity
         } else if (id == R.id.nav_conf) {
             currentFragment = new Configuration();
             changeFragment(currentFragment);
+
+        } else if (id == R.id.CinemaFinder) {
+            Intent intent = new Intent(this, CinemaFinderActivity.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_about) {
             Intent intent = new Intent(this, MovieDetailActivity.class);
@@ -336,7 +367,9 @@ public class MainActivity extends Activity //AppCompatActivity
         }
     }
 
-    float BackLightValue = 0.5f; //dummy default value
+    float BackLightValue = 0.5f; //Valor por defecto
+
+    boolean LightMode = false;
 
     private final SensorEventListener LightSensorListener = new SensorEventListener(){
 
@@ -349,20 +382,22 @@ public class MainActivity extends Activity //AppCompatActivity
 
         @Override
         public void onSensorChanged(SensorEvent event) {
-            if(event.sensor.getType() == Sensor.TYPE_LIGHT){
+            if(LightMode) {
+                if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
 
-                //Formula a cambiar para regular como afecta la luz a la aplicacion
-                BackLightValue = (float)1 - event.values[0];
+                    //Formula a cambiar para regular como afecta la luz a la aplicacion
+                    BackLightValue = (float) event.values[0];
 
-                WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
-                layoutParams.screenBrightness = BackLightValue;
-                getWindow().setAttributes(layoutParams);
+                    WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+                    layoutParams.screenBrightness = BackLightValue;
+                    getWindow().setAttributes(layoutParams);
 
-                int SysBackLightValue = (int)(BackLightValue * 255);
+                    int SysBackLightValue = (int) (BackLightValue * 255);
 
-                android.provider.Settings.System.putInt(getContentResolver(),
-                        android.provider.Settings.System.SCREEN_BRIGHTNESS,
-                        SysBackLightValue);
+                    android.provider.Settings.System.putInt(getContentResolver(),
+                            android.provider.Settings.System.SCREEN_BRIGHTNESS,
+                            SysBackLightValue);
+                }
             }
         }
 
