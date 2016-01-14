@@ -12,6 +12,9 @@ public class Lista {
     // Lista de listas
     public static List<Lista> listas = new ArrayList<Lista>();
 
+    // Lista Seleccionada
+    public static Lista current;
+
     private int id = 0;
     private String nombre;
     private String descripcion;
@@ -76,5 +79,25 @@ public class Lista {
 
     public List<Pelicula> getPeliculas() {
         return peliculas;
+    }
+
+    public Pelicula get(int index) {
+        return peliculas.get(index);
+    }
+
+    public int numPelis() {
+        return peliculas.size();
+    }
+
+    public static Lista getLista(int id_lista) {
+        for(Lista lista : listas){
+            if(lista.getId() == id_lista)
+                return lista;
+        }
+        return null;
+    }
+
+    public void setCurrent() {
+        current = this;
     }
 }
