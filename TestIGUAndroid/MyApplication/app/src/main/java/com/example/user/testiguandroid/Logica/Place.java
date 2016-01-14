@@ -3,10 +3,8 @@ package com.example.user.testiguandroid.Logica;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 
 
 public class Place {
