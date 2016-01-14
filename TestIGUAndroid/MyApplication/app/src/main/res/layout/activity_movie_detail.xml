@@ -383,6 +383,13 @@
                 android:onClick="mark_as_seen_click"
             />
 
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/youtubePlay"
+                android:onClick="youtube_player"
+                android:id="@+id/youtube_Play" />
+
             <RatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
