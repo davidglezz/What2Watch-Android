@@ -86,11 +86,6 @@ public class MainActivity extends Activity //AppCompatActivity
             this.setTheme(R.style.AppThemeCinemaMode);
         }
 
-        boolean preferenciasLightMode = datos.getBoolean("LightMode", false);
-        if(preferenciasLightMode){
-            LightMode = false;
-        }
-        //
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -240,14 +235,13 @@ public class MainActivity extends Activity //AppCompatActivity
         Switch interr2 = (Switch) findViewById(R.id.lightModeConfiguration);
 
         preferencias = datos.getBoolean("LightMode", false);
-        // System.out.println("Las preferencias antes eran eran: " + preferencias);
         if (interr2.isChecked()) {
 
             datos.edit().putBoolean("LightMode", true).commit();
-            LightMode = true;
+
         } else {
             datos.edit().putBoolean("LightMode", false).commit();
-            LightMode = false;
+
 
         }
     }
@@ -379,7 +373,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
     float BackLightValue = 0.5f; //Valor por defecto
 
-    boolean LightMode = false;
+
 
     private final SensorEventListener LightSensorListener = new SensorEventListener(){
 
@@ -392,7 +386,10 @@ public class MainActivity extends Activity //AppCompatActivity
 
         @Override
         public void onSensorChanged(SensorEvent event) {
-            if(LightMode) {
+
+            boolean preferenciasLuz = datos.getBoolean("LightMode",false);
+
+            if(preferenciasLuz) {
                 if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
 
                     //Formula a cambiar para regular como afecta la luz a la aplicacion
