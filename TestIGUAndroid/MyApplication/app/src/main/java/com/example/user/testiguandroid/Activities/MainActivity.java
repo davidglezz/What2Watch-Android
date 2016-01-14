@@ -190,24 +190,12 @@ public class MainActivity extends Activity //AppCompatActivity
         String titleString = title.getEditText().getText().toString().trim();
         String yearString = year.getEditText().getText().toString().trim();
 
-        if(!hayInternet()){
-            Snackbar snackbar = Snackbar
-                    .make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG);
-
-            snackbar.show();
-
-        }
-        if (titleString == "" || titleString.isEmpty() || titleString == null) {
-            Snackbar snackbar = Snackbar
-                    .make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG);
-
-            snackbar.show();
-
+        if (!hayInternet()) {
+            Snackbar.make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG).show();
+        } if (titleString == "" || titleString.isEmpty() || titleString == null) {
+            Snackbar.make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG).show();
         } else if (titleString.length() == 1) {
-            Snackbar snackbar = Snackbar
-                    .make(v, "Put at least 2 characters to search", Snackbar.LENGTH_LONG);
-
-            snackbar.show();
+            Snackbar.make(v, "Put at least 2 characters to search", Snackbar.LENGTH_LONG).show();
         } else {
             try {
                 APICalls api = new APICalls();
