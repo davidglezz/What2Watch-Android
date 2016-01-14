@@ -27,7 +27,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_perm_media_white_48dp"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.5"/>
 
@@ -363,18 +362,52 @@
                 </TableRow>
             </TableLayout>
 
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/add_to_list"
                 android:id="@+id/add_to_list"
-                android:layout_gravity="center_horizontal"
-                android:onClick="add_to_list_click"/>
+                android:layout_gravity="left"
+                android:layout_marginTop="35dp"
+                android:onClick="add_to_list_click"
+                />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mark_as_seen"
+                android:id="@+id/mark_as_seen"
+                android:drawableLeft="@drawable/ic_visibility_black_24dp"
+                android:layout_gravity="right"
+                android:onClick="mark_as_seen_click"
+            />
 
             <RatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingBar" />
+                android:id="@+id/ratingBar"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="35dp"
+                android:onClick="rating_bar_click"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Comment"
+                android:id="@+id/lblComentario"
+                android:layout_weight="1"
+                android:gravity="right" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/txtComment"
+                />
 
         </LinearLayout>
 

@@ -143,8 +143,8 @@ public class Pelicula {
         return nota;
     }
 
-    private void setNota(int n) {
-        this.nota = n;
+    public void setNota(int nota) {
+        this.nota = nota;
     }
 
     public String getRated() {

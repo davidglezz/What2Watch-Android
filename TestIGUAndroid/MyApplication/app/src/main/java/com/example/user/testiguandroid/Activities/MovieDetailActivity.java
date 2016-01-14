@@ -16,7 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,16 +95,12 @@ public class MovieDetailActivity extends AppCompatActivity {
         TextView votes = (TextView) findViewById(R.id.txvVotes);
 
         //pelicula.setBigPosterToView(poster);
-        Glide.with(this)
-                .load(pelicula.getBigPoster())
-                .placeholder(R.drawable.ic_perm_media_white_48dp)
-                .error(R.drawable.ic_perm_media_white_48dp)
-                .into(poster);
+        Glide.with(this).load(pelicula.getBigPoster()).into(poster);
 
         collapsing_container.setTitle(pelicula.getTitle());
         genre.setText(pelicula.getGenre());
         plot.setText(pelicula.getPlot());
-        year.setText("" + pelicula.getYear());
+        year.setText(pelicula.getYear());
         rated.setText(pelicula.getRated());
         relased.setText(pelicula.getReleased());
         duration.setText(pelicula.getRuntime());
@@ -115,6 +113,15 @@ public class MovieDetailActivity extends AppCompatActivity {
         rating.setText(pelicula.getImdbRating());
         metascore.setText(pelicula.getMetascore());
         votes.setText(pelicula.getImdbVotes());
+
+        // Usuario
+        RatingBar voto = (RatingBar) findViewById(R.id.ratingBar);
+        voto.setRating(pelicula.getNota());
+
+        final EditText comentario = (EditText) findViewById(R.id.txtComment);
+        comentario.setText(pelicula.getComment());
+        comentario.setOnFocusChangeListener(new myOnFocusChangeListener(pelicula));
+
 
     }
 
@@ -176,4 +183,33 @@ public class MovieDetailActivity extends AppCompatActivity {
         alert.show();
     }
 
+
+    public void rating_bar_click(View v) {
+        RatingBar bar = (RatingBar) v;
+        pelicula.setNota((int) bar.getRating());
+        db.saveMovie(pelicula);
+    }
+
+    public void mark_as_seen_click(View v) {
+        // TODO
+    }
+
+    private class myOnFocusChangeListener implements View.OnFocusChangeListener {
+
+        private Pelicula pelicula;
+
+        public myOnFocusChangeListener(Pelicula pelicula) {
+            this.pelicula = pelicula;
+        }
+
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if (!hasFocus) {
+                EditText txt = (EditText) v;
+                pelicula.setComment(txt.getText().toString());
+                db.saveMovie(pelicula);
+            }
+
+        }
+    }
 }
