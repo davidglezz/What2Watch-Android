@@ -32,7 +32,7 @@
     <string name="cancel">Cancel</string>
     <string name="no_lists">You have no lists</string>
     <string name="title_activity_cinema_finder">CinemaFinderActivity</string>
-
+    <string name="youtubePlay">See Trailer</string>
     <string name="type_of_place">movie_theater</string>
 
     <string name="hello_world">Hello world!</string>
