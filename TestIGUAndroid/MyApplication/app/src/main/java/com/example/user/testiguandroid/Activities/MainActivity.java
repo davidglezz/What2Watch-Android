@@ -43,13 +43,12 @@ import com.example.user.testiguandroid.Fragments.MovieListResult;
 import com.example.user.testiguandroid.Fragments.MyListsFragment;
 import com.example.user.testiguandroid.Fragments.PopularsFragment;
 import com.example.user.testiguandroid.Fragments.SearchMovies;
-import com.example.user.testiguandroid.Logica.ApiRequests;
+import com.example.user.testiguandroid.API.ApiRequests;
 import com.example.user.testiguandroid.Logica.Lista;
 import com.example.user.testiguandroid.Logica.Pelicula;
 import com.example.user.testiguandroid.R;
 import com.example.user.testiguandroid.ThemeChanger;
 
-import java.net.MalformedURLException;
 import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
