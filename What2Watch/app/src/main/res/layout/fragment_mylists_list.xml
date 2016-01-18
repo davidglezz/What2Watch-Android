@@ -9,7 +9,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/mylists"
-        android:name="com.example.user.testiguandroid.Activities.myListsFragment"
+        android:name="com.w2w.Activities.myListsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="16dp"
