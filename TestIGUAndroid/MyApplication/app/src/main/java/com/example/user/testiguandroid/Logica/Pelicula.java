@@ -118,7 +118,6 @@ public class Pelicula {
     }
 
 
-
     public String getLanguage() {
         return language;
     }
@@ -215,11 +214,17 @@ public class Pelicula {
         return poster.replace("_SX300.jpg", "_SX1000.jpg");
     }
 
-    public Boolean getVista() { return vista; }
+    public Boolean getVista() {
+        return vista;
+    }
 
-    public long getID() { return ID; }
+    public long getID() {
+        return ID;
+    }
 
-    public String getComment() { return comment; }
+    public String getComment() {
+        return comment;
+    }
 
     public void setComment(String comment) {
         this.comment = comment;

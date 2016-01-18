@@ -382,8 +382,6 @@ public class MainActivity extends Activity //AppCompatActivity
     float BackLightValue = 0.5f; //Valor por defecto
 
 
-
-
     private final SensorEventListener LightSensorListener = new SensorEventListener() {
 
 

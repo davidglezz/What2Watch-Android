@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context="com.example.user.testiguandroid.Activities.MovieDetailActivity">
+                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                 xmlns:tools="http://schemas.android.com/tools"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent"
+                                                 android:fitsSystemWindows="true"
+                                                 tools:context="com.example.user.testiguandroid.Activities.MovieDetailActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -35,24 +35,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
+                app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="com.example.user.testiguandroid.Activities.MovieDetailActivity"
-        tools:showIn="@layout/activity_movie_detail">
+                                                xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                xmlns:tools="http://schemas.android.com/tools"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent"
+                                                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                                                tools:context="com.example.user.testiguandroid.Activities.MovieDetailActivity"
+                                                tools:showIn="@layout/activity_movie_detail">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:padding="16dp">
 
 
@@ -66,22 +66,22 @@
                 android:layout_marginTop="20dp" /> -->
 
             <TextView
+                android:id="@+id/txvGenre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/sample"
-                android:id="@+id/txvGenre"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:layout_marginTop="10dp" />
+                android:text="@string/sample"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <TextView
+                android:id="@+id/txvPlot"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/sample"
-                android:id="@+id/txvPlot"
                 android:layout_gravity="fill_horizontal"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:text="@string/sample"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <TableLayout
                 android:layout_width="match_parent"
@@ -93,22 +93,22 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/lblYear"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/year"
-                        android:id="@+id/lblYear"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/year"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <TextView
+                        android:id="@+id/lblRated"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/rated"
-                        android:id="@+id/lblRated"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/rated"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
                 </TableRow>
 
                 <TableRow
@@ -116,22 +116,22 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/txvYear"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/sample"
-                        android:id="@+id/txvYear"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:layout_weight="1" />
+                        android:text="@string/sample"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     <TextView
+                        android:id="@+id/txvRated"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/sample"
-                        android:id="@+id/txvRated"
+                        android:layout_weight="1"
                         android:gravity="center"
-                        android:layout_weight="1" />
+                        android:text="@string/sample"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
                 </TableRow>
 
                 <TableRow
@@ -140,22 +140,22 @@
                     android:layout_marginTop="10dp">
 
                     <TextView
+                        android:id="@+id/lblReleased"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/released"
-                        android:id="@+id/lblReleased"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/released"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <TextView
+                        android:id="@+id/lblRunTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/duration"
-                        android:id="@+id/lblRunTime"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/duration"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
                 </TableRow>
 
                 <TableRow
@@ -163,85 +163,84 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/txvReleased"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/sample"
-                        android:id="@+id/txvReleased"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/sample"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     <TextView
+                        android:id="@+id/txvRunTime"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/sample"
-                        android:id="@+id/txvRunTime"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/sample"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
                 </TableRow>
             </TableLayout>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/director"
                 android:id="@+id/lblDirector"
-                android:layout_marginTop="20dp" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginTop="20dp"
+                android:text="@string/director"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <TextView
+                android:id="@+id/txvDirector"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/sample"
-                android:id="@+id/txvDirector" />
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/writer"
                 android:id="@+id/lblWriter"
-                android:layout_marginTop="20dp" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginTop="20dp"
+                android:text="@string/writer"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <TextView
+                android:id="@+id/txvWriter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/sample"
-                android:id="@+id/txvWriter" />
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/actors"
                 android:id="@+id/lblActors"
-                android:layout_marginTop="20dp" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginTop="20dp"
+                android:text="@string/actors"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <TextView
+                android:id="@+id/txvActors"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/sample"
-                android:id="@+id/txvActors" />
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/awards"
                 android:id="@+id/lblAwards"
-                android:layout_marginTop="20dp" />
-
-            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/sample"
-                android:id="@+id/txvAwards" />
+                android:layout_marginTop="20dp"
+                android:text="@string/awards"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
+            <TextView
+                android:id="@+id/txvAwards"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sample"
+                android:textAppearance="?android:attr/textAppearanceSmall"/>
 
 
             <TableLayout
@@ -254,22 +253,22 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/lvlLanguage"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/language"
-                        android:id="@+id/lvlLanguage"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/language"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                     <TextView
+                        android:id="@+id/lblCountry"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/country"
-                        android:id="@+id/lblCountry"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/country"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
                 </TableRow>
 
@@ -278,22 +277,22 @@
                     android:layout_height="match_parent">
 
                     <TextView
+                        android:id="@+id/txvLanguage"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/sample"
-                        android:id="@+id/txvLanguage"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/sample"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
 
                     <TextView
+                        android:id="@+id/txvCountry"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/sample"
-                        android:id="@+id/txvCountry"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/sample"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
                 </TableRow>
 
                 <TableRow
@@ -302,31 +301,31 @@
                     android:layout_marginTop="15dp">
 
                     <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/imdbRating"
                         android:id="@+id/lblRating"
-                        android:layout_weight="1"
-                        android:gravity="center" />
-
-                    <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/metascore"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/imdbRating"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
                         android:id="@+id/lblMetascore"
-                        android:layout_weight="1"
-                        android:gravity="center" />
-
-                    <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/imdbVotes"
-                        android:id="@+id/lblVotes"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/metascore"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+                    <TextView
+                        android:id="@+id/lblVotes"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/imdbVotes"
+                        android:textAppearance="?android:attr/textAppearanceMedium"/>
                 </TableRow>
 
                 <TableRow
@@ -334,43 +333,43 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/sample"
                         android:id="@+id/txvRating"
-                        android:layout_weight="1"
-                        android:gravity="center" />
-
-                    <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_weight="1"
+                        android:gravity="center"
                         android:text="@string/sample"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    <TextView
                         android:id="@+id/txvMetascore"
-                        android:layout_weight="1"
-                        android:gravity="center" />
-
-                    <TextView
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:text="@string/sample"
-                        android:id="@+id/txvVotes"
                         android:layout_weight="1"
-                        android:gravity="center" />
+                        android:gravity="center"
+                        android:text="@string/sample"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+                    <TextView
+                        android:id="@+id/txvVotes"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/sample"
+                        android:textAppearance="?android:attr/textAppearanceSmall"/>
                 </TableRow>
             </TableLayout>
 
 
             <Button
+                android:id="@+id/add_to_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/add_to_list"
-                android:id="@+id/add_to_list"
                 android:layout_gravity="left"
                 android:layout_marginTop="35dp"
                 android:onClick="add_to_list_click"
+                android:text="@string/add_to_list"
                 />
 
             <!--<Button
@@ -384,36 +383,36 @@
             />-->
 
             <Button
+                android:id="@+id/youtube_Play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/youtubePlay"
                 android:drawableLeft="@drawable/ic_visibility_black_24dp"
                 android:onClick="youtube_player"
-                android:id="@+id/youtube_Play" />
+                android:text="@string/youtubePlay"/>
 
             <RatingBar
+                android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingBar"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="35dp"
                 />
 
             <TextView
+                android:id="@+id/lblComentario"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Comment"
-                android:id="@+id/lblComentario"
                 android:layout_weight="1"
-                android:gravity="right" />
+                android:gravity="right"
+                android:text="Comment"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <EditText
+                android:id="@+id/txtComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
                 android:ems="10"
-                android:id="@+id/txtComment"
+                android:inputType="textMultiLine"
                 />
 
         </LinearLayout>
@@ -425,9 +424,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/fab_margin"
+        android:onClick="add_to_list_click"
         android:src="@drawable/ic_add_white_24dp"
         app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"
-        android:onClick="add_to_list_click" />
+        app:layout_anchorGravity="bottom|end"/>
 
 </android.support.design.widget.CoordinatorLayout>

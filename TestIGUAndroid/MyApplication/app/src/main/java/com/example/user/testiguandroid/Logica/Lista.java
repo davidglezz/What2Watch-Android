@@ -57,9 +57,9 @@ public class Lista {
         }
     }
 
-    public static boolean isLista(int id){
-        for(Lista lista : listas){
-            if(lista.getId() == id)
+    public static boolean isLista(int id) {
+        for (Lista lista : listas) {
+            if (lista.getId() == id)
                 return true;
         }
         return false;
@@ -90,8 +90,8 @@ public class Lista {
     }
 
     public static Lista getLista(int id_lista) {
-        for(Lista lista : listas){
-            if(lista.getId() == id_lista)
+        for (Lista lista : listas) {
+            if (lista.getId() == id_lista)
                 return lista;
         }
         return null;
