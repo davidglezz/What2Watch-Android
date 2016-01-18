@@ -122,7 +122,6 @@ public class MainActivity extends Activity //AppCompatActivity
         }
         if (redDeInternet.getState() == NetworkInfo.State.DISCONNECTED || redDeInternet.getState() == NetworkInfo.State.DISCONNECTED) {
             return false;
-
         }
         if (redDeInternet.getState() == NetworkInfo.State.CONNECTED || redDeInternet.getState() == NetworkInfo.State.CONNECTING) {
             return true;
