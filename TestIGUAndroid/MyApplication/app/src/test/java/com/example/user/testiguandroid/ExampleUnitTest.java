@@ -1,4 +1,4 @@
-package com.example.user.testiguandroid;
+package com.example.user.w2w;
 
 import org.junit.Test;
 

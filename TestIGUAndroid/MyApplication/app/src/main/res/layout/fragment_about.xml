@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="com.example.user.testiguandroid.Fragments.AboutFragment">
+             tools:context="com.example.user.w2w.Fragments.AboutFragment">
 
     <TextView
         android:layout_width="match_parent"

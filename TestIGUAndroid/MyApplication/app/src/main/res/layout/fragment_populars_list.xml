@@ -9,5 +9,5 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context="com.example.user.testiguandroid.Fragments.PopularsFragment"
+    tools:context="com.example.user.w2w.Fragments.PopularsFragment"
     tools:listitem="@layout/fragment_populars_item" />
