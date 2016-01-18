@@ -1,4 +1,4 @@
-package com.example.user.w2w;
+package com.w2w;
 
 import org.junit.Test;
 
