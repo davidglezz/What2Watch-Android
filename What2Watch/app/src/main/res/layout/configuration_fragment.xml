@@ -1,0 +1,32 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.w2w.Fragments.Configuration"
+    android:padding="16dp">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cinema Mode"
+        android:id="@+id/cinemaModeConfiguration"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="47dp"
+        android:checked="false"
+        android:onClick="actualizarInterfaz" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adaptative Brightness"
+        android:id="@+id/lightModeConfiguration"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="false"
+        android:layout_marginTop="-150dp"
+        android:checked="false"
+        android:onClick="actualizarInterfaz"
+        android:layout_gravity="left|center_vertical" />
+
+</FrameLayout>
