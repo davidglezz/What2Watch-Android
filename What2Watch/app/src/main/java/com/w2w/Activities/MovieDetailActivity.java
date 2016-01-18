@@ -29,15 +29,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.w2w.BaseDatos.MyDataSource;
 import com.w2w.API.ApiRequests;
+import com.w2w.Fragments.MovieListFragment;
 import com.w2w.Logica.Lista;
 import com.w2w.Logica.Pelicula;
+import com.w2w.Logica.Util;
 import com.w2w.Logica.YoutubeService;
 import com.w2w.R;
 
 public class MovieDetailActivity extends AppCompatActivity {
     public final static String TAG = MovieDetailActivity.class.getSimpleName();
-    private MovieDetailActivity This;
-    private ProgressDialog progressDialog;
     private Pelicula pelicula;
     private MyDataSource db;
 
@@ -61,34 +61,25 @@ public class MovieDetailActivity extends AppCompatActivity {
         collapsing_container.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         collapsing_container.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
-        This = this;
-        db = MyDataSource.getInstance();
-
-        // Obtener ID la película que se quiere mostrar
-        // TODO: obtener objeto pelicula
-        String imdbID = getIntent().getStringExtra("imdbID");
-
-        if (db.existPelicula(imdbID)) {// Obtener de la base de datos
-            setPelicula(db.getPelicula(imdbID));
-        } else { // Si no esta en la base de datos: de internet...
-            if (!hayInternet())
-            {
-                AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-                alertDialog.setTitle("Sorry");
-                alertDialog.setMessage("You need to be connected to internet");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                                finish();
-                            }
-                        });
-                alertDialog.show();
-            } else {
-                new getMovieInfo().execute(imdbID);
-            }
+        if (db == null) {
+            db = MyDataSource.getInstance();
         }
 
+        if (pelicula == null) {
+            // Obtener ID la película que se quiere mostrar
+            String imdbID = getIntent().getStringExtra("imdbID");
+
+            // Obtener de la base de datos o de de internet...
+            if (db.existPelicula(imdbID)) {
+                setPelicula(db.getPelicula(imdbID));
+            } else {
+                if (Util.isNetworkAvailable(this)) {
+                    new getMovieInfo().execute(imdbID);
+                } else {
+                    alertInternetConnectionRequired();
+                }
+            }
+        }
     }
 
     // Establecer valores
@@ -114,7 +105,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         TextView metascore = (TextView) findViewById(R.id.txvMetascore);
         TextView votes = (TextView) findViewById(R.id.txvVotes);
 
-        //pelicula.setBigPosterToView(poster);
+
         Glide.with(this).load(pelicula.getBigPoster()).into(poster);
 
         collapsing_container.setTitle(pelicula.getTitle());
@@ -145,8 +136,22 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     }
 
+    private void alertInternetConnectionRequired() {
+        new AlertDialog.Builder(this)
+                .setTitle("Oh! No internet")
+                .setMessage("Sorry, you need to be connected to internet.")
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        finish();
+                    }
+                })
+                .create()
+                .show();
+    }
+
     // Obtener información de la pelicula
     class getMovieInfo extends AsyncTask<String, Void, Pelicula> {
+        private ProgressDialog progressDialog;
 
         @Override
         protected void onPreExecute() {
@@ -160,11 +165,14 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(Pelicula result) {
-            db.saveMovie(result);
-            setPelicula(result);
             progressDialog.dismiss();
+            if (result != null) {
+                db.saveMovie(result);
+                setPelicula(result);
+            } else {
+                alertInternetConnectionRequired();
+            }
         }
-
     }
 
     // FAB & Add to list btn
@@ -187,7 +195,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(This);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.add_to_list);
         builder.setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
@@ -200,34 +208,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
         AlertDialog alert = builder.create();
         alert.show();
-    }
-
-    public void finhilo (String trailer)
-    {
-        String api_key="";
-        try {
-            ApplicationInfo appInfo = getPackageManager().getApplicationInfo(getPackageName(),
-                    PackageManager.GET_META_DATA);
-            api_key = appInfo.metaData.getString("com.google.android.maps.v2.API_KEY");
-        }catch(PackageManager.NameNotFoundException e){}
-
-        Log.e(TAG, "MovieDetailActivity : " + trailer);
-        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer)));
-    }
-
-    public void youtube_player(View v) {
-        String api_key="";
-        //pelicula.
-        try {
-            ApplicationInfo appInfo = getPackageManager().getApplicationInfo(getPackageName(),
-                    PackageManager.GET_META_DATA);
-            api_key = appInfo.metaData.getString("com.google.android.maps.v2.API_KEY");
-        }catch(PackageManager.NameNotFoundException e){}
-        YoutubeService youtubeService = new YoutubeService(pelicula,api_key, this);
-        youtubeService.findTrailer();
-
-
-
     }
 
 
@@ -278,20 +258,32 @@ public class MovieDetailActivity extends AppCompatActivity {
         }
     }
 
-    public boolean hayInternet() {
-        ConnectivityManager managerConectividad
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo redDeInternet = managerConectividad.getActiveNetworkInfo();
-        if (redDeInternet == null || !redDeInternet.isAvailable()) {
-            return false;
+    /* Ver trailer en Youtube */
+    public void finhilo(String trailer) {
+        String api_key = "";
+        try {
+            ApplicationInfo appInfo = getPackageManager().getApplicationInfo(getPackageName(),
+                    PackageManager.GET_META_DATA);
+            api_key = appInfo.metaData.getString("com.google.android.maps.v2.API_KEY");
+        } catch (PackageManager.NameNotFoundException e) {
         }
-        if (redDeInternet.getState() == NetworkInfo.State.DISCONNECTED || redDeInternet.getState() == NetworkInfo.State.DISCONNECTED) {
-            return false;
 
+        Log.e(TAG, "MovieDetailActivity : " + trailer);
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(trailer)));
+    }
+
+    public void youtube_player(View v) {
+        String api_key = "";
+        //pelicula.
+        try {
+            ApplicationInfo appInfo = getPackageManager().getApplicationInfo(getPackageName(),
+                    PackageManager.GET_META_DATA);
+            api_key = appInfo.metaData.getString("com.google.android.maps.v2.API_KEY");
+        } catch (PackageManager.NameNotFoundException e) {
         }
-        if (redDeInternet.getState() == NetworkInfo.State.CONNECTED || redDeInternet.getState() == NetworkInfo.State.CONNECTING) {
-            return true;
-        }
-        return redDeInternet.isConnected();
+        YoutubeService youtubeService = new YoutubeService(pelicula, api_key, this);
+        youtubeService.findTrailer();
+
+
     }
 }
