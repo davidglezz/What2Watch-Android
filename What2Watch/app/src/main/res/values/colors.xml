@@ -3,6 +3,6 @@
     <color name="colorPrimary">#CC7DFD</color>
     <color name="colorPrimaryDark">#8c54ae</color>
     <color name="colorAccent">#00a724</color>
-    <color name="year">#888888</color>
     <color name="actionBarText">#ffffff</color>
+    <color name="year">#888888</color>
 </resources>

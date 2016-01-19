@@ -43,26 +43,35 @@ public class Lista {
         return names;
     }
 
-    public void addPelicula(Pelicula p) {
-        if (peliculas.contains(p)) {
-            //TODO lanzar excepcion? no hacer nada?
-        } else {
-            peliculas.add(p);
-        }
+    public static boolean[] getInList(Pelicula pelicula) {
+        boolean[] values = new boolean[listas.size()];
+        for (int i = 0; i < values.length; i++)
+            values[i] = listas.contains(pelicula);
+        return values;
     }
 
-    public void removePelicula(Pelicula p) {
-        if (peliculas.contains(p)) {
-            peliculas.remove(p);
-        }
+    public boolean addPelicula(Pelicula p) {
+        return peliculas.contains(p) ? false : peliculas.add(p);
     }
 
-    public static boolean isLista(int id) {
+    public boolean removePelicula(Pelicula p) {
+        return peliculas.remove(p);
+    }
+
+    public static boolean existLista(int id) {
         for (Lista lista : listas) {
             if (lista.getId() == id)
                 return true;
         }
         return false;
+    }
+
+    public static Lista getLista(int id_lista) {
+        for (Lista lista : listas) {
+            if (lista.getId() == id_lista)
+                return lista;
+        }
+        return null;
     }
 
     public int getId() {
@@ -89,13 +98,7 @@ public class Lista {
         return peliculas.size();
     }
 
-    public static Lista getLista(int id_lista) {
-        for (Lista lista : listas) {
-            if (lista.getId() == id_lista)
-                return lista;
-        }
-        return null;
-    }
+
 
     public void setCurrent() {
         current = this;

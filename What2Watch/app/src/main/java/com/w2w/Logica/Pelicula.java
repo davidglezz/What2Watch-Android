@@ -229,7 +229,8 @@ public class Pelicula {
     public boolean equals(Object o) {
         if (o instanceof Pelicula) {
             Pelicula p = (Pelicula) o;
-            return imdbID.equals(p.imdbID);
+            //return imdbID.equals(p.imdbID);
+            return ID == p.ID;
         }
         return false;
     }

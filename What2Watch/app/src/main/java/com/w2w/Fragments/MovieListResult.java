@@ -24,13 +24,11 @@ import java.util.List;
 
 public class MovieListResult extends ListFragment {
 
-
     private OnFragmentInteractionListener mListener;
 
     private List<Pelicula> result;
     private MainActivity main;
 
-    //WTWListFragment listviewMovies;
     Context context;
     ListAdapter adapter;
 
@@ -46,8 +44,8 @@ public class MovieListResult extends ListFragment {
 
     @SuppressLint("ValidFragment")
     public MovieListResult(List<Pelicula> p, MainActivity main) {
-        this.result=p;
-        this.main=main;
+        this.result = p;
+        this.main = main;
     }
 
 
@@ -61,14 +59,13 @@ public class MovieListResult extends ListFragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View vista= inflater.inflate(R.layout.movie_list_result_fragment, container, false);
+        View vista = inflater.inflate(R.layout.movie_list_result_fragment, container, false);
 
-        adapter=new WTWCustomAdapter(vista.getContext(),result);
+        adapter = new WTWCustomAdapter(vista.getContext(), result);
 
         setListAdapter(adapter);
 

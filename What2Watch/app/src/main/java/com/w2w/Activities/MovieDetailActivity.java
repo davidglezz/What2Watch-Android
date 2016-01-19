@@ -2,13 +2,10 @@ package com.w2w.Activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,7 +26,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.w2w.BaseDatos.MyDataSource;
 import com.w2w.API.ApiRequests;
-import com.w2w.Fragments.MovieListFragment;
 import com.w2w.Logica.Lista;
 import com.w2w.Logica.Pelicula;
 import com.w2w.Logica.Util;
@@ -67,14 +63,27 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         if (pelicula == null) {
             // Obtener ID la película que se quiere mostrar
-            String imdbID = getIntent().getStringExtra("imdbID");
+            Intent intent = getIntent();
+            String imdbID = intent.getStringExtra("imdbID");
 
-            // Obtener de la base de datos o de de internet...
-            if (db.existPelicula(imdbID)) {
-                setPelicula(db.getPelicula(imdbID));
-            } else {
-                if (Util.isNetworkAvailable(this)) {
+            if (imdbID != null) {
+                // Obtener de la base de datos o de de internet...
+                if (db.existPelicula(imdbID)) {
+                    setPelicula(db.getPelicula(imdbID));
+                } else if (Util.isNetworkAvailable(this)) {
                     new getMovieInfo().execute(imdbID);
+                } else {
+                    alertInternetConnectionRequired();
+                }
+            } else {
+                // Obtener de la base de datos o de de internet...
+                String title = intent.getStringExtra("title");
+                String year = intent.getStringExtra("year");
+                Pelicula p = db.getPelicula(title, year);
+                if (p != null) {
+                    setPelicula(p);
+                } else if (Util.isNetworkAvailable(this)) {
+                    new getMovieInfo().execute(title, year != null ? year : "");
                 } else {
                     alertInternetConnectionRequired();
                 }
@@ -141,7 +150,10 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         @Override
         protected Pelicula doInBackground(String... params) {
-            return ApiRequests.getMovie(params[0]);
+            if (params.length == 2)
+                return ApiRequests.getMovieByTitle(params[0], params[1]);
+            
+            return ApiRequests.getMovieByImdbId(params[0]);
         }
 
         @Override
@@ -176,27 +188,27 @@ public class MovieDetailActivity extends AppCompatActivity {
             return;
         }
 
-        boolean[] checkedValues = new boolean[items.length];  // Track the selected items
+        boolean[] checkedValues = Lista.getInList(pelicula);
+
+        Pelicula p2 = db.getPelicula(pelicula.getImdbID());
+        Log.e(TAG, "Comprovación " + p2.equals(pelicula));
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.add_to_list)
-
                 .setMultiChoiceItems(items, checkedValues,
                         new DialogInterface.OnMultiChoiceClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                                 Lista lista = Lista.listas.get(which);
                                 if (isChecked) {
-                                    lista.addPelicula(pelicula);
-                                    db.addPeliculaLista(pelicula, lista);
-                                    // TODO  addPeliculaLista y removeMovieInList argumentos inconsistentes.
+                                    if (lista.addPelicula(pelicula))
+                                        db.addPeliculaLista(pelicula, lista);
                                 } else {
-                                    lista.removePelicula(pelicula);
-                                    db.removeMovieInList(pelicula.getID(), lista.getId());
+                                    if (lista.removePelicula(pelicula))
+                                        db.removePeliculaLista(pelicula, lista);
                                 }
                             }
                         })
-                        // Set the action buttons
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
@@ -206,8 +218,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
 
+    /* listener Marcar como visto */
     public void mark_as_seen_click(View v) {
-        // TODO
+        // TODO Implementar
     }
 
     /* listener Voto */

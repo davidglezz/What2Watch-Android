@@ -143,7 +143,7 @@ public class PopularsFragment extends Fragment {
                     Lista.populares.add(db.getPelicula(id));
                     publishProgress(i);
                 } else {
-                    Pelicula p = ApiRequests.getMovie(id);
+                    Pelicula p = ApiRequests.getMovieByImdbId(id);
                     if (p != null) {
                         Lista.populares.add(p);
                         // TODO: Descargar poster.
