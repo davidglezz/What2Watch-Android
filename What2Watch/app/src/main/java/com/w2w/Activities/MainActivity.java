@@ -195,7 +195,7 @@ public class MainActivity extends Activity //AppCompatActivity
     class TaskBusqueda extends AsyncTask<String, Void, List<Pelicula>> {
         @Override
         protected List<Pelicula> doInBackground(String... params) {
-            return ApiRequests.searchMovies(params[0], params[0], 1);
+            return ApiRequests.searchMovies(params[0], params[1], 1);
         }
 
         @Override
