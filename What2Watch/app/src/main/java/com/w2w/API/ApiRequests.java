@@ -2,6 +2,7 @@ package com.w2w.API;
 
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.w2w.Logica.Pelicula;
@@ -73,7 +74,9 @@ public class ApiRequests {
                 .build();
 
         Document doc = getXMLDocument(uri.toString());
-        if (doc == null) return null;
+
+        if (doc == null)
+            return null;
 
         List<Pelicula> peliculas = new ArrayList<Pelicula>();
 
@@ -83,10 +86,10 @@ public class ApiRequests {
             if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                 Element eElement = (Element) nNode;
                 peliculas.add(new Pelicula(
-                        eElement.getAttribute("Title"),
-                        eElement.getAttribute("Year"),
+                        eElement.getAttribute("title"),
+                        eElement.getAttribute("year"),
                         eElement.getAttribute("imdbID"),
-                        eElement.getAttribute("Type"),
+                        eElement.getAttribute("type"),
                         eElement.getAttribute("Poster")));
             }
         }
@@ -95,9 +98,9 @@ public class ApiRequests {
     }
 
     /*
-    * Obtiene todos los datos de una pelicula
+    * Obtiene todos los datos de una pelicula a partir de su imdbID
     */
-    public static Pelicula getMovie(String imdbID) {
+    public static Pelicula getMovieByImdbId(String imdbID) {
 
         Uri uri = Uri.parse(BASE_URL).buildUpon()
                 .appendQueryParameter(PARAM.id, imdbID)
@@ -106,8 +109,30 @@ public class ApiRequests {
                 .appendQueryParameter(PARAM.return_format, "xml")
                 .build();
 
-        Document doc = getXMLDocument(uri.toString());
-        if (doc == null) return null;
+        return xmlDocToPelicula(getXMLDocument(uri.toString()));
+    }
+
+    /*
+    * Obtiene todos los datos de una pelicula a partir de su titulo y año
+    */
+    public static Pelicula getMovieByTitle(String title, String year) {
+
+        Uri uri = Uri.parse(BASE_URL).buildUpon()
+                .appendQueryParameter(PARAM.title, title)
+                .appendQueryParameter(PARAM.year, year != null ? year : "")
+                .appendQueryParameter(PARAM.type, "movie")
+                .appendQueryParameter(PARAM.plot, "full")
+                .appendQueryParameter(PARAM.return_format, "xml")
+                .build();
+
+        return xmlDocToPelicula(getXMLDocument(uri.toString()));
+    }
+
+    @Nullable
+    private static Pelicula xmlDocToPelicula(Document doc) {
+
+        if (doc == null)
+            return null;
 
         NodeList nList = doc.getElementsByTagName("movie");
         for (int temp = 0; temp < nList.getLength(); temp++) {
@@ -139,6 +164,7 @@ public class ApiRequests {
         }
         return null;
     }
+
 
     /*
     * Obtiene las 100 peliculas mas populares del momento

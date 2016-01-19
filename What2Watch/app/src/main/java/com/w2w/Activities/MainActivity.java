@@ -46,6 +46,7 @@ import com.w2w.Fragments.SearchMovies;
 import com.w2w.API.ApiRequests;
 import com.w2w.Logica.Lista;
 import com.w2w.Logica.Pelicula;
+import com.w2w.Logica.Util;
 import com.w2w.R;
 import com.w2w.ThemeChanger;
 
@@ -113,22 +114,6 @@ public class MainActivity extends Activity //AppCompatActivity
         SensorLuz();
     }
 
-    public boolean hayInternet() {
-        ConnectivityManager managerConectividad
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo redDeInternet = managerConectividad.getActiveNetworkInfo();
-        if (redDeInternet == null || !redDeInternet.isAvailable()) {
-            return false;
-        }
-        if (redDeInternet.getState() == NetworkInfo.State.DISCONNECTED || redDeInternet.getState() == NetworkInfo.State.DISCONNECTED) {
-            return false;
-        }
-        if (redDeInternet.getState() == NetworkInfo.State.CONNECTED || redDeInternet.getState() == NetworkInfo.State.CONNECTING) {
-            return true;
-        }
-        return redDeInternet.isConnected();
-    }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -161,9 +146,11 @@ public class MainActivity extends Activity //AppCompatActivity
     public void searchSingleMovie(Pelicula p) {
         try {
             Intent intent = new Intent(this, MovieDetailActivity.class);
-            intent.putExtra("imdbID", p.getImdbID());
+            // FIX
+            //intent.putExtra("imdbID", p.getImdbID());
+            intent.putExtra("title", p.getTitle());
+            intent.putExtra("year", p.getYear());
             startActivity(intent);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -171,13 +158,12 @@ public class MainActivity extends Activity //AppCompatActivity
 
 
     public void searchMovies(View v) {
-
         android.support.design.widget.TextInputLayout title = (TextInputLayout) findViewById(R.id.movieTitleToSearch);
         android.support.design.widget.TextInputLayout year = (TextInputLayout) findViewById(R.id.movieYearToSearch);
         String titleString = title.getEditText().getText().toString().trim();
         String yearString = year.getEditText().getText().toString().trim();
 
-        if (!hayInternet()) {
+        if (!Util.isNetworkAvailable(this)) {
             Snackbar.make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG).show();
             return;
         }
@@ -189,13 +175,12 @@ public class MainActivity extends Activity //AppCompatActivity
         } else {
             new TaskBusqueda().execute(titleString, yearString);
         }
-
     }
 
     class TaskBusqueda extends AsyncTask<String, Void, List<Pelicula>> {
         @Override
         protected List<Pelicula> doInBackground(String... params) {
-            return ApiRequests.searchMovies(params[0], params[0], 1);
+            return ApiRequests.searchMovies(params[0], params[1], 1);
         }
 
         @Override
@@ -218,7 +203,6 @@ public class MainActivity extends Activity //AppCompatActivity
         boolean preferencias = datos.getBoolean("CinemaMode", false);
         // System.out.println("Las preferencias antes eran eran: " + preferencias);
         if (interr.isChecked()) {
-
             datos.edit().putBoolean("CinemaMode", true).commit();
             ThemeChanger.changeToTheme(this, ThemeChanger.CINEMA);
         } else {
@@ -236,8 +220,6 @@ public class MainActivity extends Activity //AppCompatActivity
         }
     }
 
-
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 

@@ -81,7 +81,7 @@ public class MyDataSource {
         Cursor cPeli; // Cursor en tabla peliculas a una película
         while (cListas.moveToNext()) {
             int id_list = cListas.getInt(cListas.getColumnIndex(ColumnList.ID_LIST));
-            if (!Lista.isLista(id_list)) {
+            if (!Lista.existLista(id_list)) {
                 Lista lista = new Lista(id_list,
                         cListas.getString(cListas.getColumnIndex(ColumnList.NAME_LIST)),
                         cListas.getString(cListas.getColumnIndex(ColumnList.DESCRIPTION_LIST)));
@@ -216,7 +216,42 @@ public class MyDataSource {
         String selection = ColumnMovie.IMDBID + " = ?";
         String[] selectionArgs = {imdbID};
         Cursor cursor = getAnyRow(MOVIE_TABLE_NAME, null, selection, selectionArgs, null, null, null);
+        // TODO check move next
         cursor.moveToNext();
+
+        return new Pelicula(
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.TITLE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.YEAR)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.RATED)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.RELEASED)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.DURATION)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.GENRE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.DIRECTOR)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.WRITER)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.ACTORS)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.PLOT)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.LANGUAGE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.COUNTRY)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.AWARDS)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.POSTER)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.METASCORE)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.IMDB_RATING)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.IMDB_VOTES)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.IMDBID)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.TYPE)),
+                cursor.getInt(cursor.getColumnIndex(ColumnMovie.ID)),
+                cursor.getInt(cursor.getColumnIndex(ColumnMovie.VIEWED)) > 0,
+                cursor.getInt(cursor.getColumnIndex(ColumnMovie.USER_RATING)),
+                cursor.getString(cursor.getColumnIndex(ColumnMovie.COMMENT)));
+    }
+
+    public Pelicula getPelicula(String title, String year) {
+        String selection = ColumnMovie.TITLE + " = ? AND " + ColumnMovie.YEAR + " = ? ";
+        String[] selectionArgs = {title, year};
+        Cursor cursor = getAnyRow(MOVIE_TABLE_NAME, null, selection, selectionArgs, null, null, null);
+
+        if (!cursor.moveToNext())
+            return null;
 
         return new Pelicula(
                 cursor.getString(cursor.getColumnIndex(ColumnMovie.TITLE)),
@@ -452,6 +487,7 @@ public class MyDataSource {
         values.put(ColumnMoviesList.ID_LIST, idList);
 
         //Insertando en la base de datos
+        // TODO check si ya esta metido no meter o capturar la excepcion ..
         database.insert(MOVIESLIST_TABLE_NAME, null, values);
     }
 
