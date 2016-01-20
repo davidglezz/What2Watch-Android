@@ -152,7 +152,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         protected Pelicula doInBackground(String... params) {
             if (params.length == 2)
                 return ApiRequests.getMovieByTitle(params[0], params[1]);
-            
+
             return ApiRequests.getMovieByImdbId(params[0]);
         }
 
