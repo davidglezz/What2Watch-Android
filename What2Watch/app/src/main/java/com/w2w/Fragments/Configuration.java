@@ -30,9 +30,6 @@ public class Configuration extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
     }
 
 
