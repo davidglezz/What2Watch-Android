@@ -212,9 +212,8 @@ public class ApiRequests {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
-        // Falla si se hace en el hilo principal, el fix son estas 2 lineas
-        //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        //StrictMode.setThreadPolicy(policy);
+        // Para que no falle si se hace en el hilo principal.
+        //StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().permitAll().build());
 
         try {
             URL url = new URL(strUrl);
