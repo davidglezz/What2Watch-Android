@@ -150,7 +150,7 @@ public class ApiRequests {
                         eElement.getAttribute("director"),
                         eElement.getAttribute("writer"),
                         eElement.getAttribute("actors"),
-                        eElement.getAttribute("plot").replace("&quot;","\""),
+                        eElement.getAttribute("plot").replace("&quot;", "\""),
                         eElement.getAttribute("language"),
                         eElement.getAttribute("country"),
                         eElement.getAttribute("awards"),
@@ -263,7 +263,7 @@ public class ApiRequests {
     public static String downloadAndSavePoster(String posterUrl) {
 
         if (posterUrl == null || posterUrl.isEmpty()) {
-            return "";
+            return posterUrl;
         }
 
         String[] urlParts = posterUrl.split("/");
@@ -285,15 +285,15 @@ public class ApiRequests {
             File sdCardFolder = Environment.getExternalStorageDirectory().getAbsoluteFile();
 
             File posterFolder = new File(sdCardFolder, POSTER_FOLDER);
-            if (!posterFolder.isDirectory()) {
-                if (!posterFolder.mkdir())
-                    Log.e(TAG, "No se pude crear la carpeta " + posterFolder);
+            if (!posterFolder.isDirectory() && !posterFolder.mkdir()) {
+                Log.e(TAG, "No se pude acceder a la carpeta " + posterFolder);
+                return null;
             }
 
             File file = new File(sdCardFolder, fileName);
-            if (!file.exists()) {
-                if (!file.createNewFile())
-                    Log.e(TAG, "No se pude crear el archivo " + file.getPath());
+            if (!file.exists() && !file.createNewFile()) {
+                Log.e(TAG, "No se pude crear el archivo " + file.getPath());
+                return null;
             }
 
             fileOutput = new FileOutputStream(file);
@@ -301,7 +301,7 @@ public class ApiRequests {
 
             int totalSize = urlConnection.getContentLength();
             int downloadedSize = 0;
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[4096];
             int bufferLength = 0;
 
             while ((bufferLength = inputStream.read(buffer)) > 0) {
@@ -316,23 +316,16 @@ public class ApiRequests {
         } catch (Exception error) {
             Log.e(TAG, error.getMessage());
         } finally {
-            if (fileOutput != null) {
-                try {
+            try {
+                if (fileOutput != null)
                     fileOutput.close();
-                } catch (IOException error) {
-                    Log.e(TAG, error.getMessage());
-                }
-            }
-
-            if (inputStream != null) {
-                try {
+                if (inputStream != null)
                     inputStream.close();
-                } catch (IOException error) {
-                    Log.e(TAG, error.getMessage());
-                }
+            } catch (IOException error) {
+                Log.e(TAG, error.getMessage());
             }
         }
 
-        return ""; // no se si es mejor retornar null o string vacio ""
+        return "";
     }
 }
