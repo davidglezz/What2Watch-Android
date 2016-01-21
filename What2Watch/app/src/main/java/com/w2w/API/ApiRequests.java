@@ -150,7 +150,7 @@ public class ApiRequests {
                         eElement.getAttribute("director"),
                         eElement.getAttribute("writer"),
                         eElement.getAttribute("actors"),
-                        eElement.getAttribute("plot"),
+                        eElement.getAttribute("plot").replace("&quot;","\""),
                         eElement.getAttribute("language"),
                         eElement.getAttribute("country"),
                         eElement.getAttribute("awards"),
