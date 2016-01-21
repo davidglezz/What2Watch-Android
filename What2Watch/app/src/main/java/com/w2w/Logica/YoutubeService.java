@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 public class YoutubeService {
     Pelicula peli;
-    String urlBase="https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=";
+    String urlBase = "https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=";
     String API_KEY;
     String json;
     String videoUrl;
@@ -32,15 +32,13 @@ public class YoutubeService {
     public YoutubeService(Pelicula peli, String apikey, MovieDetailActivity mda) {
         this.peli = peli;
         this.API_KEY = apikey;
-        this.mda=mda;
-
+        this.mda = mda;
     }
 
 
-    private String makeUrl ()
-    {
-       String titulo=peli.getTitle().replace(' ','+');
-       return urlBase+"+"+titulo+"+"+peli.getYear()+"&key="+API_KEY;
+    private String makeUrl() {
+        String titulo = peli.getTitle().replace(' ', '+');
+        return urlBase + "+" + titulo + "+" + peli.getYear() + "&key=" + API_KEY;
     }
 
 
@@ -53,12 +51,12 @@ public class YoutubeService {
 
         //try {
 
-            Log.v("YOUTUBE URL ", urlString);
+        Log.v("YOUTUBE URL ", urlString);
 
-            getJSON(urlString);
+        getJSON(urlString);
 
 
-            //String json = http_get(urlString);
+        //String json = http_get(urlString);
 /*
             Log.v("YOUTUBE Json fn ", json);
 
@@ -83,14 +81,14 @@ public class YoutubeService {
         }*/
 
 
-       // return videoUrl; //result+vidCode;
+        // return videoUrl; //result+vidCode;
     }
 
-    public String getVideoUrl(){
+    public String getVideoUrl() {
         return videoUrl;
     }
 
-    protected void setVideoUrl(String url){
+    protected void setVideoUrl(String url) {
         this.videoUrl = url;
         this.mda.finhilo(videoUrl);
     }
@@ -115,7 +113,7 @@ public class YoutubeService {
                 content.append(line + "\n");
             }
             bufferedReader.close();
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return content.toString();
@@ -196,32 +194,32 @@ public class YoutubeService {
 
             String status;
             String result = "http://www.youtube.com/watch?v=";
-            String vidCode="Hxy8BZGQ5Jo";
+            String vidCode = "Hxy8BZGQ5Jo";
 
             Log.v("YOUTUBE jsonPostE ", jsonresult);
-            try{
+            try {
 
-            JSONObject object = new JSONObject(json);
+                JSONObject object = new JSONObject(json);
 
-            //status =  object.getString("status");
+                //status =  object.getString("status");
 
-            //if(!status.equals("200")){
+                //if(!status.equals("200")){
                 //videoUrl =  result+vidCode;
-            //}
+                //}
 
-            JSONArray array = object.getJSONArray("items");
-            JSONObject item = (JSONObject) array.get(0);
-            JSONObject id = (JSONObject) item.get("id");
-            vidCode=id.getString("videoId");
-            Log.v("YOUTUBE Services ", "codigo: "+vidCode+" URL completa: " + result+vidCode);
-            //result+vidCode;
+                JSONArray array = object.getJSONArray("items");
+                JSONObject item = (JSONObject) array.get(0);
+                JSONObject id = (JSONObject) item.get("id");
+                vidCode = id.getString("videoId");
+                Log.v("YOUTUBE Services ", "codigo: " + vidCode + " URL completa: " + result + vidCode);
+                //result+vidCode;
 
-                youtubeService.setVideoUrl(result+vidCode);
+                youtubeService.setVideoUrl(result + vidCode);
 
-        } catch (JSONException ex) {
-            Logger.getLogger("YOUTUBE Services ").log(Level.SEVERE, null, ex);
+            } catch (JSONException ex) {
+                Logger.getLogger("YOUTUBE Services ").log(Level.SEVERE, null, ex);
 
-        }
+            }
         }
 
 
@@ -233,9 +231,6 @@ public class YoutubeService {
             //json = jsonDevuelto;
             return jsonDevuelto;
         }
-
-
-
 
 
         private String getUrlContents(String theUrl) {
@@ -252,7 +247,7 @@ public class YoutubeService {
                     content.append(line + "\n");
                 }
                 bufferedReader.close();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return content.toString();
