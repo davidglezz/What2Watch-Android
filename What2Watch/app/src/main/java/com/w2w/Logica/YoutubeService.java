@@ -176,7 +176,6 @@ public class YoutubeService {
         private String jsonDevuelto;
         YoutubeService youtubeService;
 
-
         public YoutubeResult(YoutubeService youtubeService, String url) {
             this.url = url;
             this.youtubeService = youtubeService;
@@ -186,6 +185,15 @@ public class YoutubeService {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+        }
+
+        @Override
+        protected String doInBackground(Void... arg0) {
+            jsonDevuelto = getUrlContents(url);
+            json = jsonDevuelto;
+            //Log.v("YOUTUBE jsonDevuelto ", json);
+            //json = jsonDevuelto;
+            return jsonDevuelto;
         }
 
         @Override
@@ -221,17 +229,6 @@ public class YoutubeService {
 
             }
         }
-
-
-        @Override
-        protected String doInBackground(Void... arg0) {
-            jsonDevuelto = getUrlContents(url);
-            json = jsonDevuelto;
-            //Log.v("YOUTUBE jsonDevuelto ", json);
-            //json = jsonDevuelto;
-            return jsonDevuelto;
-        }
-
 
         private String getUrlContents(String theUrl) {
             Log.v("YOUTUBE getUrlcontents ", theUrl);
