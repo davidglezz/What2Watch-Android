@@ -37,7 +37,7 @@ public class Configuration extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-         View v =inflater.inflate(R.layout.configuration_fragment, container, false);
+         View v =inflater.inflate(R.layout.fragment_settings, container, false);
 
 
         Switch interruptor=(Switch)v.findViewById(R.id.cinemaModeConfiguration);

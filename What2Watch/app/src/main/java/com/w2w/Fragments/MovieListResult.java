@@ -16,7 +16,7 @@ import android.widget.ListView;
 import com.w2w.Activities.MainActivity;
 import com.w2w.Logica.Pelicula;
 import com.w2w.R;
-import com.w2w.Adapters.WTWCustomAdapter;
+import com.w2w.Adapters.SearchResultsAdapter;
 
 
 import java.util.List;
@@ -63,9 +63,9 @@ public class MovieListResult extends ListFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View vista = inflater.inflate(R.layout.movie_list_result_fragment, container, false);
+        View vista = inflater.inflate(R.layout.fragment_search_result_list, container, false);
 
-        adapter = new WTWCustomAdapter(vista.getContext(), result);
+        adapter = new SearchResultsAdapter(vista.getContext(), result);
 
         setListAdapter(adapter);
 

@@ -1,7 +1,9 @@
-package com.w2w;
+package com.w2w.Logica;
 
 import android.app.Activity;
 import android.content.Intent;
+
+import com.w2w.R;
 
 /**
  * Created by USER on 29/12/2015.
@@ -14,21 +16,20 @@ public class ThemeChanger {
     public final static int CINEMA = 1;
 
 
-
-    public static void changeToTheme(Activity activity, int temaID)
-    {
+    public static void changeToTheme(Activity activity, int temaID) {
         temaActual = temaID;
         activity.finish();
 
         activity.startActivity(new Intent(activity, activity.getClass()));
     }
 
-    /** Set the theme of the activity, according to the configuration. */
-    public static void onActivityCreateSetTheme(Activity activity)
-    {
-       if(temaActual==CINEMA) {
-           activity.setTheme(R.style.AppThemeCinemaMode);
-       }
+    /**
+     * Set the theme of the activity, according to the configuration.
+     */
+    public static void onActivityCreateSetTheme(Activity activity) {
+        if (temaActual == CINEMA) {
+            activity.setTheme(R.style.AppThemeCinemaMode);
+        }
 
 
     }

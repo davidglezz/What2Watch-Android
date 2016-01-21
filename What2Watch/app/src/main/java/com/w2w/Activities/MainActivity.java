@@ -12,8 +12,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -48,7 +46,7 @@ import com.w2w.Logica.Lista;
 import com.w2w.Logica.Pelicula;
 import com.w2w.Logica.Util;
 import com.w2w.R;
-import com.w2w.ThemeChanger;
+import com.w2w.Logica.ThemeChanger;
 
 import java.util.List;
 
@@ -211,13 +209,9 @@ public class MainActivity extends Activity //AppCompatActivity
         }
 
         Switch interr2 = (Switch) findViewById(R.id.lightModeConfiguration);
-
         preferencias = datos.getBoolean("LightMode", false);
-        if (interr2.isChecked()) {
-            datos.edit().putBoolean("LightMode", true).commit();
-        } else {
-            datos.edit().putBoolean("LightMode", false).commit();
-        }
+        datos.edit().putBoolean("LightMode", interr2.isChecked()).commit();
+
     }
 
     @Override
@@ -381,7 +375,7 @@ public class MainActivity extends Activity //AppCompatActivity
                 if (event.sensor.getType() == Sensor.TYPE_LIGHT) {
 
                     //Formula a cambiar para regular como afecta la luz a la aplicacion
-                    BackLightValue = (float) event.values[0];
+                    BackLightValue = event.values[0];
 
                     WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
                     layoutParams.screenBrightness = BackLightValue;

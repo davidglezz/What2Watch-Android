@@ -14,32 +14,28 @@ import com.w2w.R;
 
 import java.util.List;
 
-/**
- * Created by USER on 02/01/2016.
- */
-public class WTWCustomAdapter extends ArrayAdapter<Pelicula> {
+public class SearchResultsAdapter extends ArrayAdapter<Pelicula> {
 
-    public WTWCustomAdapter(Context context, List<Pelicula> values) {
-        super(context, R.layout.movielayout, values);
+    public SearchResultsAdapter(Context context, List<Pelicula> values) {
+        super(context, R.layout.fragment_search_result_item, values);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
         if (convertView == null)
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.movielayout, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_search_result_item, null);
 
         Pelicula movie = getItem(position);
 
         if (movie != null) {
 
-            ImageView imgPoster  = (ImageView) convertView.findViewById(R.id.imgPoster);
-            TextView txvTitle    = (TextView) convertView.findViewById(R.id.txvTitle);
-            TextView txvYear     = (TextView) convertView.findViewById(R.id.txvYear);
+            ImageView imgPoster = (ImageView) convertView.findViewById(R.id.imgPoster);
+            TextView txvTitle = (TextView) convertView.findViewById(R.id.txvTitle);
+            TextView txvYear = (TextView) convertView.findViewById(R.id.txvYear);
             //TextView txvRating   = (TextView) convertView.findViewById(R.id.txvRating);
             //TextView txvGenre    = (TextView) convertView.findViewById(R.id.txvGenre);
 
-            //movie.setPosterToView(imgPoster);
             Glide.with(getContext())
                     .load(movie.getPoster())
                     .placeholder(R.drawable.ic_perm_media_white_48dp)
@@ -55,8 +51,6 @@ public class WTWCustomAdapter extends ArrayAdapter<Pelicula> {
 
         return convertView;
     }
-
-
 
 
 }
