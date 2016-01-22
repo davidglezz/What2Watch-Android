@@ -329,7 +329,6 @@ public class MainActivity extends Activity //AppCompatActivity
 
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // TODO Auto-generated method stub
 
         }
 

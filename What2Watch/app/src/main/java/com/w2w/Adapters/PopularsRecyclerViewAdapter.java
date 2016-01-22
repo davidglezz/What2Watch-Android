@@ -18,7 +18,6 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Pelicula} and makes a call to the
  * specified {@link PopularsFragment.OnPopularsFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class PopularsRecyclerViewAdapter extends RecyclerView.Adapter<PopularsRecyclerViewAdapter.ViewHolder> {
 

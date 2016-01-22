@@ -23,7 +23,6 @@ import com.w2w.R;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link Pelicula} and makes a call to the
  * specified {@link PopularsFragment.OnPopularsFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class MovieListRecyclerViewAdapter extends RecyclerView.Adapter<MovieListRecyclerViewAdapter.ViewHolder> {
     public final static String TAG = MovieListRecyclerViewAdapter.class.getSimpleName();

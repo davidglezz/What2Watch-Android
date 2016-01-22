@@ -216,8 +216,9 @@ public class MyDataSource {
         String selection = ColumnMovie.IMDBID + " = ?";
         String[] selectionArgs = {imdbID};
         Cursor cursor = getAnyRow(MOVIE_TABLE_NAME, null, selection, selectionArgs, null, null, null);
-        // TODO check move next
-        cursor.moveToNext();
+
+        if (!cursor.moveToNext())
+            return null;
 
         return new Pelicula(
                 cursor.getString(cursor.getColumnIndex(ColumnMovie.TITLE)),
