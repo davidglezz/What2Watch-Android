@@ -93,7 +93,7 @@ public class ApiRequests {
                         eElement.getAttribute("year"),
                         eElement.getAttribute("imdbID"),
                         eElement.getAttribute("type"),
-                        eElement.getAttribute("Poster")));
+                        eElement.getAttribute("poster")));
             }
         }
 
