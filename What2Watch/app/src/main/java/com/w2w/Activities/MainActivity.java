@@ -76,11 +76,11 @@ public class MainActivity extends Activity //AppCompatActivity
 
         datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
 
-        boolean preferenciasModoCine = datos.getBoolean("CinemaMode", false);
-
-        ThemeChanger.onActivityCreateSetTheme(this, preferenciasModoCine ? 2 : 0);
+        boolean CinemaMode = datos.getBoolean("CinemaMode", false);
+        ThemeChanger.onActivityCreateSetTheme(this, CinemaMode ? ThemeChanger.THEME_CINEMA : ThemeChanger.THEME_LIGHT);
 
         setContentView(R.layout.activity_main);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         //Crear nuevo objeto MyDataSource
@@ -203,19 +203,11 @@ public class MainActivity extends Activity //AppCompatActivity
     public void actualizarInterfaz(View v) {
         Switch interr = (Switch) findViewById(R.id.cinemaModeConfiguration);
 
-        //boolean preferencias = datos.getBoolean("CinemaMode", false);
-        if (interr.isChecked()) {
-            datos.edit().putBoolean("CinemaMode", true).commit();
-            //ThemeChanger.changeToTheme(this, ThemeChanger.CINEMA);
-        } else {
-            datos.edit().putBoolean("CinemaMode", false).commit();
-            //ThemeChanger.changeToTheme(this, ThemeChanger.DAY);
-        }
+        datos.edit().putBoolean("CinemaMode", interr.isChecked()).apply();
+        ThemeChanger.changeToTheme(this, interr.isChecked() ? ThemeChanger.THEME_CINEMA : ThemeChanger.THEME_LIGHT);
 
         Switch interr2 = (Switch) findViewById(R.id.lightModeConfiguration);
-        //preferencias = datos.getBoolean("LightMode", false);
-        datos.edit().putBoolean("LightMode", interr2.isChecked()).commit();
-
+        datos.edit().putBoolean("LightMode", interr2.isChecked()).apply();
     }
 
     @Override

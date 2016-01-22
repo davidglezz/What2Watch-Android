@@ -32,7 +32,6 @@ public class ThemeChanger {
         {
             default:
             case THEME_LIGHT:
-                //activity.setTheme(R.style.Theme_AppCompat_Light);
                 activity.setTheme(R.style.theme_light);
                 break;
             case THEME_DARK:

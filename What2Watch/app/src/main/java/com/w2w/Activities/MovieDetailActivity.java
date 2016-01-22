@@ -2,7 +2,6 @@ package com.w2w.Activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -30,6 +29,7 @@ import com.w2w.BaseDatos.MyDataSource;
 import com.w2w.API.ApiRequests;
 import com.w2w.Logica.Lista;
 import com.w2w.Logica.Pelicula;
+import com.w2w.Logica.ThemeChanger;
 import com.w2w.Logica.Util;
 import com.w2w.Logica.YoutubeService;
 import com.w2w.Other.NewListDialog;
@@ -45,6 +45,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         // Inicializar
         super.onCreate(savedInstanceState);
+        ThemeChanger.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_movie_detail);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

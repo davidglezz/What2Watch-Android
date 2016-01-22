@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.Exception;
 import java.lang.String;
-import java.lang.StringBuffer;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -81,7 +80,7 @@ public class ApiRequests {
         if (doc == null)
             return null;
 
-        List<Pelicula> peliculas = new ArrayList<Pelicula>();
+        List<Pelicula> peliculas = new ArrayList<>();
 
         NodeList nList = doc.getElementsByTagName("result");
         for (int temp = 0; temp < nList.getLength(); temp++) {
@@ -182,7 +181,7 @@ public class ApiRequests {
 
         String web = http_get(URL);
 
-        List<String> ids = new ArrayList<String>();
+        List<String> ids = new ArrayList<>();
 
         if (web == null || web.isEmpty())
             return ids;
@@ -231,7 +230,7 @@ public class ApiRequests {
             urlConnection.connect();
 
             InputStream inputStream = urlConnection.getInputStream();
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             if (inputStream == null) {
                 return null;
             }
@@ -239,7 +238,7 @@ public class ApiRequests {
 
             String line;
             while ((line = reader.readLine()) != null) {
-                buffer.append(line + "\n");
+                buffer.append(line).append("\n");
             }
 
             if (buffer.length() == 0) {
@@ -310,7 +309,7 @@ public class ApiRequests {
             int totalSize = urlConnection.getContentLength();
             int downloadedSize = 0;
             byte[] buffer = new byte[4096];
-            int bufferLength = 0;
+            int bufferLength;
 
             while ((bufferLength = inputStream.read(buffer)) > 0) {
                 fileOutput.write(buffer, 0, bufferLength);
