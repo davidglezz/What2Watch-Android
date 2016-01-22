@@ -22,7 +22,7 @@ import com.w2w.Adapters.SearchResultsAdapter;
 import java.util.List;
 
 
-public class MovieListResult extends ListFragment {
+public class SearchResultFragment extends ListFragment {
 
     private OnFragmentInteractionListener mListener;
 
@@ -38,12 +38,12 @@ public class MovieListResult extends ListFragment {
         main.searchSingleMovie(result.get(position));
     }
 
-    public MovieListResult() {
+    public SearchResultFragment() {
         // Required empty public constructor
     }
 
     @SuppressLint("ValidFragment")
-    public MovieListResult(List<Pelicula> p, MainActivity main) {
+    public SearchResultFragment(List<Pelicula> p, MainActivity main) {
         this.result = p;
         this.main = main;
     }

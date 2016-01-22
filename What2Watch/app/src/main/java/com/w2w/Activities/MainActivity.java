@@ -16,7 +16,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -35,12 +34,12 @@ import android.widget.Switch;
 import com.w2w.BaseDatos.MyDataSource;
 
 import com.w2w.Fragments.AboutFragment;
-import com.w2w.Fragments.Configuration;
+import com.w2w.Fragments.SettingsFragment;
 import com.w2w.Fragments.MovieListFragment;
-import com.w2w.Fragments.MovieListResult;
+import com.w2w.Fragments.SearchResultFragment;
 import com.w2w.Fragments.MyListsFragment;
 import com.w2w.Fragments.PopularsFragment;
-import com.w2w.Fragments.SearchMovies;
+import com.w2w.Fragments.SearchFragment;
 import com.w2w.API.ApiRequests;
 import com.w2w.Logica.Lista;
 import com.w2w.Logica.Pelicula;
@@ -52,36 +51,32 @@ import java.util.List;
 
 public class MainActivity extends Activity //AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        Configuration.OnFragmentInteractionListener,
-        SearchMovies.OnFragmentInteractionListener,
+        SettingsFragment.OnFragmentInteractionListener,
+        SearchFragment.OnFragmentInteractionListener,
         /*CinemaFinder.OnFragmentInteractionListener,*/
         PopularsFragment.OnPopularsFragmentInteractionListener,
         MyListsFragment.OnListFragmentInteractionListener,
-        MovieListResult.OnFragmentInteractionListener,
+        SearchResultFragment.OnFragmentInteractionListener,
         MovieListFragment.OnMovieListFragmentInteractionListener {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     private SharedPreferences datos;
     private Fragment currentFragment;
+    private MyDataSource db;
 
     public SharedPreferences getDatos() {
         return datos;
     }
 
-    //Atributo para la base de datos
-    private MyDataSource db;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //ThemeChanger.onActivityCreateSetTheme(this);
         datos = getSharedPreferences("What2WatchSecretData", Context.MODE_PRIVATE);
-        boolean preferenciasModoCine = datos.getBoolean("CinemaMode", false);
-        if (preferenciasModoCine) {
-            this.setTheme(R.style.AppThemeCinemaMode);
-        }
 
+        boolean preferenciasModoCine = datos.getBoolean("CinemaMode", false);
+
+        ThemeChanger.onActivityCreateSetTheme(this, preferenciasModoCine ? 2 : 0);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -99,8 +94,9 @@ public class MainActivity extends Activity //AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        drawer.openDrawer(GravityCompat.START);
 
-        /* Cargar la base de datos */
+        /* Cargar listas de la base de datos */
         db.loadLists();
 
         // Fragment por defecto
@@ -120,9 +116,10 @@ public class MainActivity extends Activity //AppCompatActivity
         } else {
             if (currentFragment instanceof MovieListFragment) {
                 changeFragment(new MyListsFragment());
-            } else if (currentFragment instanceof MovieListResult) {
-                changeFragment(new SearchMovies());
+            } else if (currentFragment instanceof SearchResultFragment) {
+                changeFragment(new SearchFragment());
             } else {
+                // TODO abrir menu, si esta ya abierto cerrar app
                 super.onBackPressed();
             }
         }
@@ -138,6 +135,17 @@ public class MainActivity extends Activity //AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                // Notice the Gravity.Right
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                drawer.openDrawer(GravityCompat.START);
+            }
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -156,22 +164,17 @@ public class MainActivity extends Activity //AppCompatActivity
 
 
     public void searchMovies(View v) {
-        android.support.design.widget.TextInputLayout title = (TextInputLayout) findViewById(R.id.movieTitleToSearch);
-        android.support.design.widget.TextInputLayout year = (TextInputLayout) findViewById(R.id.movieYearToSearch);
-        String titleString = title.getEditText().getText().toString().trim();
-        String yearString = year.getEditText().getText().toString().trim();
+        String title = ((EditText) findViewById(R.id.search_title_editext)).getText().toString().trim();
+        String year = ((EditText) findViewById(R.id.search_year_editext)).getText().toString().trim();
 
         if (!Util.isNetworkAvailable(this)) {
             Snackbar.make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG).show();
-            return;
-        }
-
-        if (titleString == "" || titleString.isEmpty() || titleString == null) {
+        } else if (title == null || title.isEmpty()) {
             Snackbar.make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG).show();
-        } else if (titleString.length() == 1) {
+        } else if (title.length() == 1) {
             Snackbar.make(v, "Put at least 2 characters to search", Snackbar.LENGTH_LONG).show();
         } else {
-            new TaskBusqueda().execute(titleString, yearString);
+            new TaskBusqueda().execute(title, year);
         }
     }
 
@@ -189,7 +192,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
     public void asyncResultBusqueda(List<Pelicula> lista) {
         if (lista.size() > 0) {
-            changeFragment(new MovieListResult(lista, this));
+            changeFragment(new SearchResultFragment(lista, this));
         } else {
             Snackbar.make(findViewById(android.R.id.content), "No movies found", Snackbar.LENGTH_LONG).show();
         }
@@ -198,18 +201,17 @@ public class MainActivity extends Activity //AppCompatActivity
     public void actualizarInterfaz(View v) {
         Switch interr = (Switch) findViewById(R.id.cinemaModeConfiguration);
 
-        boolean preferencias = datos.getBoolean("CinemaMode", false);
-        // System.out.println("Las preferencias antes eran eran: " + preferencias);
+        //boolean preferencias = datos.getBoolean("CinemaMode", false);
         if (interr.isChecked()) {
             datos.edit().putBoolean("CinemaMode", true).commit();
-            ThemeChanger.changeToTheme(this, ThemeChanger.CINEMA);
+            //ThemeChanger.changeToTheme(this, ThemeChanger.CINEMA);
         } else {
             datos.edit().putBoolean("CinemaMode", false).commit();
-            ThemeChanger.changeToTheme(this, ThemeChanger.DAY);
+            //ThemeChanger.changeToTheme(this, ThemeChanger.DAY);
         }
 
         Switch interr2 = (Switch) findViewById(R.id.lightModeConfiguration);
-        preferencias = datos.getBoolean("LightMode", false);
+        //preferencias = datos.getBoolean("LightMode", false);
         datos.edit().putBoolean("LightMode", interr2.isChecked()).commit();
 
     }
@@ -219,13 +221,13 @@ public class MainActivity extends Activity //AppCompatActivity
 
         int id = item.getItemId();
         if (id == R.id.nav_search_movie) {
-            changeFragment(new SearchMovies());
+            changeFragment(new SearchFragment());
         } else if (id == R.id.nav_popular) {
             changeFragment(PopularsFragment.newInstance());
         } else if (id == R.id.nav_my_lists) {
             changeFragment(new MyListsFragment());
         } else if (id == R.id.nav_conf) {
-            changeFragment(new Configuration());
+            changeFragment(new SettingsFragment());
         } else if (id == R.id.CinemaFinder) {
             Intent intent = new Intent(this, CinemaFinderActivity.class);
             startActivity(intent);

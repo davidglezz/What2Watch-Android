@@ -16,12 +16,12 @@ import com.w2w.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link Configuration.OnFragmentInteractionListener} interface
+ * {@link SettingsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
 
  * create an instance of this fragment.
  */
-public class Configuration extends Fragment {
+public class SettingsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 

@@ -13,12 +13,12 @@ import com.w2w.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SearchMovies.OnFragmentInteractionListener} interface
+ * {@link SearchFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SearchMovies#newInstance} factory method to
+ * Use the {@link SearchFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SearchMovies extends Fragment {
+public class SearchFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -32,8 +32,8 @@ public class SearchMovies extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static SearchMovies newInstance(String param1, String param2) {
-        SearchMovies fragment = new SearchMovies();
+    public static SearchFragment newInstance(String param1, String param2) {
+        SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -41,7 +41,7 @@ public class SearchMovies extends Fragment {
         return fragment;
     }
 
-    public SearchMovies() {
+    public SearchFragment() {
         // Required empty public constructor
     }
 

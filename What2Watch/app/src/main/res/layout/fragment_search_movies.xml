@@ -3,18 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context="com.w2w.Fragments.SearchMovies">
+    tools:context=".Fragments.SearchFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/movieTitleToSearch"
+        android:id="@+id/search_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
         android:layout_centerHorizontal="true">
         <EditText
-            android:id="@+id/movieTitleToSearchEditText"
+            android:id="@+id/search_title_editext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
@@ -23,18 +23,18 @@
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
-        android:id="@+id/movieYearToSearch"
+        android:id="@+id/search_year"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/movieTitleToSearch"
+        android:layout_below="@+id/search_title"
         android:layout_marginTop="45dp">
         <EditText
-            android:id="@+id/movieYearToSearchEditText"
+            android:id="@+id/search_year_editext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:hint="Year of Release (Optional)"
+            android:hint="Release year (Optional)"
             android:inputType="number" />
     </android.support.design.widget.TextInputLayout>
 
