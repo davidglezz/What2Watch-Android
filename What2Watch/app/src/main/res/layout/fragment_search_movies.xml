@@ -5,8 +5,6 @@
     android:padding="16dp"
     tools:context=".Fragments.SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <android.support.design.widget.TextInputLayout
         android:id="@+id/search_title"
         android:layout_width="match_parent"

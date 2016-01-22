@@ -61,13 +61,11 @@ public class MyListsFragment extends Fragment {
     }
 
 
-    // Perfecto, esto solo se ejecuta en moviles con api 23, Gracias Google por avisar
+    // solo api 23
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
 
-        Log.e(TAG, "EEEEEEEEEEEE");
-        // TODO: Que alguien me explique por que esto no se ejecuta
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
         } else {
