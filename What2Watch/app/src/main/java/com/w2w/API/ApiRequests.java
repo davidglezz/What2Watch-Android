@@ -3,6 +3,7 @@ package com.w2w.API;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.w2w.Logica.Pelicula;
@@ -73,6 +74,8 @@ public class ApiRequests {
                 .appendQueryParameter(PARAM.return_format, "xml")
                 .build();
 
+        Log.v(TAG, "searchMovies: " + uri.toString());
+
         Document doc = getXMLDocument(uri.toString());
 
         if (doc == null)
@@ -109,6 +112,8 @@ public class ApiRequests {
                 .appendQueryParameter(PARAM.return_format, "xml")
                 .build();
 
+        Log.v(TAG, "getMovieByImdbId: " + uri.toString());
+
         return xmlDocToPelicula(getXMLDocument(uri.toString()));
     }
 
@@ -124,6 +129,8 @@ public class ApiRequests {
                 .appendQueryParameter(PARAM.plot, "full")
                 .appendQueryParameter(PARAM.return_format, "xml")
                 .build();
+
+        Log.v(TAG, "getMovieByTitle: " + uri.toString());
 
         return xmlDocToPelicula(getXMLDocument(uri.toString()));
     }
@@ -184,8 +191,10 @@ public class ApiRequests {
         Matcher m = p.matcher(web);
         while (m.find()) { // Find each match in turn; String can't do this.
             ids.add(m.group(1)); // Access a submatch group; String can't do this.
-            Log.v(TAG, m.group(1));
+
         }
+
+        Log.v(TAG, "getPopularMovies: " + TextUtils.join(", ", ids));
 
         return ids;
     }
