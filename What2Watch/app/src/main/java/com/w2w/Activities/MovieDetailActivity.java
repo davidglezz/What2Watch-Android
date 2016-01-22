@@ -2,6 +2,7 @@ package com.w2w.Activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -20,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -30,6 +32,7 @@ import com.w2w.Logica.Lista;
 import com.w2w.Logica.Pelicula;
 import com.w2w.Logica.Util;
 import com.w2w.Logica.YoutubeService;
+import com.w2w.Other.NewListDialog;
 import com.w2w.R;
 
 public class MovieDetailActivity extends AppCompatActivity {
@@ -177,11 +180,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             Snackbar.make(view, R.string.no_lists, Snackbar.LENGTH_LONG).setAction(R.string.new_list, new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            // TODO: mostrar dialogo nueva lista
-                            Lista lista = new Lista("Que pasa wey", "Lista generada automaticamente");
-                            db.guardarLista(lista);
-                            lista.addPelicula(pelicula);
-                            db.addPeliculaLista(pelicula, lista);
+                            new NewListDialog(pelicula).showDialog(v);
                         }
                     }
             ).show();

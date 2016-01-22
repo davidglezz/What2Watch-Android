@@ -44,6 +44,7 @@ import com.w2w.API.ApiRequests;
 import com.w2w.Logica.Lista;
 import com.w2w.Logica.Pelicula;
 import com.w2w.Logica.Util;
+import com.w2w.Other.NewListDialog;
 import com.w2w.R;
 import com.w2w.Logica.ThemeChanger;
 
@@ -256,36 +257,7 @@ public class MainActivity extends Activity //AppCompatActivity
      * My Lists
      ***************/
     public void fab_new_list_click(View view) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext());
-        Context context = view.getContext();
-        LinearLayout layout = new LinearLayout(context);
-        layout.setPadding(16, 16, 16, 16);
-        layout.setOrientation(LinearLayout.VERTICAL);
-
-        final EditText nameBox = new EditText(context);
-        nameBox.setHint(R.string.name);
-        layout.addView(nameBox);
-
-        final EditText descriptionBox = new EditText(context);
-        descriptionBox.setHint(R.string.description);
-        layout.addView(descriptionBox);
-
-        dialog.setTitle(R.string.new_list).setView(layout)//.setIcon(R.drawable...)
-                .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        if (!nameBox.getText().toString().isEmpty()) {
-                            Lista l = new Lista(nameBox.getText().toString(), descriptionBox.getText().toString());
-                            MyDataSource.getInstance().guardarLista(l);
-                        }
-                    }
-                })
-                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // No hacer nada
-                    }
-                });
-
-        dialog.show();
+        new NewListDialog().showDialog(view);
     }
 
     /* Lista de películas Populares */
