@@ -53,6 +53,9 @@ public class PopularsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        getActivity().setTitle("Populars");
+
         if (getArguments() != null) {
             //mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }

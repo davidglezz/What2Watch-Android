@@ -52,10 +52,7 @@ public class SearchResultFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-
-
-        }
+        getActivity().setTitle("Search results");
     }
 
 

@@ -18,45 +18,36 @@ import com.w2w.R;
  * Activities that contain this fragment must implement the
  * {@link SettingsFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
-
- * create an instance of this fragment.
  */
 public class SettingsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActivity().setTitle("Settings");
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-         View v =inflater.inflate(R.layout.fragment_settings, container, false);
+        View v = inflater.inflate(R.layout.fragment_settings, container, false);
 
 
-        Switch interruptor=(Switch)v.findViewById(R.id.cinemaModeConfiguration);
+        Switch interruptor = (Switch) v.findViewById(R.id.cinemaModeConfiguration);
+        Switch interruptor2 = (Switch) v.findViewById(R.id.lightModeConfiguration);
 
-        Switch interruptor2=(Switch)v.findViewById(R.id.lightModeConfiguration);
-
-        SharedPreferences datos=((MainActivity) getActivity()).getDatos();
-        boolean preferencias=datos.getBoolean("CinemaMode",false);
+        SharedPreferences datos = ((MainActivity) getActivity()).getDatos();
+        boolean preferencias = datos.getBoolean("CinemaMode", false);
         interruptor.setChecked(preferencias);
 
-
-
-        boolean preferenciasLuz = datos.getBoolean("LightMode",false);
+        boolean preferenciasLuz = datos.getBoolean("LightMode", false);
         interruptor2.setChecked(preferenciasLuz);
-
 
         return v;
     }
-
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -70,8 +61,7 @@ public class SettingsFragment extends Fragment {
         try {
             mListener = (OnFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+            throw new ClassCastException(activity.toString() + " must implement OnFragmentInteractionListener");
         }
     }
 
@@ -86,10 +76,6 @@ public class SettingsFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

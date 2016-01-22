@@ -56,6 +56,8 @@ public class MovieListFragment extends Fragment {
         int id_lista = getArguments().getInt("id_lista");
         lista = Lista.getLista(id_lista);
 
+        getActivity().setTitle(lista.getNombre());
+
         if (adapter == null) {
             adapter = new MovieListRecyclerViewAdapter(lista, mListener);
         }

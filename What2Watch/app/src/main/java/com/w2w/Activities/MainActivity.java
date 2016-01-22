@@ -28,7 +28,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Switch;
 
 import com.w2w.BaseDatos.MyDataSource;
@@ -65,6 +64,8 @@ public class MainActivity extends Activity //AppCompatActivity
     private Fragment currentFragment;
     private MyDataSource db;
 
+    private Toolbar toolbar;
+
     public SharedPreferences getDatos() {
         return datos;
     }
@@ -80,8 +81,7 @@ public class MainActivity extends Activity //AppCompatActivity
         ThemeChanger.onActivityCreateSetTheme(this, preferenciasModoCine ? 2 : 0);
 
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         //Crear nuevo objeto MyDataSource
         db = MyDataSource.getInstance(this);
@@ -95,7 +95,7 @@ public class MainActivity extends Activity //AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        drawer.openDrawer(GravityCompat.START);
+        //drawer.openDrawer(GravityCompat.START);
 
         /* Cargar listas de la base de datos */
         db.loadLists();
@@ -120,7 +120,6 @@ public class MainActivity extends Activity //AppCompatActivity
             } else if (currentFragment instanceof SearchResultFragment) {
                 changeFragment(new SearchFragment());
             } else {
-                // TODO abrir menu, si esta ya abierto cerrar app
                 super.onBackPressed();
             }
         }
@@ -150,6 +149,10 @@ public class MainActivity extends Activity //AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    public void setTitle(CharSequence title) {
+        toolbar.setTitle(title);
+    }
+
     public void searchSingleMovie(Pelicula p) {
         try {
             Intent intent = new Intent(this, MovieDetailActivity.class);
@@ -170,9 +173,7 @@ public class MainActivity extends Activity //AppCompatActivity
 
         if (!Util.isNetworkAvailable(this)) {
             Snackbar.make(v, "Internet connection required to search movies", Snackbar.LENGTH_LONG).show();
-        } else if (title == null || title.isEmpty()) {
-            Snackbar.make(v, "A Movie Title is required to search any movie", Snackbar.LENGTH_LONG).show();
-        } else if (title.length() == 1) {
+        } else if (title.length() < 2) {
             Snackbar.make(v, "Put at least 2 characters to search", Snackbar.LENGTH_LONG).show();
         } else {
             new TaskBusqueda().execute(title, year);
