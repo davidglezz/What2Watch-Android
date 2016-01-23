@@ -83,7 +83,7 @@ public class MyListsRecyclerViewAdapter extends RecyclerView.Adapter<MyListsRecy
                 public void onClick(DialogInterface dialog, int item) {
                     MyDataSource db = MyDataSource.getInstance();
                     db.removeAllMoviesInList(mItem.getId());
-                    db.eliminarLista(mItem);
+                    db.removeMovieList(mItem);
                     Lista.listas.remove(mItem);
                     Log.v(TAG, "Eliminada lista: " + mItem.getNombre());
                     notifyDataSetChanged();

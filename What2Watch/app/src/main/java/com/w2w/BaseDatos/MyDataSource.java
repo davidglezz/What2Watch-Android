@@ -76,7 +76,7 @@ public class MyDataSource {
 
     // Carga las listas de peliculas
     public void loadLists() {
-        Cursor cListas = getAllLists(); // Cursor en tabla listas
+        Cursor cListas = getAllMovieLists(); // Cursor en tabla listas
         Cursor cMovieList; // Cursor en tabla lista-pelicula
         Cursor cPeli; // Cursor en tabla peliculas a una película
         while (cListas.moveToNext()) {
@@ -339,28 +339,26 @@ public class MyDataSource {
     //************************************ LIST *****************************************
 
     //Metainformación de la base de datos
-    public static final String LIST_TABLE_NAME = "List";
+    public static final String MOVIELIST_TABLE_NAME = "List";
 
     //Campos de la tabla List
     public static class ColumnList {
         public static final String ID_LIST = BaseColumns._ID;
         public static final String NAME_LIST = "name";
         public static final String DESCRIPTION_LIST = "description";
-
-
     }
 
     //Script de Creación de la tabla List
-    public static final String CREATE_LIST_SCRIPT =
-            "create table " + LIST_TABLE_NAME + "(" +
+    public static final String CREATE_MOVIELIST_SCRIPT =
+            "create table " + MOVIELIST_TABLE_NAME + "(" +
                     ColumnList.ID_LIST + " " + INT_TYPE + " primary key autoincrement not null," +
                     ColumnList.NAME_LIST + " " + STRING_TYPE + " not null," +
                     ColumnList.DESCRIPTION_LIST + " " + STRING_TYPE + ")";
 
 
     //Scripts de inserción por de listas
-    public static final String INSERT_LIST_SCRIPT =
-            "insert into " + LIST_TABLE_NAME + " values(" +
+    public static final String INSERT_MOVIELIST_SCRIPT =
+            "insert into " + MOVIELIST_TABLE_NAME + " values(" +
                     "null," +
                     "\"Favorite\"," +
                     "\"Favorite movies\")," +
@@ -372,83 +370,65 @@ public class MyDataSource {
                     "\"Movies that have already been seen\")";
 
     //Script para borrar la base de datos
-    public static final String DROP_LIST_SCRIPT = "DROP TABLE IF EXISTS " + LIST_TABLE_NAME;
-
-    //Metodo para añadir una lista
-    public void saveListRow(String name, String descripcion) {
-        //Nuestro contenedor de valores
-        ContentValues values = new ContentValues();
-
-        //Seteando columnas
-        values.put(ColumnList.NAME_LIST, name);
-        values.put(ColumnList.DESCRIPTION_LIST, descripcion);
-
-        //Insertando en la base de datos
-        database.insert(LIST_TABLE_NAME, null, values);
-    }
+    public static final String DROP_LIST_SCRIPT = "DROP TABLE IF EXISTS " + MOVIELIST_TABLE_NAME;
 
 
     //Devuelve todas las listas
-    public Cursor getAllLists() {
+    public Cursor getAllMovieLists() {
         //Seleccionamos todas las filas de la tabla List
         return database.rawQuery(
-                "select * from " + LIST_TABLE_NAME, null);
-    }
-
-    public void actualizarList(int id, String name, String descripcion) {
-        //Nuestro contenedor de valores
-        ContentValues values = new ContentValues();
-
-        //Seteando body y author
-        values.put(ColumnList.NAME_LIST, name);
-        values.put(ColumnList.DESCRIPTION_LIST, descripcion);
-
-        //Clausula WHERE
-        String selection = ColumnList.ID_LIST + " = ?";
-        String[] selectionArgs = {Integer.toString(id)};
-
-        //Actualizando
-        database.update(LIST_TABLE_NAME, values, selection, selectionArgs);
+                "select * from " + MOVIELIST_TABLE_NAME, null);
     }
 
     //obtener una lista por su id
-    public Cursor getList(int id) {
+    public Cursor getMovieList(int id) {
         String selection = ColumnList.ID_LIST + " = ?";
         String[] selectionArgs = {Integer.toString(id)};
-        return getAnyRow(LIST_TABLE_NAME, null, selection, selectionArgs, null, null, null);
-    }
-
-    //borrar una lista por su id
-    public void removeList(int id) {
-        String selection = ColumnList.ID_LIST + " = ?";
-        String[] selectionArgs = {Integer.toString(id)};
-
-        deleteAnyRow(LIST_TABLE_NAME, selection, selectionArgs);
+        return getAnyRow(MOVIELIST_TABLE_NAME, null, selection, selectionArgs, null, null, null);
     }
 
     //Metodo para añadir una lista
-    public void guardarLista(Lista lista) {
-        if (lista.getId() == 0) {
-            //Nuestro contenedor de valores
-            ContentValues values = new ContentValues();
-
-            //Seteando columnas
-            values.put(ColumnList.NAME_LIST, lista.getNombre());
-            values.put(ColumnList.DESCRIPTION_LIST, lista.getDescripcion());
-
-            //Insertando en la base de datos
-            database.insert(LIST_TABLE_NAME, null, values);
+    public void saveMovieList(Lista list) {
+        if (list.getId() == 0) {
+            saveMovieList(list.getNombre(), list.getDescripcion());
+            // TODO setID()
         } else {
-            actualizarList(lista.getId(), lista.getNombre(), lista.getDescripcion());
+            updateMovieList(list.getId(), list.getNombre(), list.getDescripcion());
         }
     }
 
-    //borrar una lista por su id
-    public void eliminarLista(Lista lista) {
-        String selection = ColumnList.ID_LIST + " = ?";
-        String[] selectionArgs = {Integer.toString(lista.getId())};
+    public long saveMovieList(String name, String descripcion) {
 
-        deleteAnyRow(LIST_TABLE_NAME, selection, selectionArgs);
+        ContentValues values = new ContentValues();
+
+        values.put(ColumnList.NAME_LIST, name);
+        values.put(ColumnList.DESCRIPTION_LIST, descripcion);
+
+        return database.insert(MOVIELIST_TABLE_NAME, null, values);
+    }
+
+    public void updateMovieList(int id, String name, String descripcion) {
+
+        ContentValues values = new ContentValues();
+
+        values.put(ColumnList.NAME_LIST, name);
+        values.put(ColumnList.DESCRIPTION_LIST, descripcion);
+
+        String selection = ColumnList.ID_LIST + " = ?";
+        String[] selectionArgs = {Integer.toString(id)};
+
+        database.update(MOVIELIST_TABLE_NAME, values, selection, selectionArgs);
+    }
+
+    // remove
+    public void removeMovieList(Lista list) {
+        removeMovieList(list.getId());
+    }
+
+    public void removeMovieList(int id) {
+        String selection = ColumnList.ID_LIST + " = ?";
+        String[] selectionArgs = {Integer.toString(id)};
+        deleteAnyRow(MOVIELIST_TABLE_NAME, selection, selectionArgs);
     }
 
 
@@ -472,7 +452,7 @@ public class MyDataSource {
                     "FOREIGN KEY(" + ColumnMoviesList.ID_MOVIE + ") REFERENCES " +
                     MOVIE_TABLE_NAME + "(" + ColumnMovie.ID + ") ON DELETE CASCADE," +
                     "FOREIGN KEY(" + ColumnMoviesList.ID_LIST + ") REFERENCES " +
-                    LIST_TABLE_NAME + "(" + ColumnList.ID_LIST + ") ON DELETE CASCADE" + ")";
+                    MOVIELIST_TABLE_NAME + "(" + ColumnList.ID_LIST + ") ON DELETE CASCADE" + ")";
 
 
     //Script para borrar la base de datos

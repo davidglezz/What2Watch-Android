@@ -45,7 +45,7 @@ public class NewListDialog {
                         if (!nameBox.getText().toString().isEmpty()) {
                             Lista lista = new Lista(nameBox.getText().toString(), descriptionBox.getText().toString());
                             MyDataSource db = MyDataSource.getInstance();
-                            db.guardarLista(lista);
+                            db.saveMovieList(lista);
 
                             if (pelicula != null) {
                                 lista.addPelicula(pelicula);
