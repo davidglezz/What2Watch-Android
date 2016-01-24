@@ -31,7 +31,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Switch;
 
-import com.w2w.BaseDatos.MyDataSource;
+import com.w2w.DataBase.MyDataSource;
 
 import com.w2w.Fragments.AboutFragment;
 import com.w2w.Fragments.SettingsFragment;
@@ -41,12 +41,12 @@ import com.w2w.Fragments.MyListsFragment;
 import com.w2w.Fragments.PopularsFragment;
 import com.w2w.Fragments.SearchFragment;
 import com.w2w.API.ApiRequests;
-import com.w2w.Logica.Lista;
-import com.w2w.Logica.Pelicula;
-import com.w2w.Logica.Util;
+import com.w2w.Logic.Lista;
+import com.w2w.Logic.Pelicula;
+import com.w2w.Logic.Util;
 import com.w2w.Other.NewListDialog;
 import com.w2w.R;
-import com.w2w.Logica.ThemeChanger;
+import com.w2w.Logic.ThemeChanger;
 
 import java.util.List;
 

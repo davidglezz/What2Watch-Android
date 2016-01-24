@@ -14,7 +14,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.w2w.Activities.MainActivity;
-import com.w2w.Logica.Pelicula;
+import com.w2w.Logic.Pelicula;
 import com.w2w.R;
 import com.w2w.Adapters.SearchResultsAdapter;
 

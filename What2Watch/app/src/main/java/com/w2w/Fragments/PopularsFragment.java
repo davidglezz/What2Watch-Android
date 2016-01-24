@@ -13,10 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.w2w.Adapters.PopularsRecyclerViewAdapter;
-import com.w2w.BaseDatos.MyDataSource;
+import com.w2w.DataBase.MyDataSource;
 import com.w2w.API.ApiRequests;
-import com.w2w.Logica.Lista;
-import com.w2w.Logica.Pelicula;
+import com.w2w.Logic.Lista;
+import com.w2w.Logic.Pelicula;
+import com.w2w.Other.TaskDownloadMovieInfo;
 import com.w2w.R;
 
 import java.util.List;

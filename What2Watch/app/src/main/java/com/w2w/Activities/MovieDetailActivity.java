@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.Snackbar;
@@ -24,13 +23,13 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.w2w.BaseDatos.MyDataSource;
-import com.w2w.API.ApiRequests;
-import com.w2w.Logica.Lista;
-import com.w2w.Logica.Pelicula;
-import com.w2w.Logica.ThemeChanger;
-import com.w2w.Logica.Util;
-import com.w2w.Logica.YoutubeService;
+import com.w2w.DataBase.MyDataSource;
+import com.w2w.Logic.Lista;
+import com.w2w.Logic.Pelicula;
+import com.w2w.Logic.ThemeChanger;
+import com.w2w.Logic.Util;
+import com.w2w.Logic.YoutubeService;
+import com.w2w.Other.TaskDownloadMovieInfo;
 import com.w2w.Other.NewListDialog;
 import com.w2w.R;
 
@@ -44,11 +43,10 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         // Inicializar
         super.onCreate(savedInstanceState);
-        ThemeChanger.onActivityCreateSetTheme(this);
+        //ThemeChanger.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_movie_detail);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(ContextCompat.getDrawable(this, R.drawable.ic_arrow_back_white_24dp));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,9 +70,9 @@ public class MovieDetailActivity extends AppCompatActivity {
             if (imdbID != null) {
                 // Obtener de la base de datos o de de internet...
                 if (db.existPelicula(imdbID)) {
-                    setPelicula(db.getPelicula(imdbID));
+                    setPelicula(db.getPelicula(imdbID), true);
                 } else if (Util.isNetworkAvailable(this)) {
-                    new getMovieInfo().execute(imdbID);
+                    new TaskDownloadMovieInfo(new DownloadMovieInfoListener()).execute(imdbID);
                 } else {
                     alertInternetConnectionRequired();
                 }
@@ -82,11 +80,11 @@ public class MovieDetailActivity extends AppCompatActivity {
                 // Obtener de la base de datos o de de internet...
                 String title = intent.getStringExtra("title");
                 String year = intent.getStringExtra("year");
-                Pelicula p = db.getPelicula(title, year);
-                if (p != null) {
-                    setPelicula(p);
+                Pelicula movie = db.getPelicula(title, year);
+                if (movie != null) {
+                    setPelicula(movie, true);
                 } else if (Util.isNetworkAvailable(this)) {
-                    new getMovieInfo().execute(title, year != null ? year : "");
+                    new TaskDownloadMovieInfo(new DownloadMovieInfoListener()).execute(title, year != null ? year : "");
                 } else {
                     alertInternetConnectionRequired();
                 }
@@ -95,38 +93,46 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     // Establecer valores
-    private void setPelicula(Pelicula pelicula) {
+    private void setPelicula(Pelicula movie, boolean setPoster) {
 
-        this.pelicula = pelicula;
+        this.pelicula = movie;
 
         // Movie Info
-        Glide.with(this).load(pelicula.getBigPoster()).into((ImageView) findViewById(R.id.imgPoster));
-        ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(pelicula.getTitle());
-        ((TextView) findViewById(R.id.txvGenre)).setText(pelicula.getGenre());
-        ((TextView) findViewById(R.id.txvPlot)).setText(pelicula.getPlot());
-        ((TextView) findViewById(R.id.txvYear)).setText(pelicula.getYear());
-        ((TextView) findViewById(R.id.txvRated)).setText(pelicula.getRated());
-        ((TextView) findViewById(R.id.txvReleased)).setText(pelicula.getReleased());
-        ((TextView) findViewById(R.id.txvRunTime)).setText(pelicula.getRuntime());
-        ((TextView) findViewById(R.id.txvDirector)).setText(pelicula.getDirector());
-        ((TextView) findViewById(R.id.txvWriter)).setText(pelicula.getWriter());
-        ((TextView) findViewById(R.id.txvActors)).setText(pelicula.getActors());
-        ((TextView) findViewById(R.id.txvAwards)).setText(pelicula.getAwards());
-        ((TextView) findViewById(R.id.txvLanguage)).setText(pelicula.getLanguage());
-        ((TextView) findViewById(R.id.txvCountry)).setText(pelicula.getCountry());
-        ((TextView) findViewById(R.id.txvRating)).setText(pelicula.getImdbRating());
-        ((TextView) findViewById(R.id.txvMetascore)).setText(pelicula.getMetascore());
-        ((TextView) findViewById(R.id.txvVotes)).setText(pelicula.getImdbVotes());
+        ((CollapsingToolbarLayout) findViewById(R.id.toolbar_layout)).setTitle(movie.getTitle());
+        ((TextView) findViewById(R.id.txvGenre)).setText(movie.getGenre());
+        ((TextView) findViewById(R.id.txvPlot)).setText(movie.getPlot());
+        ((TextView) findViewById(R.id.txvYear)).setText(movie.getYear());
+        ((TextView) findViewById(R.id.txvRated)).setText(movie.getRated());
+        ((TextView) findViewById(R.id.txvReleased)).setText(movie.getReleased());
+        ((TextView) findViewById(R.id.txvRunTime)).setText(movie.getRuntime());
+        ((TextView) findViewById(R.id.txvDirector)).setText(movie.getDirector());
+        ((TextView) findViewById(R.id.txvWriter)).setText(movie.getWriter());
+        ((TextView) findViewById(R.id.txvActors)).setText(movie.getActors());
+        ((TextView) findViewById(R.id.txvAwards)).setText(movie.getAwards());
+        ((TextView) findViewById(R.id.txvLanguage)).setText(movie.getLanguage());
+        ((TextView) findViewById(R.id.txvCountry)).setText(movie.getCountry());
+        ((TextView) findViewById(R.id.txvRating)).setText(movie.getImdbRating());
+        ((TextView) findViewById(R.id.txvMetascore)).setText(movie.getMetascore());
+        ((TextView) findViewById(R.id.txvVotes)).setText(movie.getImdbVotes());
+
+        if (setPoster) {
+            setPoster(movie.getBigPoster());
+        }
+        //if (movie.getPoster().startsWith("http"));
 
         // User fields
         RatingBar voto = (RatingBar) findViewById(R.id.ratingBar);
-        voto.setRating(pelicula.getNota() / 2f);
-        voto.setOnRatingBarChangeListener(new myOnRatingBarChangeListener(pelicula));
+        voto.setRating(movie.getNota() / 2f);
+        voto.setOnRatingBarChangeListener(new myOnRatingBarChangeListener(movie));
 
         final EditText comentario = (EditText) findViewById(R.id.txtComment);
-        comentario.setText(pelicula.getComment());
-        comentario.addTextChangedListener(new myTextWatcher(pelicula));
+        comentario.setText(movie.getComment());
+        comentario.addTextChangedListener(new myTextWatcher(movie));
 
+    }
+
+    private void setPoster(String url) {
+        Glide.with(this).load(url).into((ImageView) findViewById(R.id.imgPoster));
     }
 
     private void alertInternetConnectionRequired() {
@@ -143,32 +149,31 @@ public class MovieDetailActivity extends AppCompatActivity {
     }
 
     // Obtener información de la pelicula
-    class getMovieInfo extends AsyncTask<String, Void, Pelicula> {
+    class DownloadMovieInfoListener implements TaskDownloadMovieInfo.TaskDownloadMovieInfoListener {
         private ProgressDialog progressDialog;
 
         @Override
-        protected void onPreExecute() {
+        public void onPreDownload() {
             progressDialog = ProgressDialog.show(MovieDetailActivity.this, "", "Loading movie info...", true);
         }
 
         @Override
-        protected Pelicula doInBackground(String... params) {
-            if (params.length == 2)
-                return ApiRequests.getMovieByTitle(params[0], params[1]);
-
-            return ApiRequests.getMovieByImdbId(params[0]);
+        public void onDownloadedMovieInfo(Pelicula result) {
+            progressDialog.dismiss();
+            if (result != null)  // TODO && this.pelicula == null
+                setPelicula(result, true);
         }
 
         @Override
-        protected void onPostExecute(Pelicula result) {
-            progressDialog.dismiss();
+        public void onDownloadedMoviePoster(Pelicula result) {
             if (result != null) {
-                db.saveMovie(result);
-                setPelicula(result);
+                setPoster(result.getBigPoster());
             } else {
                 alertInternetConnectionRequired();
             }
         }
+
+
     }
 
     // FAB & Add to list btn

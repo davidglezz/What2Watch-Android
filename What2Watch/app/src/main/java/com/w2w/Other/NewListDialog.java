@@ -8,9 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.w2w.BaseDatos.MyDataSource;
-import com.w2w.Logica.Lista;
-import com.w2w.Logica.Pelicula;
+import com.w2w.DataBase.MyDataSource;
+import com.w2w.Logic.Lista;
+import com.w2w.Logic.Pelicula;
 import com.w2w.R;
 
 public class NewListDialog {

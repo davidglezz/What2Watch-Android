@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.w2w.Adapters.MovieListRecyclerViewAdapter;
-import com.w2w.Logica.Lista;
-import com.w2w.Logica.Pelicula;
+import com.w2w.Logic.Lista;
+import com.w2w.Logic.Pelicula;
 import com.w2w.R;
 
 /**

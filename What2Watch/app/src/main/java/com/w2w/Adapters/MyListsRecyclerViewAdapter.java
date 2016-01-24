@@ -10,9 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.w2w.BaseDatos.MyDataSource;
+import com.w2w.DataBase.MyDataSource;
 import com.w2w.Fragments.MyListsFragment;
-import com.w2w.Logica.Lista;
+import com.w2w.Logic.Lista;
 import com.w2w.R;
 
 import java.util.List;

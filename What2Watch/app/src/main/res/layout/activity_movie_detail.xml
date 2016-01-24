@@ -26,6 +26,7 @@
                 android:id="@+id/imgPoster"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/MoviePosterContentDescription"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="0.5"/>
@@ -366,7 +367,7 @@
                 android:id="@+id/add_to_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:layout_marginTop="35dp"
                 android:onClick="add_to_list_click"
                 android:text="@string/add_to_list"
@@ -386,7 +387,7 @@
                 android:id="@+id/youtube_Play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_visibility_black_24dp"
+                android:drawableStart="@drawable/ic_visibility_black_24dp"
                 android:onClick="youtube_player"
                 android:text="@string/youtubePlay"/>
 
@@ -398,22 +399,20 @@
                 android:layout_marginTop="35dp"
                 />
 
-            <TextView
+            <android.support.design.widget.TextInputLayout
                 android:id="@+id/lblComentario"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="right"
-                android:text="Comment"
-                android:textAppearance="?android:attr/textAppearanceMedium"/>
-
-            <EditText
-                android:id="@+id/txtComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textMultiLine"
-                />
+                android:layout_marginTop="16dp">
+
+                <EditText
+                    android:id="@+id/txtComment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/your_comment"
+                    android:inputType="textMultiLine"
+                    />
+            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 

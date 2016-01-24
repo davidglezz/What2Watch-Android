@@ -13,11 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.w2w.BaseDatos.MyDataSource;
+import com.w2w.DataBase.MyDataSource;
 import com.w2w.Fragments.MovieListFragment;
 import com.w2w.Fragments.PopularsFragment;
-import com.w2w.Logica.Lista;
-import com.w2w.Logica.Pelicula;
+import com.w2w.Logic.Lista;
+import com.w2w.Logic.Pelicula;
 import com.w2w.R;
 
 /**

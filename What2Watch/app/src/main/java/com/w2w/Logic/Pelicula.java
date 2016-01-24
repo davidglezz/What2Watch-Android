@@ -1,4 +1,4 @@
-package com.w2w.Logica;
+package com.w2w.Logic;
 
 
 public class Pelicula {
@@ -237,5 +237,9 @@ public class Pelicula {
 
     public void setID(long ID) {
         this.ID = ID;
+    }
+
+    public void _setPoster(String poster) {
+        this.poster = poster;
     }
 }

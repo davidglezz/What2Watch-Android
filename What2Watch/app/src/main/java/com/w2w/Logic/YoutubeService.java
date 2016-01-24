@@ -1,4 +1,4 @@
-package com.w2w.Logica;
+package com.w2w.Logic;
 
 
 import android.os.AsyncTask;

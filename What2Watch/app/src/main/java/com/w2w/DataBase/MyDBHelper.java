@@ -1,4 +1,4 @@
-package com.w2w.BaseDatos;
+package com.w2w.DataBase;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

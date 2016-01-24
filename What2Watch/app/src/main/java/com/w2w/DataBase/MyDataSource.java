@@ -1,4 +1,4 @@
-package com.w2w.BaseDatos;
+package com.w2w.DataBase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import com.w2w.Logica.Lista;
-import com.w2w.Logica.Pelicula;
+import com.w2w.Logic.Lista;
+import com.w2w.Logic.Pelicula;
 
 
 public class MyDataSource {

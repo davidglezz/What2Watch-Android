@@ -13,7 +13,7 @@
     <string name="imdbRating">Rating</string>
     <string name="metascore">Metascore</string>
     <string name="imdbVotes">Votes</string>
-    <string name="sample">sample</string>
+    <string name="sample">Loading...</string>
     <string name="country">Country</string>
     <string name="rated">Rated</string>
     <string name="released">Released</string>
@@ -39,4 +39,5 @@
     <string name="mark_as_seen">Mark as seen</string>
     <string name="about_fragment_text_es">Esta aplicación ha sido desarrollada para la asignatura "SDM".</string>
     <string name="about_fragment_text_en">This application has been developed for the subject "SDM".</string>
+    <string name="your_comment">Your comment</string>
 </resources>

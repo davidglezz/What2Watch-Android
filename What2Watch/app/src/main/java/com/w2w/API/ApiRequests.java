@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.w2w.Logica.Pelicula;
+import com.w2w.Logic.Pelicula;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

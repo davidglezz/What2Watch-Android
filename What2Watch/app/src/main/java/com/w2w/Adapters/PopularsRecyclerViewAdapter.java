@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.w2w.Fragments.PopularsFragment;
-import com.w2w.Logica.Pelicula;
+import com.w2w.Logic.Pelicula;
 import com.w2w.R;
 
 import java.util.List;
