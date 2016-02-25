@@ -1,5 +1,5 @@
-# SDM
-App Android para SDM
+# What2Watch-Android
+App Android What2Watch.
 
 
 # Atajos de teclado útiles:
