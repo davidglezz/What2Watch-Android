@@ -1,5 +1,5 @@
 # What2Watch-Android
-App Android What2Watch.
+App for Android: What2Watch.
 
 An app where your can find movies of the moment.
 Save them into several and personalized lists.
