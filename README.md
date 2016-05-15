@@ -1,6 +1,7 @@
 # What2Watch-Android
 App Android What2Watch.
 
-
-# Atajos de teclado útiles:
-`Ctrl + Alt + L` Autoformat
+An app where your can find movies of the moment.
+Save them into several and personalized lists.
+Watch movie thriller.
+Also find your nearest theaters.
