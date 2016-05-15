@@ -3,5 +3,5 @@ App for Android: What2Watch.
 
 An app where your can find movies of the moment.
 Save them into several and personalized lists.
-Watch movie thriller.
+Watch movie trailer.
 Also find your nearest theaters.
